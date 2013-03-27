@@ -1,4 +1,10 @@
 <?php
+
+
+
+
+
+?><?php
 	include 'DB_data.php';
 
 	// Connect with DB
@@ -10,29 +16,35 @@
 	mysql_select_db($database, $con);
 
 	$id = $_POST['id'];
-	$password = $_POST['pw'];
 
 	$result = array();
 
 	// sql statement
-	$sql = "SELECT messageText, password FROM messages
-			WHERE id = $id
-			AND enabled = 1";
+	$sql_message = "SELECT messageText FROM messages
+					WHERE id = \"" .$id."\"";
+	$sql_answers = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = \"" .$id."\"";
 
-	$content = mysql_query($sql, $con);
+	$content_message = mysql_query($sql_message, $con);
+	$content_answers = mysql_query($sql_answers, $con);
 
-	if (!$content) {
+	if (!$content_message) {
 		die('Error: ' . mysql_error());
 	} else {
-		$row = mysql_fetch_array($content);
-		// Check pw
-		if ($password == $row['password']) {
-			// correct pw
-			$result = $row['messageText'];
-		} else {
-			// wrong pw
-			$result = "-";
-		}
+		$row_messageText = mysql_fetch_array($content_message);
+  	}
+  	
+  	if (!$content_answers) {
+		die('Error: ' . mysql_error());
+	} else {
+		$row_answers = mysql_fetch_array($content_answers);
+		
+		$result [] = array('message'=>$row_messageText['messageText'],
+						   'ans1'=>$row_answers['answer1'],
+						   'ans2'=>$row_answers['answer2'],
+						   'ans3'=>$row_answers['answer3'],
+						   'ans4'=>$row_answers['answer4'],
+						   'ans5'=>$row_answers['answer5'],
+						   'ans6'=>$row_answers['answer6']);
   	}
 
   	// close DB
