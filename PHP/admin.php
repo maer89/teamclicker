@@ -8,8 +8,10 @@
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	
 	<script>
+		var editAnswers;
 		$(document).ready(function(){
 			var i = 3;					/*to add oder delete answers*/
+			
 		
    			//*start* get the UserID
    			var user_id = -1;
@@ -158,6 +160,7 @@
 					'id': messageID
 				},
 				success: function(data) {
+					editAnswers = 2;
 					var data_field = $.parseJSON(data);
 					document.getElementById("editedanswer1").value = data_field.ans1;
 					document.getElementById("editedanswer2").value = data_field.ans2;
@@ -167,11 +170,13 @@
 					}else if(data_field.ans4 == ""){
 						$("#edit").append("<div>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 						document.getElementById("editedanswer3").value = data_field.ans3;
+						editAnswers = 3;
 					}else if(data_field.ans5 == ""){
 						$("#edit").append("<div>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 						$("#edit").append("<div>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
 						document.getElementById("editedanswer3").value = data_field.ans3;
 						document.getElementById("editedanswer4").value = data_field.ans4;
+						editAnswers = 4;
 					}else if(data_field.ans6 == ""){
 						$("#edit").append("<div>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 						$("#edit").append("<div>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
@@ -179,6 +184,7 @@
 						document.getElementById("editedanswer3").value = data_field.ans3;
 						document.getElementById("editedanswer4").value = data_field.ans4;
 						document.getElementById("editedanswer5").value = data_field.ans5;
+						editAnswers = 5;
 					}else{
 						$("#edit").append("<div>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 						$("#edit").append("<div>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
@@ -188,6 +194,7 @@
 						document.getElementById("editedanswer4").value = data_field.ans4;
 						document.getElementById("editedanswer5").value = data_field.ans5;
 						document.getElementById("editedanswer6").value = data_field.ans6;
+						editAnswers = 6;
 					}
 					$("#edit").append("</div><input type='button' onclick='saveChanges("+num+")' value='save changes' /></p></form>");
 				}
@@ -199,13 +206,52 @@
 		function saveChanges(num){
 			var messageID = document.getElementById("id"+num).innerHTML;
 			var text = document.getElementById("messageText").value;
-			alert("messageText:" + text);
+			var ans1 = "";
+			var ans2 = "";
+			var ans3 = "";
+			var ans4 = "";
+			var ans5 = "";
+			var ans6 = "";
+			
+			if(editAnswers == 2){
+				ans1 = document.getElementById("editedanswer1").value;
+				ans2 = document.getElementById("editedanswer2").value;
+			}else if(editAnswers == 3){
+				ans1 = document.getElementById("editedanswer1").value;
+				ans2 = document.getElementById("editedanswer2").value;
+				ans3 = document.getElementById("editedanswer3").value;
+			}else if(editAnswers == 4){
+				ans1 = document.getElementById("editedanswer1").value;
+				ans2 = document.getElementById("editedanswer2").value;
+				ans3 = document.getElementById("editedanswer3").value;
+				ans4 = document.getElementById("editedanswer4").value;
+			}else if(editAnswers == 5){
+				ans1 = document.getElementById("editedanswer1").value;
+				ans2 = document.getElementById("editedanswer2").value;
+				ans3 = document.getElementById("editedanswer3").value;
+				ans4 = document.getElementById("editedanswer4").value;
+				ans5 = document.getElementById("editedanswer5").value;
+			}else if(editAnswers == 6){
+				ans1 = document.getElementById("editedanswer1").value;
+				ans2 = document.getElementById("editedanswer2").value;
+				ans3 = document.getElementById("editedanswer3").value;
+				ans4 = document.getElementById("editedanswer4").value;
+				ans5 = document.getElementById("editedanswer5").value;
+				ans6 = document.getElementById("editedanswer6").value;
+			}
+			
 			$.ajax({
 				type: 'POST',
 				url: '../PHP/saveChanges.php',
 				data: {
 					'id': messageID,
-					'text': text
+					'text': text,
+					'ans1': ans1,
+					'ans2': ans2,
+					'ans3': ans3,
+					'ans4': ans4,
+					'ans5': ans5,
+					'ans6': ans6
 				},
 				success: function(data) {
 					var data_field = $.parseJSON(data);
