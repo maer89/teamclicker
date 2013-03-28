@@ -9,5 +9,7 @@
 	
 	$res = mysql_query("DELETE FROM messages WHERE id = $id");
 	
+	$res = mysql_query("DELETE FROM answers WHERE messageID = $id");
+	
 	echo json_encode($id);
 ?>
