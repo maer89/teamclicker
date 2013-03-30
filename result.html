@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Clicker Result</title>
+	
+	<!--JQuery-->
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	
+	<script>
+		function getResult(){
+			$.ajax({
+				type: 'POST',
+				url: '../PHP/result.php',
+				data: {
+					'id': 17,
+					'ans1': "A",
+					'ans2': "B",
+					'ans3': "C",
+					'ans4': "D",
+					'ans5': "E",
+					'ans6': "F"
+				},
+				success: function(data) {
+					var data_field = $.parseJSON(data);
+					alert("erfolgreich!");
+				}
+			})
+		}
+	</script>
+</head>
+<body>
+	<button id="button" onclick="getResult()" >Get Result</button>
+</body>
+</html>
