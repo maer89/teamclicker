@@ -10,12 +10,12 @@
 	<script>
 		var editAnswers;
 		var j = 3;					/*to add or delete edited answers*/
-		$(document).ready(function(){
-			var i = 3;					/*to add or delete answers*/
-			
+		var i = 3;					/*to add or delete answers*/
+		var user_id;
+		$(document).ready(function(){	
 		
    			//*start* get the UserID
-   			var user_id = -1;
+   			user_id = -1;
    			
    			var params = decodeURI(document.URL);
 			var pos = params.indexOf('=');
@@ -37,7 +37,7 @@
 			/*add answer*/
 			$("#addanswer").click(function(){
 				if(i <= 6 ){
-					$("#answers").append("<div id='answer" + i + "'>Answer " + i + " <input type='text' name='answer" + i +"' /></div>");
+					$("#answers").append("<div id='answer" + i + "'>Answer " + i + " <input type='text' name='answer" + i +"' id='answerText" + i + "' /></div>");
 					i++;
 				}else{
 					alert("max. Anzahl von Antworten erreicht");
@@ -79,6 +79,65 @@
 			});			
 		});
 		
+		/*save message*/
+		function saveMessage(){
+			var text = document.getElementById("message").value;
+			var userID = user_id;
+			var ans1 = "";
+			var ans2 = "";
+			var ans3 = "";
+			var ans4 = "";
+			var ans5 = "";
+			var ans6 = "";
+			
+			if(i-1 == 2){
+				ans1 = document.getElementById("answerText1").value;
+				ans2 = document.getElementById("answerText2").value;
+			}else if(i-1 == 3){
+				ans1 = document.getElementById("answerText1").value;
+				ans2 = document.getElementById("answerText2").value;
+				ans3 = document.getElementById("answerText3").value;
+			}else if(i-1 == 4){
+				ans1 = document.getElementById("answerText1").value;
+				ans2 = document.getElementById("answerText2").value;
+				ans3 = document.getElementById("answerText3").value;
+				ans4 = document.getElementById("answerText4").value;
+			}else if(i-1 == 5){
+				ans1 = document.getElementById("answerText1").value;
+				ans2 = document.getElementById("answerText2").value;
+				ans3 = document.getElementById("answerText3").value;
+				ans4 = document.getElementById("answerText4").value;
+				ans5 = document.getElementById("answerText5").value;
+			}else if(i-1 == 6){
+				alert("hier");
+				ans1 = document.getElementById("answerText1").value;
+				ans2 = document.getElementById("answerText2").value;
+				ans3 = document.getElementById("answerText3").value;
+				ans4 = document.getElementById("answerText4").value;
+				ans5 = document.getElementById("answerText5").value;
+				ans6 = document.getElementById("answerText6").value;
+			}
+			alert("Antworten: " + ans1 + " "  + ans2 + " " + ans3);
+			$.ajax({
+				type: 'POST',
+				url: '../PHP/saveMessage.php',
+				data: {
+					'text': text,
+					'userID': userID,
+					'ans1': ans1,
+					'ans2': ans2,
+					'ans3': ans3,
+					'ans4': ans4,
+					'ans5': ans5,
+					'ans6': ans6
+				},
+				success: function(data) {
+					
+					alert("message saved");
+					var data_field = $.parseJSON(data);
+				}
+			});
+		}
 		/*enable message*/
 		function enable(num){
 			var messageID = document.getElementById("id"+num).innerHTML;
@@ -296,6 +355,7 @@
 	</div>
 	<div class="content">
 		<div id="newMessage">
+			<!--2013-04-01 -Start-
 			<form action="DB_admin.php" method="post">
 				<p>
 					Message:<br />
@@ -315,13 +375,32 @@
 					<input type="reset" value="reset" />
 				</p>
 			</form>
+			-->
+			<form>
+			<p>
+				Message:<br />
+				<textarea type="textarea" id="message" name="message" cols="35" rows="5"></textarea>
+			</p>
+			<p>
+				Answers:<br />
+				<div id="answers">
+					<div id="answer1">Answer 1 <input type="text" name="answer1" id="answerText1"/></div>
+					<div id="answer2">Answer 2 <input type="text" name="answer2" id="answerText2"/></div>
+				</div>
+				<input type="button" id="addanswer" value="add answer" />
+				<input type="button" id="delanswer" value="delete answer" />
+			</p>
+			<p>
+				<input type="button" onclick="saveMessage()" value="save message" />
+				<input type="reset" value="reset" />
+			</p>
+			</form>
 		</div>
 	
 		<div id="showAllMessages">
 			<?php
 				// Same as in js where we get the user_id (we have to choose one, js or php)
 				$user_id = $_GET['user_id'];
-				echo $user_id;
 
 				/*Connect*/
 				mysql_connect("46.4.164.194","web90","maer89");
