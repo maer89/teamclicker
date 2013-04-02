@@ -6,6 +6,8 @@
 	<link type="text/css" rel="stylesheet" href="../css/admin.css" >
 	<!--JQuery-->
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<!-- storage.js -->
+	<script type="text/javascript" src="../js/storage.js"></script>
 	
 	<script>
 		var editAnswers;
@@ -14,8 +16,9 @@
 		var user_id;
 		$(document).ready(function(){	
 		
+			// not in use --> new code beneath
    			//*start* get the UserID
-   			user_id = -1;
+   			/*user_id = -1;
    			
    			var params = decodeURI(document.URL);
 			var pos = params.indexOf('=');
@@ -29,8 +32,18 @@
 				alert("You\'re not allowed to enter this site!");
 				var page = "../HTML/index.html";
 				window.open(page, "_self");
-			}
+			}  */
 			//*end*
+			
+			// get the userID from storage
+			user_id = storage.get("user_id");
+			if (user_id == "") {
+				alert("Invalide option");
+				var page = "../HTML/index.html";
+				window.open(page, "_self");
+			} else {
+				storage.set("user_id", "");
+			}
 			
 			$("#showAllMessages").hide();
 			
@@ -60,6 +73,7 @@
 			$("#showMessage").click(function(){
 				$("#edit").empty();
 				$("#newMessage").hide();
+				updateTable();
 				$("#showAllMessages").show();
 			});
 			
@@ -117,7 +131,7 @@
 				ans5 = document.getElementById("answerText5").value;
 				ans6 = document.getElementById("answerText6").value;
 			}
-			alert("Antworten: " + ans1 + " "  + ans2 + " " + ans3);
+			
 			$.ajax({
 				type: 'POST',
 				url: '../PHP/saveMessage.php',
@@ -132,8 +146,6 @@
 					'ans6': ans6
 				},
 				success: function(data) {
-					
-					alert("message saved");
 					var data_field = $.parseJSON(data);
 				}
 			});
@@ -150,6 +162,7 @@
 				success: function(data) {
 					var data_field = $.parseJSON(data);
 					alert("message enabled");
+					updateTable();
 				}
 			});
 		}
@@ -165,6 +178,7 @@
 				success: function(data) {
 					var data_field = $.parseJSON(data);
 					alert("message disabled");
+					updateTable();
 				}
 			});
 		}
@@ -181,6 +195,7 @@
 				success: function(data) {
 					var data_field = $.parseJSON(data);
 					alert("message delete");
+					updateTable();
 				}
 			});
 		}
@@ -342,7 +357,67 @@
 				success: function(data) {
 					var data_field = $.parseJSON(data);
 					alert("changes saved");
+					updateTable();
 				}
+			});
+		}
+	
+		/*update table*/
+		function updateTable(){
+			$("#showAllMessages").empty();
+			var userID = user_id;
+			$.ajax({
+				type: 'POST',
+				url: 'updateTable.php',
+				data: {
+					'userID': userID
+				},
+				success: function(data){
+					var data_field = $.parseJSON(data);
+					var content = "<table border='1'>"+
+						"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>";
+					/*$("#showAllMessages").append("<table border='1'>"+
+						"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>");					
+					
+					for(var i=0; i< data_field.length;i++){
+						$("#showAllMessages").append("<tr class='row'><td id='id" + i +"'>" + data_field[i].id + "</td>" +
+													"<td>" + data_field[i].userID + "</td>" +
+													"<td>" + data_field[i].message + "</td>");
+						
+						if(data_field[i].enable == 0){
+							$("#showAllMessages").append("<td><input type='radio' onclick='enable("+i+")' /></td>");
+						}else{
+							$("#showAllMessages").append("<td><input type='radio' onclick='disable("+i+")' checked='checked'/></td>");
+						}
+						
+						$("#showAllMessages").append("<td><a><img src='../img/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
+							"<td><img src='../img/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
+							"<td>"+data_field[i].pw+"</td></tr>");
+					}*/
+					
+					for(var i=0; i< data_field.length;i++){
+						content = content + "<tr class='row'><td id='id" + i +"'>" + data_field[i].id + "</td>" +
+													"<td>" + data_field[i].userID + "</td>" +
+													"<td>" + data_field[i].message + "</td>";
+						
+						if(data_field[i].enable == 0){
+							content = content + "<td><input type='radio' onclick='enable("+i+")' /></td>";
+						}else{
+							content = content + "<td><input type='radio' onclick='disable("+i+")' checked='checked'/></td>";
+						}
+						
+						content = content + "<td><a><img src='../img/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
+							"<td><img src='../img/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
+							"<td>"+data_field[i].pw+"</td></tr>";
+					}
+					
+					/*$("#showAllMessages").append("</table>");	*/
+						content = content + "</table>";
+						
+						$("#showAllMessages").append(content);
+				}
+			}).error(function(){
+				alert("hier");
 			});
 		}
 	</script>
@@ -398,40 +473,7 @@
 		</div>
 	
 		<div id="showAllMessages">
-			<?php
-				// Same as in js where we get the user_id (we have to choose one, js or php)
-				$user_id = $_GET['user_id'];
-
-				/*Connect*/
-				mysql_connect("46.4.164.194","web90","maer89");
-		
-				/*select database*/
-				mysql_select_db("usr_web90_3");
-				
-				$res = mysql_query("SELECT * FROM messages WHERE userID = $user_id");
-				
-				$i=0;
-				echo "<table border='1'>";
-				echo "<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>";
-				while($data = mysql_fetch_array($res)){
-					echo "<tr class='row'><td id='id".$i."'>".$data['id']."</td>"
-						."<td>".$data['userID']."</td>"
-						."<td>".$data['messageText']."</td>";
-						
-					if($data['enabled'] == 0){
-						echo "<td><input type='radio' onclick='enable($i)' /></td>";
-					}else{
-						echo "<td><input type='radio' onclick='disable($i)' checked='checked'/></td>";
-					}
-					
-					echo "<td><a><img src='../img/edit.png' onclick='editMessage($i)'/></a></td>"
-						."<td><img src='../img/delete.png' onclick='deleteMessage($i)'/></td>"
-						."<td>".$data['password']."</td></tr>";
-					
-					$i++;
-				}
-				echo "</table>";
-			?>
+			
 		</div>
 		<div id="edit" >
 		</div>

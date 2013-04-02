@@ -24,5 +24,5 @@
 						  'pw'=>$pw);
 	}
 	
-	echo json_enxode($res);
+	echo json_encode($result);
 ?>
