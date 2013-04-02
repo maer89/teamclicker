@@ -9,7 +9,7 @@ $(function() {
 		var page = "../HTML/index.html";
 		window.open(page, "_self");
 	}
-	storage.set("q_id", -1);
+	storage.set("q_id", "");
 	storage.set("q_pw", "");
 });
 
@@ -26,9 +26,15 @@ function check_Question(q_id, q_pw) {
 				switch(data_field) {
 					case -1:
 						alert('Question doesn\'t exist or isn\'t enabled!');
+						// link back to index.html
+						var page = "../HTML/index.html";
+						window.open(page, "_self");
 						break;
 					case 0:
 						alert('You entered the wrong password for the ID  ' + q_id);
+						// link back to index.html
+						var page = "../HTML/index.html";
+						window.open(page, "_self");
 						break;
 					case 1:
 						alert('Question found! Click \'ok\' to see it.');
@@ -87,8 +93,10 @@ function sendAnswer(id) {
 			},
    			success: function(data) {
 				alert("Vote successful!");
-				var page = "../HTML/index.html";
-				window.open(page, "_self");
+
+				storage.set("q_id", q_id);
+				// Link to Timer-/Resultpage
+				location.href = "result.html";
 			}
 	}).error(function() {
 		alert("Error sending answer!");
