@@ -1,5 +1,18 @@
 var q_id = "";
 $(function() {
+
+	var c = document.cookie;
+	var visited = 0;
+	var pos = c.indexOf('=');
+	if (pos != -1) {
+		visited = c.slice(pos+1);
+		if (visited == 1) {
+			alert("You have already voted");
+			var page = "../HTML/index.html";
+			window.open(page, "_self");
+			return;
+		}
+	}
 	q_id = storage.get("q_id");
 	var q_pw = storage.get("q_pw");
 	if (q_id != "") {
@@ -8,8 +21,9 @@ $(function() {
 		alert("Invalide option");
 		var page = "../HTML/index.html";
 		window.open(page, "_self");
+		return;
 	}
-	storage.set("q_id", "");
+  	storage.set("q_id", "");
 	storage.set("q_pw", "");
 });
 
@@ -45,7 +59,7 @@ function check_Question(q_id, q_pw) {
 				}
 			}
 	}).error(function() {
-		alert("Error checking input!");
+		alert("Error checking Question!");
 	});
 }
 
@@ -93,7 +107,12 @@ function sendAnswer(id) {
 			},
    			success: function(data) {
 				alert("Vote successful!");
-
+				// that only one vote is possible
+				//storage.set("visited", "1");
+				var expire = new Date();
+				var in12hours = expire.getTime() + (12 * 60 * 60 * 1000);
+				expire.setTime(in12hours);
+				document.cookie = "visited="+1 + "; expires=" + expire.toGMTString();
 				storage.set("q_id", q_id);
 				// Link to Timer-/Resultpage
 				location.href = "result.html";
