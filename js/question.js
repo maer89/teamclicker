@@ -3,17 +3,14 @@ $(function() {
 
 	var c = document.cookie;
 	var visited = 0;
-	var pos = c.indexOf('=');
-	if (pos != -1) {
-		visited = c.slice(pos+1);
-		if (visited == 1) {
-			alert("You have already voted");
-			var page = "../HTML/index.html";
-			window.open(page, "_self");
-			return;
-		}
-	}
 	q_id = storage.get("q_id");
+	var pos = c.indexOf(q_id);
+	if (pos != -1) {
+		alert("You have already voted for this question!");
+		var page = "../HTML/index.html";
+		window.open(page, "_self");
+		return;
+	}
 	var q_pw = storage.get("q_pw");
 	if (q_id != "") {
 		check_Question(q_id, q_pw);
@@ -112,7 +109,7 @@ function sendAnswer(id) {
 				var expire = new Date();
 				var in12hours = expire.getTime() + (12 * 60 * 60 * 1000);
 				expire.setTime(in12hours);
-				document.cookie = "visited="+1 + "; expires=" + expire.toGMTString();
+				document.cookie = q_id + "=visited" + "; expires=" + expire.toGMTString();
 				storage.set("q_id", q_id);
 				// Link to Timer-/Resultpage
 				location.href = "result.html";
