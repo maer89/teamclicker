@@ -1,0 +1,36 @@
+.login {
+	float: right;
+	width: 20%;
+	margin-right: 10%;
+}
+
+#btn_login {
+	margin-left: 80%;
+	margin-right: auto;
+}
+
+a{
+	text-decoration:none;
+	color:black;
+	margin: 5px;
+	font-size: large;
+}
+
+.header{
+	width:900px;
+	height:100px;
+}
+.nav{
+	height: 50px;
+	width: 900px;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+}
+.content{
+	height:300px;
+	width: 900px;
+	margin-left:auto;
+	margin-right:auto;
+	text-align:center;
+}

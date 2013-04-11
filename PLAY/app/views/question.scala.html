@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Clicker Question</title>
+	<!-- jQuery -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	<!-- includes -->
+ 	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/index.css")'>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/storage.js")'></script>
+ 	<script type="text/javascript" src=@routes.Assets.at("javascripts/index.js")'></script>
+
+</head>
+<body>
+	<div class="header">
+	</div>
+	
+	<div class="nav">
+		<a href="/index">Home</a>
+		<a href="/question">Question</a>
+		<a href="/admin">Admin</a>
+	</div>
+	
+	<div class="content">
+		<div id="question">
+			<form name="question_form" action="" onsubmit="get_Question(); return false;">
+		  		<p>
+		    		<label for="q_id">Question ID: </label>
+		    		<input type="text" name="q_id" id="q_id"/>
+		  		</p>
+		  		<p>
+		    		<label for="q_pw">Password: </label>
+		    		<input type="text" name="q_pw" id="q_pw"/>
+		  		</p>
+		  		<p><input type="submit" value="Get Question"/></p>
+			</form>
+		</div>
+	</div>
+	
+	<div class="footer">
+	</div>
+</body>
+</html>
