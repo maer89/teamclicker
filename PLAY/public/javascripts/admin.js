@@ -24,14 +24,14 @@ $(document).ready(function(){
 	//*end*
 	
 	// get the userID from storage
-	user_id = storage.get("user_id");
+	/*user_id = storage.get("user_id");
 	if (user_id == "") {
 		alert("Invalide option");
 		var page = "../HTML/index.html";
 		window.open(page, "_self");
 	} else {
 		storage.set("user_id", "");
-	}
+	}*/
 	
 	$("#showAllMessages").hide();
 	
@@ -53,7 +53,7 @@ $(document).ready(function(){
 			$test="answer"+i;
 			$('div[id="'+$test+'"]').remove();
 		}else{
-			alert("Es können nicht mehr Antworten entfernt werden");
+			alert("Es kï¿½nnen nicht mehr Antworten entfernt werden");
 		}
 	});
 	
@@ -111,7 +111,6 @@ function saveMessage(){
 		ans4 = document.getElementById("answerText4").value;
 		ans5 = document.getElementById("answerText5").value;
 	}else if(i-1 == 6){
-		alert("hier");
 		ans1 = document.getElementById("answerText1").value;
 		ans2 = document.getElementById("answerText2").value;
 		ans3 = document.getElementById("answerText3").value;
@@ -120,9 +119,21 @@ function saveMessage(){
 		ans6 = document.getElementById("answerText6").value;
 	}
 	
-	$.ajax({
-		type: 'POST',
-		url: '../PHP/saveMessage.php',
+	$.get('/save',
+		{'text': text,
+		 'ans1': ans1,
+		 'ans2': ans2,
+		 'ans3': ans3,
+		 'ans4': ans4,
+		 'ans5': ans5,
+		 'ans6': ans6},
+		function(data){
+			//do nothing
+			alert("success");
+	});
+	/*$.ajax({
+		type: 'GET',
+		url: '@routes.Application.saveMessage()',
 		data: {
 			'text': text,
 			'userID': userID,
@@ -136,7 +147,7 @@ function saveMessage(){
 		success: function(data) {
 			var data_field = $.parseJSON(data);
 		}
-	});
+	});*/
 }
 /*enable message*/
 function enable(num){
@@ -287,7 +298,7 @@ function deleditanswer(){
 		$test="edit"+j;
 		$('div[id="'+$test+'"]').remove();
 	}else{
-		alert("Es können nicht mehr Antworten entfernt werden");
+		alert("Es kï¿½nnen nicht mehr Antworten entfernt werden");
 	}
 }
 

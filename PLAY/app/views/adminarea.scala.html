@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>Clicker Admin</title>
+	<!--CSS-->
+	<link type="text/css" rel="stylesheet" href='@routes.Assets.at("stylesheets/admin.css")' >
+	<!--JQuery-->
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<!-- storage.js -->
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/storage.js")'></script>
+	<!--admin.js-->
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/admin.js")'"></script>
+	
+</head>
+<body>
+	<div class="nav">
+		<button id="addMessage">add message</button>
+		<button id="showMessage">show messages</button>
+	</div>
+	<div class="content">
+		<div id="newMessage">
+			<form>
+			<p>
+				Message:<br />
+				<textarea type="textarea" id="message" name="message" cols="35" rows="5"></textarea>
+			</p>
+			<p>
+				Answers:<br />
+				<div id="answers">
+					<div id="answer1">Answer 1 <input type="text" name="answer1" id="answerText1"/></div>
+					<div id="answer2">Answer 2 <input type="text" name="answer2" id="answerText2"/></div>
+				</div>
+				<input type="button" id="addanswer" value="add answer" />
+				<input type="button" id="delanswer" value="delete answer" />
+			</p>
+			<p>
+				<input type="button" onclick="saveMessage()" value="save message" />
+				<input type="reset" value="reset" />
+			</p>
+			</form>
+		</div>
+		<!--show messages-->
+		<div id="showAllMessages">
+			
+		</div>
+		<!--edit message-->
+		<div id="edit" >
+		</div>
+	</div>
+</body>
+</html>

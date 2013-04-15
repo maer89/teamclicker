@@ -8,6 +8,10 @@ public class Answer {
 	
 	public Answer() {};
 	
+	public Answer(String text){
+		this.text = text;
+	}
+	
 	public int getID() {
 		return this.id;
 	}
