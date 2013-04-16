@@ -22,9 +22,21 @@ public class User {
 	
 	public void setPassword(String password) {
 		this.password = password;
+		// write to DB
+		// TODO: implement
 	}
 	
 	public String getPassword() {
 		return this.password;
+	}
+	
+	public void ReadFromDB(int userID) {
+		// TODO: implement
+		// read all values of the User with the UID = userID
+	}
+	
+	public boolean checkUser(String n, String pw) {
+		return false;
+		// TODO: implement
 	}
 }

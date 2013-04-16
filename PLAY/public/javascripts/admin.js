@@ -152,7 +152,13 @@ function saveMessage(){
 /*enable message*/
 function enable(num){
 	var messageID = document.getElementById("id"+num).innerHTML;
-	$.ajax({
+	$.get('/enable',
+		{'id': messageID},
+		function(data){
+			//do nothing
+			alert("success");
+	});
+	/*$.ajax({
 		type: 'POST',
 		url: '../PHP/enable.php',
 		data: {
@@ -163,12 +169,19 @@ function enable(num){
 			alert("message enabled");
 			updateTable();
 		}
-	});
+	});*/
 }
 /*disable message*/
 function disable(num){
 	var messageID = document.getElementById("id"+num).innerHTML;
-	$.ajax({
+	$.get('/disable',
+		{'id': messageID},
+		function(data){
+			//do nothing
+			alert("success");
+	});
+	
+	/*$.ajax({
 		type: 'POST',
 		url: '../PHP/disable.php',
 		data: {
@@ -179,13 +192,19 @@ function disable(num){
 			alert("message disabled");
 			updateTable();
 		}
-	});
+	});*/
 }
 
 /*delete message*/
 function deleteMessage(num){
 	var messageID = document.getElementById("id"+num).innerHTML;
-	$.ajax({
+	$.get('/delete',
+		{'id': messageID},
+		function(data){
+			//do nothing
+			alert("success");
+	});
+	/*$.ajax({
 		type: 'POST',
 		url: '../PHP/delete.php',
 		data: {
@@ -196,7 +215,7 @@ function deleteMessage(num){
 			alert("message delete");
 			updateTable();
 		}
-	});
+	});*/
 }
 /*edit message*/
 function editMessage(num){
@@ -206,7 +225,13 @@ function editMessage(num){
 
 	var messageID = document.getElementById("id"+num).innerHTML;
 	var message;
-	$.ajax({
+	$.get('/getMessage',
+		{'id': messageID},
+		function(data){
+			//do nothing
+			alert("success");
+	});
+	/*$.ajax({
 		type: 'POST',
 		url: '../PHP/getMessage.php',
 		data: {
@@ -216,7 +241,7 @@ function editMessage(num){
 			message = $.parseJSON(data);
 			document.getElementById("messageText").innerHTML = message;
 		}
-	});
+	});*/
 	
 	$("#edit").append("<form action='edit.php' method='POST'>" +
 		"<p>Message:<br />" +
@@ -226,8 +251,13 @@ function editMessage(num){
 		"<div id='edit1'>Answer 1<input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
 		"<div id='edit2'>Answer 2<input type='text' id='editedanswer2' name='editedanswer2'/></div>");
 		
-	
-	$.ajax({
+	$.get('/getAnswers',
+		{'id': messageID},
+		function(data){
+			//do nothing
+			alert("success");
+	});
+	/*$.ajax({
 		type: 'POST',
 		url: '../PHP/getAnswers.php',
 		data: {
@@ -276,7 +306,7 @@ function editMessage(num){
 			
 			j = editAnswers + 1;
 		}
-	});
+	});*/
 	
 }
 
@@ -340,7 +370,20 @@ function saveChanges(num){
 		ans6 = document.getElementById("editedanswer6").value;
 	}
 	
-	$.ajax({
+	$.get('/saveChanges',
+		{'id': messageID,
+		'text': text,
+		'ans1': ans1,
+		'ans2': ans2,
+		'ans3': ans3,
+		'ans4': ans4,
+		'ans5': ans5,
+		'ans6': ans6},
+		function(data){
+			//do nothing
+			alert("success");
+	});
+	/*$.ajax({
 		type: 'POST',
 		url: '../PHP/saveChanges.php',
 		data: {
@@ -358,7 +401,7 @@ function saveChanges(num){
 			alert("changes saved");
 			updateTable();
 		}
-	});
+	});*/
 }
 
 /*update table*/

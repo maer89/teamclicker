@@ -81,7 +81,8 @@ public class Message {
 			System.out.println(e.toString());
 		}		
 		
-		
+		// in Answers eigene Methode writeToDB (oder so ähnlich) implementieren
+		// und diese dann von hier mit den einzelnen Answer-Objekten aufrufen
 		sql = "INSERT INTO answers VALUES(null,"+id+",'"+ans1+"','"+ans2+"','"+ans3+"','"+ans4+"','"+ans5+"','"+ans6+"')";
 		try {
 			int rs = stmt.executeUpdate(sql);
@@ -90,6 +91,10 @@ public class Message {
 		}
 		
 		closeDB();
+	}
+	
+	public void setID(int id) {
+		this.id = id;
 	}
 	
 	public int getID() {
@@ -118,6 +123,32 @@ public class Message {
 	
 	public void setEnabled(boolean e) {
 		this.enabled = e;
+		openDB();
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+		
+		String sql = "UPDATE messages SET enabled=1 WHERE id = " + this.getID();
+		try {
+			int rs = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		/*password*/
+		String pw = "ladida";
+		
+		sql = "UPDATE messages SET password='"+pw+"' WHERE id=" + this.getID();
+		try {
+			int rs = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		closeDB();
 	}
 	
 	public String getPassword() {
