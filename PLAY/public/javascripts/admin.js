@@ -408,7 +408,16 @@ function saveChanges(num){
 function updateTable(){
 	$("#showAllMessages").empty();
 	var userID = user_id;
-	$.ajax({
+	
+	$.get('/updateTable',
+		{'id': userID},
+		function(data){
+			//var data_field = $.parseJSON(data);
+			alert(data.name);
+			
+	});
+	
+	/*$.ajax({
 		type: 'POST',
 		url: 'updateTable.php',
 		data: {
@@ -437,7 +446,7 @@ function updateTable(){
 					"<td>"+data_field[i].pw+"</td></tr>");
 			}*/
 			
-			for(var i=0; i< data_field.length;i++){
+			/*for(var i=0; i< data_field.length;i++){
 				content = content + "<tr class='row'><td id='id" + i +"'>" + data_field[i].id + "</td>" +
 											"<td>" + data_field[i].userID + "</td>" +
 											"<td>" + data_field[i].message + "</td>";
@@ -454,11 +463,11 @@ function updateTable(){
 			}
 			
 			/*$("#showAllMessages").append("</table>");	*/
-				content = content + "</table>";
+				/*content = content + "</table>";
 				
 				$("#showAllMessages").append(content);
 		}
 	}).error(function(){
 		alert("hier");
-	});
+	});*/
 }

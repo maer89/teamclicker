@@ -93,6 +93,28 @@ public class Message {
 		closeDB();
 	}
 	
+	public void delete(){
+		openDB();
+		
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+		
+		String sql = "DELETE FROM messages WHERE id = " + this.getID();
+		String sqlans = "DELETE FROM answers WHERE messageID = " + this.getID();
+		try {
+			int rs = stmt.executeUpdate(sql);
+			int rsans = stmt.executeUpdate(sqlans);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		closeDB();
+	}
+	
 	public void setID(int id) {
 		this.id = id;
 	}
@@ -138,14 +160,27 @@ public class Message {
 			System.out.println(e1.toString());
 		}
 		
-		/*password*/
-		String pw = "ladida";
-		
-		sql = "UPDATE messages SET password='"+pw+"' WHERE id=" + this.getID();
-		try {
-			int rs = stmt.executeUpdate(sql);
-		}catch (SQLException e1) {
-			System.out.println(e1.toString());
+		if(e == true){
+			/*enable*/
+			/*password*/
+			String pw = "1234";
+			
+			sql = "UPDATE messages SET password='"+pw+"' WHERE id=" + this.getID();
+			try {
+				int rs = stmt.executeUpdate(sql);
+			}catch (SQLException e1) {
+				System.out.println(e1.toString());
+			}
+		}else{
+			/*disable*/
+			sql = "UPDATE messages SET enabled = 0 WHERE id=" + this.getID();
+			String sqlpw = "UPDATE messages SET password='' WHERE id=" + this.getID();
+			try {
+				int rs = stmt.executeUpdate(sql);
+				int rspw = stmt.executeUpdate(sqlpw);
+			}catch (SQLException e1) {
+				System.out.println(e1.toString());
+			}
 		}
 		
 		closeDB();

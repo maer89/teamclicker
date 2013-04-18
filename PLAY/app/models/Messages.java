@@ -1,5 +1,8 @@
 package models;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,21 +26,34 @@ public class Messages {
 		return messages.get(idx);
 	}
 	
+	public Message getMessageWithID(int id) {
+		for (int i = 0; i < size()-1; i++) {
+			if (getMessage(i).getID() == id) {
+				return getMessage(i);
+			}
+		}
+		return null;
+	}
+	
+	public int getMessageIdx(int id){
+		for (int i = 0; i < size()-1; i++) {
+			if (getMessage(i).getID() == id) {
+				return i;
+			}
+		}
+		return 0;
+	}
 	
 	public boolean addMessage(Message m) {
 		return messages.add(m);
 	}
 	
-	public Message addMessage(int i) {
+	public Message addMessage() {
 		Message m = new Message();
-		addMessage(m, i);
+		addMessage(m);
 		return m;
 	}
-	
-	public void addMessage(Message m, int i) {
-		messages.add(i, m);
-	}
-	
+		
 	public Message deleteMessage(int i) {
 		return messages.remove(i);
 	}
@@ -54,6 +70,7 @@ public class Messages {
 	public ArrayList<Message> clone() {
 		return (ArrayList<Message>) messages.clone();
 	}
+	
 	
 	public int indexOf(Message m) {
 		return messages.indexOf(m);
@@ -82,7 +99,7 @@ public class Messages {
         }
 	}
 	
-	public void ReadFromDB(int userID) {
+	public void ReadFromDB(int userID) throws IOException {
 		openDB();
 		Statement stmt = null;
 		try {
@@ -93,11 +110,17 @@ public class Messages {
 		int id = -1;
 		Message m = null;
 		String sql = "SELECT * FROM messages WHERE userID = " + userID;
+		File file = new File("blabla.txt");
+		FileWriter writer = new FileWriter(file,true);
+		
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				id = rs.getInt("id");
-				m = addMessage(id);
+				writer.write("Id: " + id + "\n");
+
+				writer.flush();
+				m = addMessage();
 				m.setID(id);
 				m.setText(rs.getString("messageText"));
 				m.setEnabled(rs.getBoolean("enabled"));
@@ -107,6 +130,7 @@ public class Messages {
 		}catch (SQLException e1) {
 			System.out.println(e1.toString());
 		}
+		writer.close();
 		
 		closeDB();
 	}
