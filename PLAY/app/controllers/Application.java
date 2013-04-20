@@ -19,8 +19,6 @@ import play.mvc.*;
 import scala.util.parsing.json.JSONArray;
 import scala.util.parsing.json.JSONObject;
 
-import views.*;
-
 public class Application extends Controller {
 	
 	private static Messages m = new Messages();
@@ -108,8 +106,18 @@ public class Application extends Controller {
     public static Result getMessage(){
     	return ok();
     }
+    
+    /* get answers for question xy */ 
     public static Result getAnswers(){
-    	return ok();
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
+    	Message mes = new Message();
+    	mes.setID(messageID);
+    	ArrayList<Answer> a = mes.getAnswers();
+    	Answer message = new Answer();
+    	message.setText(mes.getText());
+    	a.add(message);
+    	return ok(Json.toJson(a));
     }
     
     /*save Changes*/
@@ -133,4 +141,23 @@ public class Application extends Controller {
     	return ok(result);
     }
     
+    /*get Question */
+    public static Result getQuestion(int id, String pw) {   	
+    	return ok(views.html.showQuestion.render(id, pw));
+    }
+    
+    /*check Question-Parameters */
+    public static Result checkQuestion() {
+    	/* get Paramters */
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
+    	String messagePW = queryParameters.get("pw")[0];
+    	
+    	int res;
+    	Message mes = new Message();
+    	mes.setID(messageID);
+    	mes.setPassword(messagePW);
+    	res = mes.check();
+    	return ok(String.valueOf(res));
+    }
 }

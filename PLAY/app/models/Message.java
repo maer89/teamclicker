@@ -132,7 +132,27 @@ public class Message {
 	}
 	
 	public String getText() {
-		return this.text;
+		String text = "";
+		openDB();
+		
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+		
+		String sql = "SELECT messageText FROM messages WHERE id = " + getID();
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			if (rs.next()) {
+				text = rs.getString("messageText");
+			}
+		} catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}		
+		closeDB();
+		return text;
 	}
 	
 	public void setText(String text) {
@@ -198,6 +218,12 @@ public class Message {
 		this.answers.add(aAnswer);
 	}
 	
+	public Answer addAnswer() {
+		Answer a = new Answer();
+		addAnswer(a);
+		return a;
+	}
+	
 	public void removeAnswer(Answer aAnswer) {
 		this.answers.remove(aAnswer);
 	}
@@ -211,10 +237,78 @@ public class Message {
 	}
 	
 	public ArrayList<Answer> getAnswers() {
-		return this.answers;
+		boolean res = false;
+		openDB();
+		
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+		
+		String sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = " + getID();
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			if (rs.next()) {
+				Answer a1 = addAnswer();
+				Answer a2 = addAnswer();
+				Answer a3 = addAnswer();
+				Answer a4 = addAnswer();
+				Answer a5 = addAnswer();
+				Answer a6 = addAnswer();
+				
+				a1.setText(rs.getString("answer1"));
+				a2.setText(rs.getString("answer2"));
+				a3.setText(rs.getString("answer3"));
+				a4.setText(rs.getString("answer4"));
+				a5.setText(rs.getString("answer5"));
+				a6.setText(rs.getString("answer6"));
+				
+				res = true;
+			}
+		} catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}		
+		closeDB();
+		
+		if (res) return answers;
+		else return null;
 	}
 	
 	public ArrayList<Result> getResults() {
 		return this.results;
+	}
+	
+	public int check() {
+		
+		openDB();
+		int res = -1;
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+		
+		String sql = "SELECT password FROM messages WHERE id = " + getID() 
+					 + " AND enabled  = 1";
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			if (rs.next()) {
+					// Check pw
+					if (getPassword().equals(rs.getString("password"))) {
+						// correct pw
+						res = 1;
+					} else {
+						// wrong pw
+						res = 0;
+					}	
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}		
+		closeDB();
+		return res;
 	}
 }

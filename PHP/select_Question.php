@@ -1,10 +1,4 @@
 <?php
-
-
-
-
-
-?><?php
 	include 'DB_data.php';
 
 	// Connect with DB

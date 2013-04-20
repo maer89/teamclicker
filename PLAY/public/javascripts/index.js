@@ -57,7 +57,8 @@ function login_ftn(user, pw) {
 }
 
 function get_Question() {
-	storage.set("q_id", document.getElementById("q_id").value);
-	storage.set("q_pw", document.getElementById("q_pw").value);
-	location.href = "./HTML/question.html";
+	alert('hier');
+	var id = document.getElementById("q_id").value;
+	var pw = document.getElementById("q_pw").value;
+	location.href = "/getQuestion?id=" + id + "&pw=" + pw;
 }
