@@ -57,7 +57,6 @@ function login_ftn(user, pw) {
 }
 
 function get_Question() {
-	alert('hier');
 	var id = document.getElementById("q_id").value;
 	var pw = document.getElementById("q_pw").value;
 	location.href = "/getQuestion?id=" + id + "&pw=" + pw;

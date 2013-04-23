@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
+
 import play.db.*;
 
 public class Message {
@@ -21,16 +24,16 @@ public class Message {
 	private DataSource ds = null;
 	
 	private ArrayList<Answer> answers;
-	private ArrayList<Result> results;
+	private ArrayList<Response> results;
 	
 	public Message() {
 		this.answers = new ArrayList<Answer>();
-		this.results = new ArrayList<Result>();
+		this.results = new ArrayList<Response>();
 	};
 	
 	public Message(String text) {
 		this.answers = new ArrayList<Answer>();
-		this.results = new ArrayList<Result>();
+		this.results = new ArrayList<Response>();
 		this.text = text;
 	}
 	
@@ -65,14 +68,14 @@ public class Message {
 			System.out.println(e2.toString());
 		}
 		
-		String sql = "INSERT INTO messages VALUES (null, 1 ,'"+getText()+"',0,'')";
+		String sql = "INSERT INTO messages VALUES (null, 1 ,'"+this.getText()+"',0,'')";
 		try {
 			int rs = stmt.executeUpdate(sql);
 		} catch (SQLException e1) {
 			System.out.println(e1.toString());
 		}
 		
-		sql = "SELECT id FROM messages WHERE messageText = '"+getText()+"'";
+		sql = "SELECT id FROM messages WHERE messageText = '"+this.getText()+"'";
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
@@ -115,6 +118,41 @@ public class Message {
 		closeDB();
 	}
 	
+	public void updateMessage(String text) throws IOException{
+		openDB();
+		this.setText(text);
+		
+		Statement stmt = null;
+		String ans1 = answers.get(0).getText();
+		String ans2 = answers.get(1).getText();
+		String ans3 = answers.get(2).getText();
+		String ans4 = answers.get(3).getText();
+		String ans5 = answers.get(4).getText();
+		String ans6 = answers.get(5).getText();
+		
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+		
+		String sql = "UPDATE messages SET messageText = '" + this.getText() + "' WHERE id = " + this.getID();
+		String sqlans = "UPDATE answers SET answer1='"+ans1+"',answer2='"+ans2+"',answer3='"+ans3+"',answer4='"+ans4+"',answer5='"+ans5+"',answer6='"+ans6+"' WHERE messageID = " + this.getID();
+		try {
+			int rs = stmt.executeUpdate(sql);
+			rs = stmt.executeUpdate(sqlans);
+		} catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		closeDB();
+	}
+	
+	public void updateAnswer(int id, String text) throws IOException{
+			this.answers.get(id).setText(text);
+	}
+	
 	public void setID(int id) {
 		this.id = id;
 	}
@@ -132,9 +170,12 @@ public class Message {
 	}
 	
 	public String getText() {
-		String text = "";
+		return text;
+	}
+	
+	public String getTextFromDB() {
+		String s = "";
 		openDB();
-		
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
@@ -143,16 +184,17 @@ public class Message {
 		}
 		
 		String sql = "SELECT messageText FROM messages WHERE id = " + getID();
-		try {
+		try{
 			ResultSet rs = stmt.executeQuery(sql);
-			if (rs.next()) {
-				text = rs.getString("messageText");
+			while (rs.next()){
+				s = rs.getString("messageText");
 			}
-		} catch (SQLException e1) {
-			System.out.println(e1.toString());
-		}		
+		}catch(SQLException ex){
+			System.out.println(ex.toString());
+		}
 		closeDB();
-		return text;
+		
+		return s;
 	}
 	
 	public void setText(String text) {
@@ -173,31 +215,39 @@ public class Message {
 			System.out.println(e2.toString());
 		}
 		
-		String sql = "UPDATE messages SET enabled=1 WHERE id = " + this.getID();
-		try {
-			int rs = stmt.executeUpdate(sql);
-		}catch (SQLException e1) {
-			System.out.println(e1.toString());
-		}
-		
 		if(e == true){
 			/*enable*/
-			/*password*/
-			String pw = "1234";
+			/*generate password*/
+			String pw="";
+			String getpw = "SELECT password FROM messages WHERE id = " + this.getID();
 			
-			sql = "UPDATE messages SET password='"+pw+"' WHERE id=" + this.getID();
-			try {
-				int rs = stmt.executeUpdate(sql);
-			}catch (SQLException e1) {
-				System.out.println(e1.toString());
+			/*get pw from DB*/
+			try{
+				ResultSet rs = stmt.executeQuery(getpw);
+				while (rs.next()){
+					pw = rs.getString("password");
+				}
+			}catch(SQLException ex){
+				System.out.println(ex.toString());
+			}
+			
+			if(pw.equals("")){
+				pw = RandomStringUtils.randomAlphanumeric(4);
+				this.setPassword(pw);
+				String sql = "UPDATE messages SET enabled=1, password='"+pw+"' WHERE id=" + this.getID();
+				try {
+					int rs = stmt.executeUpdate(sql);
+				}catch (SQLException e1) {
+					System.out.println(e1.toString());
+				}
+			}else{
+				//do nothing
 			}
 		}else{
 			/*disable*/
-			sql = "UPDATE messages SET enabled = 0 WHERE id=" + this.getID();
-			String sqlpw = "UPDATE messages SET password='' WHERE id=" + this.getID();
+			String sql = "UPDATE messages SET enabled = 0, password='' WHERE id=" + this.getID();
 			try {
 				int rs = stmt.executeUpdate(sql);
-				int rspw = stmt.executeUpdate(sqlpw);
 			}catch (SQLException e1) {
 				System.out.println(e1.toString());
 			}
@@ -276,8 +326,21 @@ public class Message {
 		else return null;
 	}
 	
-	public ArrayList<Result> getResults() {
+	public ArrayList<Response> getResults() {
 		return this.results;
+	}
+	
+	public Response getResponse(int id) {
+		for (int i = 0; i <= results.size()-1; i++) {
+			if (results.get(i).getID() == id) {
+				return results.get(i);
+			}
+		}
+		return null;
+	}
+	
+	public void addResponse(Response r) {
+		results.add(r);
 	}
 	
 	public int check() {

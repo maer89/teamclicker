@@ -1,13 +1,13 @@
 $(function() {
 	var c = document.cookie;
 	var visited = 0;
-	var pos = c.indexOf(q_id);/*
+	var pos = c.indexOf(q_id);
 	if (pos != -1) {
 		alert("You have already voted for this question!");
 		var page = "/";
 		window.open(page, "_self");
 		return;
-	}*/
+	}
 
 	if (q_id != "") {
 		check_Question(q_id, q_pw);
@@ -56,22 +56,21 @@ function get_answers(q_id) {
 	$.post('/getAnswers',
 		   {'id': q_id},
    		   function(data) {
-				
 			   	var content = "Question: ";
 				content = content + data[6].text + " <br>"
-						  + "<button id=\"ans1\" onclick=\"sendAnswer(id)\">a: " + data[0].text + "</button>"
-						  + "<br><button id=\"ans2\" onclick=\"sendAnswer(id)\">b: " + data[1].text + "</button>"
-				if(data[2].text != "") {
-					content = content + "<br><button id=\"ans3\" onclick=\"sendAnswer(id)\">c: " + data[2].text + "</button>";
+						  + "<button id=\"1\" onclick=\"sendAnswer(id)\">a: " + data[0].text + "</button>"
+						  + "<br><button id=\"2\" onclick=\"sendAnswer(id)\">b: " + data[1].text + "</button>"
+				if(data[2] == null) {
+					content = content + "<br><button id=\"3\" onclick=\"sendAnswer(id)\">c: " + data[2].text + "</button>";
 				}
-				if(data[3].text != "") {
-					content = content + "<br><button id=\"ans4\" onclick=\"sendAnswer(id)\">d: " + data[3].text + "</button>";
+				if(data[3] == null) {
+					content = content + "<br><button id=\"4\" onclick=\"sendAnswer(id)\">d: " + data[3].text + "</button>";
 				}
-				if(data[4].text != "") {
-					content = content + "<br><button id=\"ans5\" onclick=\"sendAnswer(id)\">e: " + data[4].text + "</button>";
+				if(data[4] == null) {
+					content = content + "<br><button id=\"5\" onclick=\"sendAnswer(id)\">e: " + data[4].text + "</button>";
 				}
-				if(data[5].text != "") {
-					content = content + "<br><button id=\"ans6\" onclick=\"sendAnswer(id)\">f: " + data[5].text + "</button>";
+				if(data[5] == null) {
+					content = content + "<br><button id=\"6\" onclick=\"sendAnswer(id)\">f: " + data[5].text + "</button>";
 				}
 
 				var html_element = document.getElementById('question_and_Answers');
@@ -83,26 +82,22 @@ function get_answers(q_id) {
 }
 
 function sendAnswer(id) {
-	$.ajax({
-			type: 'POST',
-			url: '../PHP/send_answer.php',
-			data: {
-				'answer': id,
-				'q_id': q_id
+	$.post(	'/sendAnswer',
+			{
+			'answer': id,
+			'q_id': q_id
 			},
-   			success: function(data) {
+   			function(data) {
 				alert("Vote successful!");
-				// that only one vote is possible
-				//storage.set("visited", "1");
+				// that only one vote is possible --> set cookie
 				var expire = new Date();
 				var in12hours = expire.getTime() + (12 * 60 * 60 * 1000);
 				expire.setTime(in12hours);
 				document.cookie = q_id + "=visited" + "; expires=" + expire.toGMTString();
-				storage.set("q_id", q_id);
-				// Link to Timer-/Resultpage
-				location.href = "result.html";
+				// Link to resultpage
+				location.href = "/result";
 			}
-	}).error(function() {
+	).error(function() {
 		alert("Error sending answer!");
 	});
 }

@@ -3,21 +3,10 @@ package controllers;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
-
-import org.codehaus.jackson.node.ObjectNode;
-
 import play.libs.Json;
-
-import models.Answer;
-import models.Message;
-import models.Messages;
-import play.*;
-import play.api.libs.json.Writes;
+import models.*;
 import play.mvc.*;
-import scala.util.parsing.json.JSONArray;
-import scala.util.parsing.json.JSONObject;
 
 public class Application extends Controller {
 	
@@ -76,7 +65,7 @@ public class Application extends Controller {
     	
     	Message msg = m.getMessageWithID(messageID);
     	msg.setEnabled(true);
-    	return ok();
+    	return ok(Json.toJson(msg));
     }
     
     /*disable message*/
@@ -90,12 +79,14 @@ public class Application extends Controller {
     }
     
     /*delete message*/
-    public static Result delete(){
+    public static Result delete() throws IOException{
     	Map<String, String[]> queryParameters = request().queryString();
     	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
-    	
+    	/*get message*/
     	Message msg = m.getMessageWithID(messageID);
+    	/*delete message from DB*/
     	msg.delete();
+    	/*delete message from messages*/
     	int idx = m.getMessageIdx(messageID);
     	m.deleteMessage(idx);
     	
@@ -104,7 +95,12 @@ public class Application extends Controller {
     
     /*edit message*/
     public static Result getMessage(){
-    	return ok();
+    	Map<String, String[]> queryParameters = request().queryString();
+    	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
+    	
+    	Message msg = m.getMessageWithID(messageID);
+    	
+    	return ok(Json.toJson(msg));
     }
     
     /* get answers for question xy */ 
@@ -115,30 +111,43 @@ public class Application extends Controller {
     	mes.setID(messageID);
     	ArrayList<Answer> a = mes.getAnswers();
     	Answer message = new Answer();
-    	message.setText(mes.getText());
+    	message.setText(mes.getTextFromDB());
     	a.add(message);
     	return ok(Json.toJson(a));
     }
     
     /*save Changes*/
-    public static Result saveChanges(){
+    public static Result saveChanges() throws IOException{
+    	Map<String, String[]> queryParameters = request().queryString();
+    	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
+    	String text = queryParameters.get("text")[0];
+    	
+    	Message msg = m.getMessageWithID(messageID);
+    	
+    	File file = new File("update.txt");
+		FileWriter writer = new FileWriter(file,true);
+		writer.write("ans1 "+ queryParameters.get("ans1")[0] + "\n"
+				+ "ans4 " + queryParameters.get("ans4")[0] + "\n");
+		writer.flush();
+		writer.close();
+    	
+    	msg.updateAnswer(0, queryParameters.get("ans1")[0]);
+    	msg.updateAnswer(1, queryParameters.get("ans2")[0]);
+    	msg.updateAnswer(2, queryParameters.get("ans3")[0]);
+    	msg.updateAnswer(3, queryParameters.get("ans4")[0]);
+    	msg.updateAnswer(4, queryParameters.get("ans5")[0]);
+    	msg.updateAnswer(5, queryParameters.get("ans6")[0]);
+    	
+    	msg.updateMessage(text);
+    	
     	return ok();
     }
     
     /*update Table*/
     public static Result updateTable() throws IOException{
+    	m.clear();
     	m.ReadFromDB(userID);
-    	ObjectNode result = Json.newObject();
-    	result.put("name", "Marcel");
-    	result.put("name", "Daniel");
-    	/*for(int i = 0; i < m.size()-1; i++){
-    		result.put("id",m.getMessage(i).getID());
-    		result.put("user",m.getMessage(i).getUID());
-    		result.put("text",m.getMessage(i).getText());
-    		result.put("enabled",m.getMessage(i).getEnabled());
-    		result.put("pw",m.getMessage(i).getPassword());
-    	}*/
-    	return ok(result);
+    	return ok(Json.toJson(m.getList()));
     }
     
     /*get Question */
@@ -159,5 +168,37 @@ public class Application extends Controller {
     	mes.setPassword(messagePW);
     	res = mes.check();
     	return ok(String.valueOf(res));
+    }
+    
+    /* send the selected answer to DB */
+    public static Result sendAnswer() {
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	int q_id = Integer.parseInt(queryParameters.get("q_id")[0]);
+    	int id = Integer.parseInt(queryParameters.get("answer")[0]);
+    	
+    	Message mes = m.getMessageWithID(q_id);
+    	if (mes == null) {
+    		// message isn't in list --> add it
+    		mes = new Message();
+    		mes.setID(q_id);
+    		m.addMessage(mes);
+    	} 
+    	
+    	Response r = mes.getResponse(id);
+    	if (r == null) {
+    		// response doesn't exist --> create it
+    		r = new Response();
+    		r.setMID(q_id);
+    		r.setID(id);
+    		mes.addResponse(r);
+    	} else {
+    		// read actual values from DB
+    		r.readFromDB();
+    	}
+    	r.setCount(r.getCount()+1);
+
+    	// write response back to DB
+    	r.writeToDB();
+    	return ok();
     }
 }

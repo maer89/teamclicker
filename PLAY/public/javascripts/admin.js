@@ -128,26 +128,15 @@ function saveMessage(){
 		 'ans5': ans5,
 		 'ans6': ans6},
 		function(data){
-			//do nothing
-			alert("success");
+			alert("message saved");
+			document.getElementById("message").value = "";
+			document.getElementById("answerText1").value = "";
+			document.getElementById("answerText2").value = "";
+			document.getElementById("answerText3").value = "";
+			document.getElementById("answerText4").value = "";
+			document.getElementById("answerText5").value = "";
+			document.getElementById("answerText6").value = "";
 	});
-	/*$.ajax({
-		type: 'GET',
-		url: '@routes.Application.saveMessage()',
-		data: {
-			'text': text,
-			'userID': userID,
-			'ans1': ans1,
-			'ans2': ans2,
-			'ans3': ans3,
-			'ans4': ans4,
-			'ans5': ans5,
-			'ans6': ans6
-		},
-		success: function(data) {
-			var data_field = $.parseJSON(data);
-		}
-	});*/
 }
 /*enable message*/
 function enable(num){
@@ -155,21 +144,9 @@ function enable(num){
 	$.get('/enable',
 		{'id': messageID},
 		function(data){
-			//do nothing
-			alert("success");
-	});
-	/*$.ajax({
-		type: 'POST',
-		url: '../PHP/enable.php',
-		data: {
-			'id': messageID
-		},
-		success: function(data) {
-			var data_field = $.parseJSON(data);
-			alert("message enabled");
+			alert("Message " + messageID + " enabled password: " + data.password);
 			updateTable();
-		}
-	});*/
+	});
 }
 /*disable message*/
 function disable(num){
@@ -177,22 +154,9 @@ function disable(num){
 	$.get('/disable',
 		{'id': messageID},
 		function(data){
-			//do nothing
-			alert("success");
-	});
-	
-	/*$.ajax({
-		type: 'POST',
-		url: '../PHP/disable.php',
-		data: {
-			'id': messageID
-		},
-		success: function(data) {
-			var data_field = $.parseJSON(data);
-			alert("message disabled");
+			alert("Message " + messageID + " disabled");
 			updateTable();
-		}
-	});*/
+	});
 }
 
 /*delete message*/
@@ -202,20 +166,9 @@ function deleteMessage(num){
 		{'id': messageID},
 		function(data){
 			//do nothing
-			alert("success");
-	});
-	/*$.ajax({
-		type: 'POST',
-		url: '../PHP/delete.php',
-		data: {
-			'id': messageID
-		},
-		success: function(data) {
-			var data_field = $.parseJSON(data);
-			alert("message delete");
+			alert("Message " + messageID + " delete");
 			updateTable();
-		}
-	});*/
+	});
 }
 /*edit message*/
 function editMessage(num){
@@ -228,20 +181,8 @@ function editMessage(num){
 	$.get('/getMessage',
 		{'id': messageID},
 		function(data){
-			//do nothing
-			alert("success");
+			document.getElementById("messageText").innerHTML = data.text;
 	});
-	/*$.ajax({
-		type: 'POST',
-		url: '../PHP/getMessage.php',
-		data: {
-			'id': messageID
-		},
-		success: function(data) {
-			message = $.parseJSON(data);
-			document.getElementById("messageText").innerHTML = message;
-		}
-	});*/
 	
 	$("#edit").append("<form action='edit.php' method='POST'>" +
 		"<p>Message:<br />" +
@@ -251,53 +192,43 @@ function editMessage(num){
 		"<div id='edit1'>Answer 1<input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
 		"<div id='edit2'>Answer 2<input type='text' id='editedanswer2' name='editedanswer2'/></div>");
 		
-	$.get('/getAnswers',
+	$.post('/getAnswers',
 		{'id': messageID},
 		function(data){
-			//do nothing
-			alert("success");
-	});
-	/*$.ajax({
-		type: 'POST',
-		url: '../PHP/getAnswers.php',
-		data: {
-			'id': messageID
-		},
-		success: function(data) {
 			editAnswers = 2;
-			var data_field = $.parseJSON(data);
-			document.getElementById("editedanswer1").value = data_field.ans1;
-			document.getElementById("editedanswer2").value = data_field.ans2;
+			var data_field="";
+			document.getElementById("editedanswer1").value = data[0].text;
+			document.getElementById("editedanswer2").value = data[1].text;
 			
-			if(data_field.ans3 == ""){
+			if(data[2].text == ""){
 				//do nothing
-			}else if(data_field.ans4 == ""){
+			}else if(data[3].text == ""){
 				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				document.getElementById("editedanswer3").value = data_field.ans3;
+				document.getElementById("editedanswer3").value = data[2].text;
 				editAnswers = 3;
-			}else if(data_field.ans5 == ""){
+			}else if(data[4].text == ""){
 				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
-				document.getElementById("editedanswer3").value = data_field.ans3;
-				document.getElementById("editedanswer4").value = data_field.ans4;
+				document.getElementById("editedanswer3").value = data[2].text;
+				document.getElementById("editedanswer4").value = data[3].text;
 				editAnswers = 4;
-			}else if(data_field.ans6 == ""){
+			}else if(data[5].text== ""){
 				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
 				$("#edit").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
-				document.getElementById("editedanswer3").value = data_field.ans3;
-				document.getElementById("editedanswer4").value = data_field.ans4;
-				document.getElementById("editedanswer5").value = data_field.ans5;
+				document.getElementById("editedanswer3").value = data[2].text;
+				document.getElementById("editedanswer4").value = data[3].text;
+				document.getElementById("editedanswer5").value = data[4].text;
 				editAnswers = 5;
 			}else{
 				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
 				$("#edit").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
 				$("#edit").append("<div id='edit6'>Answer 6<input type='text' id='editedanswer6' name='editedanswer6'/></div>");
-				document.getElementById("editedanswer3").value = data_field.ans3;
-				document.getElementById("editedanswer4").value = data_field.ans4;
-				document.getElementById("editedanswer5").value = data_field.ans5;
-				document.getElementById("editedanswer6").value = data_field.ans6;
+				document.getElementById("editedanswer3").value = data[2].text;
+				document.getElementById("editedanswer4").value = data[3].text;
+				document.getElementById("editedanswer5").value = data[4].text;
+				document.getElementById("editedanswer6").value = data[5].text;
 				editAnswers = 6;
 			}
 			$("#edit").append("</div><p><input type='button' onclick='addeditanswer()' id='addeditanswer' value='add answer' />"+
@@ -305,9 +236,7 @@ function editMessage(num){
 							"<input type='button' onclick='saveChanges("+num+")' value='save changes' /></p></form>");
 			
 			j = editAnswers + 1;
-		}
-	});*/
-	
+	});
 }
 
 
@@ -370,6 +299,8 @@ function saveChanges(num){
 		ans6 = document.getElementById("editedanswer6").value;
 	}
 	
+	alert("Test: " + ans4);
+	
 	$.get('/saveChanges',
 		{'id': messageID,
 		'text': text,
@@ -380,8 +311,7 @@ function saveChanges(num){
 		'ans5': ans5,
 		'ans6': ans6},
 		function(data){
-			//do nothing
-			alert("success");
+			alert("changes saved");
 	});
 	/*$.ajax({
 		type: 'POST',
@@ -412,62 +342,31 @@ function updateTable(){
 	$.get('/updateTable',
 		{'id': userID},
 		function(data){
-			//var data_field = $.parseJSON(data);
-			alert(data.name);
-			
-	});
-	
-	/*$.ajax({
-		type: 'POST',
-		url: 'updateTable.php',
-		data: {
-			'userID': userID
-		},
-		success: function(data){
-			var data_field = $.parseJSON(data);
 			var content = "<table border='1'>"+
-				"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>";
-			/*$("#showAllMessages").append("<table border='1'>"+
-				"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>");					
+				"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>";
 			
-			for(var i=0; i< data_field.length;i++){
-				$("#showAllMessages").append("<tr class='row'><td id='id" + i +"'>" + data_field[i].id + "</td>" +
-											"<td>" + data_field[i].userID + "</td>" +
-											"<td>" + data_field[i].message + "</td>");
-				
-				if(data_field[i].enable == 0){
-					$("#showAllMessages").append("<td><input type='radio' onclick='enable("+i+")' /></td>");
-				}else{
-					$("#showAllMessages").append("<td><input type='radio' onclick='disable("+i+")' checked='checked'/></td>");
-				}
-				
-				$("#showAllMessages").append("<td><a><img src='../img/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
-					"<td><img src='../img/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
-					"<td>"+data_field[i].pw+"</td></tr>");
-			}*/
 			
-			/*for(var i=0; i< data_field.length;i++){
-				content = content + "<tr class='row'><td id='id" + i +"'>" + data_field[i].id + "</td>" +
-											"<td>" + data_field[i].userID + "</td>" +
-											"<td>" + data_field[i].message + "</td>";
+			for(var i=0; i< data.length;i++){
+				content = content + "<tr class='row'><td id='id" + i +"'>" + data[i].id + "</td>" +
+											"<td>" + data[i].text + "</td>";
 				
-				if(data_field[i].enable == 0){
+				if(data[i].enabled == false){
 					content = content + "<td><input type='radio' onclick='enable("+i+")' /></td>";
 				}else{
 					content = content + "<td><input type='radio' onclick='disable("+i+")' checked='checked'/></td>";
 				}
 				
-				content = content + "<td><a><img src='../img/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
-					"<td><img src='../img/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
-					"<td>"+data_field[i].pw+"</td></tr>";
+				content = content + "<td><a><img src='assets/images/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
+					"<td><img src='assets/images/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
+					"<td>"+data[i].password+"</td></tr>";
 			}
 			
-			/*$("#showAllMessages").append("</table>");	*/
-				/*content = content + "</table>";
+			/*$("#showAllMessages").append("</table>");*/
+				content = content + "</table>";
 				
 				$("#showAllMessages").append(content);
-		}
+			
 	}).error(function(){
-		alert("hier");
-	});*/
+		alert("Error");
+	});
 }
