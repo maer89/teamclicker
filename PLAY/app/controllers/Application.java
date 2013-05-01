@@ -3,7 +3,16 @@ package controllers;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.*;
+
+import javax.sql.DataSource;
+
+import play.db.DB;
+import play.libs.Comet;
 import play.libs.Json;
 import models.*;
 import play.mvc.*;
@@ -11,7 +20,6 @@ import play.mvc.*;
 public class Application extends Controller {
 	
 	private static Messages m = new Messages();
-	private static int userID = 1;
 	
   
     public static Result index() {
@@ -26,11 +34,17 @@ public class Application extends Controller {
     	return ok(views.html.question.render());
     }
     
-    public static Result adminarea() throws IOException{
+    public static Result adminarea() {
     	m = new Messages();
-    	userID = 1;
-    	m.ReadFromDB(userID);
     	return ok(views.html.adminarea.render());
+    }
+    
+    /* loads messages for specific user */
+    public static Result loadMessages() throws IOException {
+    	Map<String, String[]> queryParameters = request().queryString();
+    	int userID = Integer.parseInt(queryParameters.get("id")[0]);
+    	m.ReadFromDB(userID);
+    	return ok();
     }
     
     public static Result result(){
@@ -46,6 +60,8 @@ public class Application extends Controller {
     	Answer ans4 = new Answer(queryParameters.get("ans4")[0]);
     	Answer ans5 = new Answer(queryParameters.get("ans5")[0]);
     	Answer ans6 = new Answer(queryParameters.get("ans6")[0]);
+    	int userID = Integer.parseInt(queryParameters.get("userID")[0]);
+    			
 
     	msg.addAnswer(ans1);
     	msg.addAnswer(ans2);
@@ -54,7 +70,7 @@ public class Application extends Controller {
     	msg.addAnswer(ans5);
     	msg.addAnswer(ans6);
     	
-    	msg.saveMessage();
+    	msg.saveMessage(userID);
     	return ok();
     }
     
@@ -124,13 +140,6 @@ public class Application extends Controller {
     	
     	Message msg = m.getMessageWithID(messageID);
     	
-    	File file = new File("update.txt");
-		FileWriter writer = new FileWriter(file,true);
-		writer.write("ans1 "+ queryParameters.get("ans1")[0] + "\n"
-				+ "ans4 " + queryParameters.get("ans4")[0] + "\n");
-		writer.flush();
-		writer.close();
-    	
     	msg.updateAnswer(0, queryParameters.get("ans1")[0]);
     	msg.updateAnswer(1, queryParameters.get("ans2")[0]);
     	msg.updateAnswer(2, queryParameters.get("ans3")[0]);
@@ -146,6 +155,8 @@ public class Application extends Controller {
     /*update Table*/
     public static Result updateTable() throws IOException{
     	m.clear();
+    	Map<String, String[]> queryParameters = request().queryString();
+    	int userID = Integer.parseInt(queryParameters.get("id")[0]);
     	m.ReadFromDB(userID);
     	return ok(Json.toJson(m.getList()));
     }
@@ -200,5 +211,134 @@ public class Application extends Controller {
     	// write response back to DB
     	r.writeToDB();
     	return ok();
+    }
+    
+    /* login */
+    public static Result login() {
+    	User u = new User();
+    	int res = -1;
+    	
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	String name = queryParameters.get("user")[0];
+    	String pw = queryParameters.get("pw")[0];
+    	u.setName(name);
+    	u.setPassword(pw);
+    	if (u.checkUser()) {
+    		res = u.getID();
+    	}
+    	return ok(String.valueOf(res));
+    }
+
+    /*get Result*/
+    public static Result outcome() throws IOException{
+    	Map<String, String[]> queryParameters = request().queryString();
+    	int userID = Integer.parseInt(queryParameters.get("id")[0]);
+    	
+    	return ok(new Comet("parent.test"){
+    		public void onConnected(){
+    			
+    			//DB....
+    			DataSource ds = DB.getDataSource();
+    			Connection con = DB.getConnection();
+    			
+    			int ans1=0,ans2=0,ans3=0,ans4=0,ans5=0,ans6 = 0;
+    			int ans1neu=0,ans2neu=0,ans3neu=0,ans4neu=0,ans5neu=0,ans6neu=0;
+    			int answers = 0;
+    			
+    			Statement stmt = null;
+    			try {
+    				stmt = con.createStatement();
+    			} catch (SQLException e2) {
+    				System.out.println(e2.toString());
+    			}
+    			/*get answers*/
+    			String res ="SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = 101";
+    			try{
+	    			ResultSet result = stmt.executeQuery(res);
+	    			while(result.next()){
+	    				if(result.getString("answer3").compareTo("") == 0){ 
+	    					answers = 2;
+	    				}else if(result.getString("answer4").compareTo("")  == 0){
+	    					answers = 3;
+	    				}else if(result.getString("answer5").compareTo("")  == 0){
+	    					answers = 4;
+	    				}else if(result.getString("answer6").compareTo("")  == 0){
+	    					answers = 5;
+	    				}else{
+	    					answers = 6;
+	    				}
+	    				/*$ans1text = $data['answer1'];
+	    				$ans2text = $data['answer2'];
+	    				$ans3text = $data['answer3'];
+	    				$ans4text = $data['answer4'];
+	    				$ans5text = $data['answer5'];
+	    				$ans6text = $data['answer6'];*/
+	    			}
+    			}catch(Exception e){
+    				
+    			}
+    			
+    			String sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = 101";
+    			try {
+    				ResultSet rs = stmt.executeQuery(sql);
+    				while(rs.next()){
+    					ans1 = rs.getInt("answer1");
+    					ans2 = rs.getInt("answer2");
+    					ans3 = rs.getInt("answer3");
+    					ans4 = rs.getInt("answer4");
+    					ans5 = rs.getInt("answer5");
+    					ans6 = rs.getInt("answer6");
+    				}
+    			} catch (SQLException e) {
+    				System.out.println(e.toString());
+    			}	
+    			
+    			long start = System.currentTimeMillis();
+    			long end = System.currentTimeMillis();
+    			
+    			boolean i = true;
+    			while(end-start < 2000){
+    				sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = 101";
+    				try {
+    					ResultSet rs = stmt.executeQuery(sql);
+    					while(rs.next()){
+    						ans1neu = rs.getInt("answer1");
+    						ans2neu = rs.getInt("answer2");
+    						ans3neu = rs.getInt("answer3");
+    						ans4neu = rs.getInt("answer4");
+    						ans5neu = rs.getInt("answer5");
+    						ans6neu = rs.getInt("answer6");
+    					}
+    				} catch (SQLException e) {
+    					System.out.println(e.toString());
+    				}	
+    				
+    				if(ans1neu > ans1 || ans2neu > ans2 || ans3neu > ans3 || ans4neu > ans4 || ans5neu > ans5 || ans6neu > ans6 || i==true){
+    					ArrayList<Integer> response = new ArrayList<Integer>();
+    					response.add(ans1neu);
+    					response.add(ans2neu);
+    					response.add(ans3neu);
+    					response.add(ans4neu);
+    					response.add(ans5neu);
+    					response.add(ans6neu);
+    					response.add(answers);
+    					
+    					this.sendMessage(Json.toJson(response));
+    					
+    	    			close();
+    				}
+    				i = false;
+    				end = System.currentTimeMillis();
+    			}
+    			
+    			if (con != null) {
+    	            try {
+    	                con.close();
+    	            } catch (Exception e) {
+    	            }
+    	        }
+    			//this.sendMessage("Text...");
+    		}
+    	});
     }
 }

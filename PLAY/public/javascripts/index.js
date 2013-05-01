@@ -34,24 +34,30 @@ $(function() {
 });
 
 function login_ftn(user, pw) {
-  	$.ajax({
-			type: 'POST',
-			url: './PHP/index_login.php',
-			data: {
+	if (navigator.cookieEnabled == false) {
+		alert("Bitte aktivieren Sie Ihre Cookies,\n da der Vorgang sonst nicht fortgesetzt werden kann.");
+		return;
+	}
+	$.post( '/login',
+			{
 				'user': user,
 				'pw': pw
 			},
-   			success: function(data) {
+   			function(data) {
 				var data_field = $.parseJSON(data);
 				if ((data_field != -1) && (data_field >= 1)) {
 					alert('Welcome ' + user + '!');
-  					storage.set("user_id", data_field);
-	 				location.href = "./PHP/admin.php";
+					// set cookie for login
+					var expire = new Date();
+					var in1hour = expire.getTime() + (1 * 60 * 60 * 1000);
+					expire.setTime(in1hour);
+					document.cookie = "uid=" + data_field + "; expires=" + expire.toGMTString();
+  					location.href = "/adminarea";
 				} else {
 					alert('Wrong username or password');
 				}
 			}
-	}).error(function() {
+	).error(function() {
 		alert("Error during Login");
 	});
 }

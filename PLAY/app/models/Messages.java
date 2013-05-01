@@ -129,5 +129,7 @@ public class Messages {
 		}catch (SQLException e1) {
 			System.out.println(e1.toString());
 		}
+		
+		closeDB();
 	}
 }

@@ -6,16 +6,18 @@
 	<link type="text/css" rel="stylesheet" href='@routes.Assets.at("stylesheets/admin.css")' >
 	<!--JQuery-->
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<!-- QR-Code -->
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.qrcode-0.2.min.js")'></script>
 	<!-- storage.js -->
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/storage.js")'></script>
 	<!--admin.js-->
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/admin.js")'"></script>
-	
 </head>
 <body>
 	<div class="nav">
 		<button id="addMessage">add message</button>
 		<button id="showMessage">show messages</button>
+		<button id="logout">logout</button>
 	</div>
 	<div class="content">
 		<div id="newMessage">
@@ -40,12 +42,12 @@
 			</form>
 		</div>
 		<!--show messages-->
-		<div id="showAllMessages">
-			
+		<div id="showAllMessages">			
 		</div>
 		<!--edit message-->
 		<div id="edit" >
 		</div>
 	</div>
+	<div id="qrcode" ></div>
 </body>
 </html>

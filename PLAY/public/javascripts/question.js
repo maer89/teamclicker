@@ -94,6 +94,8 @@ function sendAnswer(id) {
 				var in12hours = expire.getTime() + (12 * 60 * 60 * 1000);
 				expire.setTime(in12hours);
 				document.cookie = q_id + "=visited" + "; expires=" + expire.toGMTString();
+				// set storage
+				storage.set("q_id", q_id);
 				// Link to resultpage
 				location.href = "/result";
 			}

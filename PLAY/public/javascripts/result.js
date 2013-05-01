@@ -1,7 +1,27 @@
 function connect(){
-	var id = storage.get("q_id");
+	//var id = storage.get("q_id");
 	//storage.set("q_id", "");
+	id = 101;
+	/*$.get('/outcome',
+		{'id': id},
+		function(data){
+			alert("get result: " + data);
+			
+			//$("#result").append(data);
+	});*/
 	$.ajax({
+		url:'/outcome',
+		type:'GET',
+		data: {'id': id},
+		success:function(data){
+			alert("success: " + data);
+		},
+		complete: function(data){
+			alert("complete");
+			connect();
+		}
+	});
+	/*$.ajax({
 		type : 'POST',
 		url : '../PHP/result.php',
 		data : {
@@ -31,5 +51,9 @@ function connect(){
 		complete : function(response) {
 			connect();
 		}
-	});
+	});*/
+}
+
+function test(data) {
+	alert("hier");
 }

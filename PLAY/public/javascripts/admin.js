@@ -1,37 +1,25 @@
 var editAnswers;
 var j = 3;					/*to add or delete edited answers*/
 var i = 3;					/*to add or delete answers*/
-var user_id;
+var user_id = -1;
 $(document).ready(function(){	
-
-	// not in use --> new code beneath
-	//*start* get the UserID
-	/*user_id = -1;
-	
-	var params = decodeURI(document.URL);
-	var pos = params.indexOf('=');
-	if (pos != -1) {
-		// no "=" found in string
-		pos++;
-		user_id = params.slice(pos);
-	}
-	
-	if (user_id == -1) {
-		alert("You\'re not allowed to enter this site!");
-		var page = "../HTML/index.html";
-		window.open(page, "_self");
-	}  */
-	//*end*
-	
-	// get the userID from storage
-	/*user_id = storage.get("user_id");
-	if (user_id == "") {
-		alert("Invalide option");
-		var page = "../HTML/index.html";
-		window.open(page, "_self");
+	// get the userID from cookie
+	if (document.cookie) {
+		// check URL
+		var c = document.cookie;
+		var pos = c.indexOf('uid');
+		user_id = c.slice(pos+4);
+		if (user_id < 1) {
+			alert("Wrong user-ID!");
+			return;
+		}
 	} else {
-		storage.set("user_id", "");
-	}*/
+		alert("You're not allowed to enter this site!");
+		var page = "/";
+		window.open(page, "_self");
+		return;
+	}  
+	loadMessages();
 	
 	$("#showAllMessages").hide();
 	
@@ -78,7 +66,12 @@ $(document).ready(function(){
 		$(this).css("background","black");
 		$(this).css("color","white");
 		$(this).getElementBy
-	});			
+	});		
+	
+	$("#logout").click(function() {
+		logout();
+	})
+
 });
 
 /*save message*/
@@ -126,7 +119,8 @@ function saveMessage(){
 		 'ans3': ans3,
 		 'ans4': ans4,
 		 'ans5': ans5,
-		 'ans6': ans6},
+		 'ans6': ans6,
+		 'userID': user_id},
 		function(data){
 			alert("message saved");
 			document.getElementById("message").value = "";
@@ -147,6 +141,10 @@ function enable(num){
 			alert("Message " + messageID + " enabled password: " + data.password);
 			updateTable();
 	});
+	
+	// show QR-Button
+	var s = 'qr' + messageID;
+	document.getElementById(s).style.visibility = "visible";
 }
 /*disable message*/
 function disable(num){
@@ -157,6 +155,10 @@ function disable(num){
 			alert("Message " + messageID + " disabled");
 			updateTable();
 	});
+	
+	// hide QR-Button
+	var s = 'qr' + messageID;
+	document.getElementById(s).style.visibility = "hidden";
 }
 
 /*delete message*/
@@ -245,6 +247,9 @@ function addeditanswer(){
 	if(j <= 6 ){
 		$("#editanswers").append("<div id='edit"+j+"'>Answer " + j + "<input type='text' id='editedanswer" + j +"' name='editedanswer" + j +"' /></div>");
 		j++;
+		if(editAnswers < 6){
+			editAnswers++;
+		}
 	}else{
 		alert("max. Anzahl von Antworten erreicht");
 	}
@@ -254,6 +259,9 @@ function deleditanswer(){
 	if(j > 3){	
 		//$(".ans").has("name='answer3'").remove();
 		j--;
+		if(editAnswers > 2){
+			editAnswers--;
+		}
 		$test="edit"+j;
 		$('div[id="'+$test+'"]').remove();
 	}else{
@@ -298,8 +306,6 @@ function saveChanges(num){
 		ans5 = document.getElementById("editedanswer5").value;
 		ans6 = document.getElementById("editedanswer6").value;
 	}
-	
-	alert("Test: " + ans4);
 	
 	$.get('/saveChanges',
 		{'id': messageID,
@@ -358,7 +364,14 @@ function updateTable(){
 				
 				content = content + "<td><a><img src='assets/images/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
 					"<td><img src='assets/images/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
-					"<td>"+data[i].password+"</td></tr>";
+					"<td>"+data[i].password+"</td>";
+				
+				if (data[i].enabled == false) {
+					content = content + "<td><button id='qr" + data[i].id + "/" + data[i].password + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td></tr>";
+				} else {
+					content = content + "<td><button id='qr" + data[i].id + "/" + data[i].password + "' onclick='qr_code(id)' style='visibility: visible' >Generate QR-Code</button></td></tr>";
+				}
+				
 			}
 			
 			/*$("#showAllMessages").append("</table>");*/
@@ -369,4 +382,50 @@ function updateTable(){
 	}).error(function(){
 		alert("Error");
 	});
+}
+
+function loadMessages() {
+	$.get(	'/loadMessages',
+			{'id': user_id},
+			function(data){
+				// do nothing
+			}
+		).error(function(){
+			alert("Error");
+		});
+}
+
+function logout() {
+	// delete cookie
+	// set expire time to past
+	document.cookie = 'uid=' + user_id + "meinwert; expires=Thu, 01-Jan-70 00:00:01 GMT;";
+	// link to index
+	location.href = "/";
+}
+
+function qr_code(id) {
+	// delete content of qrcode-div
+	var qr = document.getElementById("qrcode");
+	// load new QR-Code  
+	var pos1 = id.indexOf('/');
+	q_id = id.slice(2, pos1);
+	q_pw = id.slice(pos1+1);
+	
+	// google chart api 
+	//var s = "'localhost:9000/getQuestion?id=" + q_id + "&pw=" + q_pw + "'";
+	//var s2 = "<img src=\"https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=" + s + "\" alt=\"QR-Code\" width=\"250\" height=\"250\" />"
+	
+	qr.innerHTML = '';
+	
+	//q_id = id;
+	//q_pw = password;
+	
+	$('#qrcode').qrcode({
+        text    : "localhost:9000/getQuestion?id=" + q_id + "&pw=" + q_pw,
+        render    : "canvas",  // 'canvas' or 'table'. Default value is 'canvas'
+        background : "#ffffff",
+        foreground : "#000000",
+        width : 250,
+        height: 250
+    });
 }

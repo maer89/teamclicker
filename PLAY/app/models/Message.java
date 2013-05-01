@@ -52,7 +52,7 @@ public class Message {
         }
 	}
 	
-	public void saveMessage() {
+	public void saveMessage(int userID) {
 		openDB();
 		
 		Statement stmt = null;
@@ -68,7 +68,7 @@ public class Message {
 			System.out.println(e2.toString());
 		}
 		
-		String sql = "INSERT INTO messages VALUES (null, 1 ,'"+this.getText()+"',0,'')";
+		String sql = "INSERT INTO messages VALUES (null, " + userID + " ,'"+this.getText()+"',0,'')";
 		try {
 			int rs = stmt.executeUpdate(sql);
 		} catch (SQLException e1) {
