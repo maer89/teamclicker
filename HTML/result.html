@@ -11,167 +11,9 @@
  	<script type="text/javascript" src="../js/storage.js"></script>
 	
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	<!--<script type="text/javascript" src="../js/result.js"></script>-->
+	<script type="text/javascript" src="../js/result.js"></script>
 	
-	<script type="text/javascript">
-		var ans1;
-		var ans2;
-		var ans3;
-		var ans4;
-		var ans5;
-		var ans6;
-		var ans1text;
-		var ans2text;
-		var ans3text;
-		var ans4text;
-		var ans5text;
-		var ans6text;
-		var num = 0;
-		var msg;
-
-		function connect(){
-		//google.load('visualization', '1.0', {'packages':['corechart']});
-		//google.setOnLoadCallback(drawChart);
-			
-			var id = storage.get("q_id");
-			//storage.set("q_id", "");
-			$.ajax({
-				type : 'POST',
-				url : '../PHP/result.php',
-				data : {
-					'id': id
-				},
-				success : function(response) {
-					var data_field = $.parseJSON(response);
-					$("#result").empty();
-					if(data_field.num == 2){
-						$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": " + data_field.ans2 + "</p>");
-						ans1 = data_field.ans1;
-						ans2 = data_field.ans2;
-						ans1text = data_field.ans1text;
-						ans2text = data_field.ans2text;
-						num = 2;
-					}else if(data_field.num == 3){
-						$("#result").append("<p>" + data_field.ans1text + ": "+ data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + "</p>");
-						ans1 = data_field.ans1;
-						ans2 = data_field.ans2;
-						ans3 = data_field.ans3;
-						ans1text = data_field.ans1text;
-						ans2text = data_field.ans2text;
-						ans3text = data_field.ans3text;
-						num = 3;
-					}else if(data_field.num == 4){
-						$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + 
-											"</p><p>" + data_field.ans4text + ": " + data_field.ans4 + "</p>");
-						ans1 = data_field.ans1;
-						ans2 = data_field.ans2;
-						ans3 = data_field.ans3;
-						ans4 = data_field.ans4;
-						ans1text = data_field.ans1text;
-						ans2text = data_field.ans2text;
-						ans3text = data_field.ans3text;
-						ans4text = data_field.ans4text;
-						num = 4;
-					}else if(data_field.num == 5){
-						$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + 
-											"</p><p>" + data_field.ans4text + ": "+ data_field.ans4 + "</p><p>" + data_field.ans5text + ": " + data_field.ans5 + "</p>");
-						ans1 = data_field.ans1;
-						ans2 = data_field.ans2;
-						ans3 = data_field.ans3;
-						ans4 = data_field.ans4;
-						ans5 = data_field.ans5;
-						ans1text = data_field.ans1text;
-						ans2text = data_field.ans2text;
-						ans3text = data_field.ans3text;
-						ans4text = data_field.ans4text;
-						ans5text = data_field.ans5text;
-						num = 5;
-					}else if(data_field.num == 6){
-						$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p>" + data_field.ans3text + ": " + data_field.ans3 + 
-											"</p><p>" + data_field.ans4text + ": " + data_field.ans4 + "</p><p>" + data_field.ans5text + ": " + data_field.ans5 + "</p><p>" + data_field.ans6text + ": " + data_field.ans6 + "</p>");
-						ans1 = data_field.ans1;
-						ans2 = data_field.ans2;
-						ans3 = data_field.ans3;
-						ans4 = data_field.ans4;
-						ans5 = data_field.ans5;
-						ans6 = data_field.ans6;
-						ans1text = data_field.ans1text;
-						ans2text = data_field.ans2text;
-						ans3text = data_field.ans3text;
-						ans4text = data_field.ans4text;
-						ans5text = data_field.ans5text;
-						ans6text = data_field.ans6text;
-						num = 6;
-					}else{
-						//do nothing
-					}
-					msg = data_field.msg;
-					drawChart();
-				},
-				complete : function(response) {
-					connect();
-				}
-			});
-		}	
-		
-		google.load('visualization', '1.0', {'packages':['corechart']});
-		google.setOnLoadCallback(drawChart);	
-
-		function drawChart() {
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-		
-		if(parseInt(num)==2){
-			data.addRows([
-			  [ans1text, parseInt(ans1)],
-			  [ans2text, parseInt(ans2)]
-			]);
-		}else if(parseInt(num)==3){
-			data.addRows([
-			  [ans1text, parseInt(ans1)],
-			  [ans2text, parseInt(ans2)],
-			  [ans3text, parseInt(ans3)]
-			]);
-		}else if(parseInt(num)==4){
-			data.addRows([
-			  ["antwort1", parseInt(ans1)],
-			  ["antwort2", parseInt(ans2)],
-			  ["antwort1", parseInt(ans3)],
-			  ["antwort1", parseInt(ans4)]
-			]);
-		}else if(parseInt(num)==5){
-			data.addRows([
-			  ["antwort1", parseInt(ans1)],
-			  ["antwort2", parseInt(ans2)],
-			  ["antwort3", parseInt(ans3)],
-			  ["antwort4", parseInt(ans4)],
-			  ["antwort5", parseInt(ans5)]
-			]);
-		}else if(parseInt(num)==6){
-			data.addRows([
-			  ["antwort1", parseInt(ans1)],
-			  ["antwort2", parseInt(ans2)],
-			  ["antwort3", parseInt(ans3)],
-			  ["antwort4", parseInt(ans4)],
-			  ["antwort5", parseInt(ans5)],
-			  ["antwort6", parseInt(ans6)]
-			]);
-		}else{
-			//do nothing
-		}
-
-        // Set chart options
-        var options = {'title':msg,
-                       'width':400,
-                       'height':300};
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-      }
-	</script>
+	
 </head>
 
 <body onload="connect()">
@@ -179,5 +21,11 @@
 	</div>
 	
 	<div id="chart_div" style="width:400; height:300"></div>
+	
+	<div>
+		<button id="column">column chart</button>
+		<button id="bar">bar chart</button>
+		<button id="pie">pie chart</button>
+	</div>
 </body>
 </html>
