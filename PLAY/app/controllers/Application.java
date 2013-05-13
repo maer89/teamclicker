@@ -11,11 +11,19 @@ import java.util.*;
 
 import javax.sql.DataSource;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonToken;
+import org.codehaus.jackson.JsonParser.NumberType;
+import org.codehaus.jackson.node.ObjectNode;
+
 import play.db.DB;
 import play.libs.Comet;
 import play.libs.Json;
 import models.*;
 import play.mvc.*;
+import scala.util.parsing.json.JSONArray;
+import scala.util.parsing.json.JSONObject;
 
 public class Application extends Controller {
 	
@@ -230,12 +238,14 @@ public class Application extends Controller {
     }
 
     /*get Result*/
-    public static Result outcome() throws IOException{
-    	Map<String, String[]> queryParameters = request().queryString();
-    	int userID = Integer.parseInt(queryParameters.get("id")[0]);
+    public static Result outcome(final int id) throws IOException{
+    	//Map<String, String[]> queryParameters = request().queryString();
+    	//int userID = Integer.parseInt(queryParameters.get("id")[0]);
+    	ObjectNode response = Json.newObject();
     	
-    	return ok(new Comet("parent.test"){
-    		public void onConnected(){
+    	//return ok(new Comet("parent.test"){
+    	//Comet comet = new Comet("callback"){
+    		//public void onConnected(){
     			
     			//DB....
     			DataSource ds = DB.getDataSource();
@@ -243,7 +253,9 @@ public class Application extends Controller {
     			
     			int ans1=0,ans2=0,ans3=0,ans4=0,ans5=0,ans6 = 0;
     			int ans1neu=0,ans2neu=0,ans3neu=0,ans4neu=0,ans5neu=0,ans6neu=0;
+    			String ans1text="",ans2text="",ans3text="",ans4text="",ans5text="",ans6text="";
     			int answers = 0;
+    			String msg = "";
     			
     			Statement stmt = null;
     			try {
@@ -252,7 +264,7 @@ public class Application extends Controller {
     				System.out.println(e2.toString());
     			}
     			/*get answers*/
-    			String res ="SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = 101";
+    			String res ="SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = " + id;
     			try{
 	    			ResultSet result = stmt.executeQuery(res);
 	    			while(result.next()){
@@ -267,18 +279,18 @@ public class Application extends Controller {
 	    				}else{
 	    					answers = 6;
 	    				}
-	    				/*$ans1text = $data['answer1'];
-	    				$ans2text = $data['answer2'];
-	    				$ans3text = $data['answer3'];
-	    				$ans4text = $data['answer4'];
-	    				$ans5text = $data['answer5'];
-	    				$ans6text = $data['answer6'];*/
+	    				ans1text = result.getString("answer1");
+	    				ans2text = result.getString("answer2");
+	    				ans3text = result.getString("answer3");
+	    				ans4text = result.getString("answer4");
+	    				ans5text = result.getString("answer5");
+	    				ans6text = result.getString("answer6");
 	    			}
     			}catch(Exception e){
     				
     			}
     			
-    			String sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = 101";
+    			String sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID =" + id;
     			try {
     				ResultSet rs = stmt.executeQuery(sql);
     				while(rs.next()){
@@ -293,12 +305,23 @@ public class Application extends Controller {
     				System.out.println(e.toString());
     			}	
     			
+    			sql= "SELECT messageText FROM messages WHERE id = " + id;
+    			try{
+    				ResultSet rs = stmt.executeQuery(sql);
+    				while(rs.next()){
+    					msg = rs.getString("messageText");
+    				}
+    				
+    			}catch(SQLException esql){
+    				
+    			}
+    			
     			long start = System.currentTimeMillis();
     			long end = System.currentTimeMillis();
     			
     			boolean i = true;
     			while(end-start < 2000){
-    				sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = 101";
+    				sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = " + id;
     				try {
     					ResultSet rs = stmt.executeQuery(sql);
     					while(rs.next()){
@@ -311,21 +334,58 @@ public class Application extends Controller {
     					}
     				} catch (SQLException e) {
     					System.out.println(e.toString());
-    				}	
+    				}
     				
     				if(ans1neu > ans1 || ans2neu > ans2 || ans3neu > ans3 || ans4neu > ans4 || ans5neu > ans5 || ans6neu > ans6 || i==true){
-    					ArrayList<Integer> response = new ArrayList<Integer>();
-    					response.add(ans1neu);
-    					response.add(ans2neu);
-    					response.add(ans3neu);
-    					response.add(ans4neu);
-    					response.add(ans5neu);
-    					response.add(ans6neu);
-    					response.add(answers);
+    					/*ArrayList<String> response = new ArrayList<String>();
+    					response.add(ans1text);
+    					response.add(String.valueOf(ans1neu));
+    					response.add(ans2text);
+    					response.add(String.valueOf(ans2neu));
+    					response.add(ans3text);
+    					response.add(String.valueOf(ans3neu));
+    					response.add(ans4text);
+    					response.add(String.valueOf(ans4neu));
+    					response.add(ans5text);
+    					response.add(String.valueOf(ans5neu));
+    					response.add(ans6text);
+    					response.add(String.valueOf(ans6neu));
+    					response.add(String.valueOf(answers));
+    					response.add(msg);*/
     					
-    					this.sendMessage(Json.toJson(response));
+    					response.put("ans1text",ans1text);
+    					response.put("ans1", ans1neu);
+    					response.put("ans2text", ans2text);
+    					response.put("ans2", ans2neu);
+    					response.put("ans3text", ans3text);
+    					response.put("ans3", ans3neu);
+    					response.put("ans4text", ans4text);
+    					response.put("ans4", ans4neu);
+    					response.put("ans5text", ans5text);
+    					response.put("ans5", ans5neu);
+    					response.put("ans6text", ans6text);
+    					response.put("ans6", ans6neu);
+    					response.put("answers",answers);
+    					response.put("msg", msg);
+    					    					
+    					try{
+	    					File file = new File("result.txt");
+	    					FileWriter writer = new FileWriter(file,true);
+	    					writer.write("zeit: " + (end-start) + "   i: " + i + "         response: " + response + "     end: "+ end + "      start: " + start + "\n");
+	    					writer.flush();
+	    					writer.close();
+    					}catch(Exception e){
+    						
+    					}
     					
-    	    			close();
+    					//this.sendMessage(Json.toJson(response));
+
+        				//break;
+        				if(!i){
+        					return created(response);
+        				}
+        				
+    	    			//close();
     				}
     				i = false;
     				end = System.currentTimeMillis();
@@ -338,7 +398,13 @@ public class Application extends Controller {
     	            }
     	        }
     			//this.sendMessage("Text...");
-    		}
-    	});
+    		//}
+    	//};
+    			
+    	return created(response);
+    }
+
+    public static Result popup(Integer id, String pw) {
+    	return ok(views.html.popup.render(id, pw)); 
     }
 }

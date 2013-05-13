@@ -1,0 +1,51 @@
+@(id: Integer)(pw: String)
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>QR-Code for Question @id</title>
+        <!--JQuery-->
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<!-- QR-Code -->
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.qrcode-0.2.min.js")'></script>
+        <script type="text/javascript">
+        	$(function() {
+        		window.onresize = newQR;
+        		newQR();
+        	});
+        	
+        	function newQR() {
+        		var q_id = @id;
+        		var q_pw = '@pw'
+        		
+        		// delete actual content
+        		var qr = document.getElementById("qrcode");
+        		qr.innerHTML = '';
+        		        		
+        		$('#qrcode').qrcode({
+            		text    : "localhost:9000/getQuestion?id=" + q_id + "&pw=" + q_pw,
+            		render    : "canvas",  // 'canvas' or 'table'. Default value is 'canvas'
+           			background : "#ffffff",
+            		foreground : "#000000",
+            		width : window.innerWidth-30,
+            		height: window.innerHeight-60
+        		});
+        		var canvas = document.getElementsByTagName("canvas")[0];
+        		var img    = canvas.toDataURL("image/png");
+        		qr.innerHTML = "<img src='" + img + "'/>"
+        	}
+        	
+        	function save() {
+        		var canvas = document.getElementsByTagName("canvas")[0];
+        		Canvas2Image.saveAsPNG(canvas);
+        	}
+        </script>
+    </head>
+    <body>
+    	<div id="qrcode" ></div>
+    	<!-- <div>
+    		<button id='saveQR' onclick='save()'>Save QR as PNG</button>
+    	</div> -->
+    </body>
+</html>

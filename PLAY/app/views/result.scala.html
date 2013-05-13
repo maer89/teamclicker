@@ -7,13 +7,29 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
  	<!-- includes -->
 	<link rel="shortcut icon" href="../img/favicon.ico" >
- 	<script type="text/javascript" src='@routes.Assets.at("javascripts/storage.js")'"></script>
-	<script type="text/javascript" src='@routes.Assets.at("javascripts/result.js")'"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+ 	<script type="text/javascript" src='@routes.Assets.at("javascripts/storage.js")'></script>
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/result.js")'></script>
+	<script type="text/javascript">
+		var id = storage.get("q_id");
+	</script>
+	
 </head>
 
 <body onload="connect()">
+	<div>
+		<button id="main">Back to main</button>	
+	</div>
 	<div id="result">
 	</div>
+	<div id="chart_div" style="width:400; height:300"></div>
+	
+	<div>
+		<button id="column">column chart</button>
+		<button id="bar">bar chart</button>
+		<button id="pie">pie chart</button>
+	</div>
+	
 	
 	<!--<script type="text/javascript" charset="utf-8">	
 		var test = function(data){
@@ -23,6 +39,7 @@
 				$("#result").append("<p>" + data[0] + "</p><p>" + data[1] + "</p>");
 				//$("#result").append("<p>" + data_field.ans1text + ": " + data[0] + "</p><p>" + data_field.ans2text + ": " + data_field.ans2 + "</p>");
 			}else if(data[6] == 3){
+				$("#result").append("<p>" + data[0] + "</p><p>" + data[1] + "</p><p>" + data[2] + "</p>");
 				//$("#result").append("<p>" + data_field.ans1text + ": "+ data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + "</p>");
 			}else if(data[6] == 4){
 				//$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + 
@@ -36,11 +53,15 @@
 			}else{
 				//do nothing
 			}
-			window.frames['comet'];
+			//window.frames['comet'];
 		}
 	</script>-->
 	
-	<!--<iframe name="comet" id="comet" src="@routes.Application.outcome"></iframe>-->
+	
+	<!--<iframe name="comet" id="comet" width=0px height=0px src=""></iframe>
+	<script>
+		document.getElementById("comet").src="/outcome?id="+id;
+	</script>-->
 	
 </body>
 </html>

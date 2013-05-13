@@ -30,13 +30,13 @@ function check_Question(q_id, q_pw) {
 					case -1:
 						alert('Question doesn\'t exist or isn\'t enabled!');
 						// link back to index.html
-						var page = "/";
+						var page = "/question";
 						window.open(page, "_self");
 						break;
 					case 0:
 						alert('You entered the wrong password for the ID  ' + q_id);
 						// link back to index.html
-						var page = "/";
+						var page = "/question";
 						window.open(page, "_self");
 						break;
 					case 1:
@@ -60,16 +60,16 @@ function get_answers(q_id) {
 				content = content + data[6].text + " <br>"
 						  + "<button id=\"1\" onclick=\"sendAnswer(id)\">a: " + data[0].text + "</button>"
 						  + "<br><button id=\"2\" onclick=\"sendAnswer(id)\">b: " + data[1].text + "</button>"
-				if(data[2] == null) {
+				if(data[2].text != '') {
 					content = content + "<br><button id=\"3\" onclick=\"sendAnswer(id)\">c: " + data[2].text + "</button>";
 				}
-				if(data[3] == null) {
+				if(data[3].text != '') {
 					content = content + "<br><button id=\"4\" onclick=\"sendAnswer(id)\">d: " + data[3].text + "</button>";
 				}
-				if(data[4] == null) {
+				if(data[4].text != '') {
 					content = content + "<br><button id=\"5\" onclick=\"sendAnswer(id)\">e: " + data[4].text + "</button>";
 				}
-				if(data[5] == null) {
+				if(data[5].text != '') {
 					content = content + "<br><button id=\"6\" onclick=\"sendAnswer(id)\">f: " + data[5].text + "</button>";
 				}
 

@@ -2,6 +2,7 @@ var editAnswers;
 var j = 3;					/*to add or delete edited answers*/
 var i = 3;					/*to add or delete answers*/
 var user_id = -1;
+var popupStatus = 0;
 $(document).ready(function(){	
 	// get the userID from cookie
 	if (document.cookie) {
@@ -71,6 +72,30 @@ $(document).ready(function(){
 	$("#logout").click(function() {
 		logout();
 	})
+	
+	
+	
+	// for QR-Code
+	$("div.close").click(function() {
+        disablePopup();
+    });
+
+	
+	$("div.close").hover(
+        function() {
+            $('span.ecs_tooltip').show();
+        },
+        function () {
+            $('span.ecs_tooltip').hide();
+        }
+	);
+	
+	$(this).keyup(function(event) {
+         if (event.which == 27) { // 27 is 'Ecs' in the keyboard
+             disablePopup();
+         }
+	});
+
 
 });
 
@@ -124,12 +149,43 @@ function saveMessage(){
 		function(data){
 			alert("message saved");
 			document.getElementById("message").value = "";
-			document.getElementById("answerText1").value = "";
-			document.getElementById("answerText2").value = "";
-			document.getElementById("answerText3").value = "";
-			document.getElementById("answerText4").value = "";
-			document.getElementById("answerText5").value = "";
-			document.getElementById("answerText6").value = "";
+			
+			if(i-1 == 2){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+			}else if(i-1 == 3){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+				$("#answer3").remove();
+				$("#answerText3").remove();
+			}else if(i-1 == 4){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+				$("#answer3").remove();
+				$("#answerText3").remove();
+				$("#answer4").remove();
+				$("#answerText4").remove();
+			}else if(i-1 == 5){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+				$("#answer3").remove();
+				$("#answerText3").remove();
+				$("#answer4").remove();
+				$("#answerText4").remove();
+				$("#answer5").remove();
+				$("#answerText5").remove();
+			}else if(i-1 == 6){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+				$("#answer3").remove();
+				$("#answerText3").remove();
+				$("#answer4").remove();
+				$("#answerText4").remove();
+				$("#answer5").remove();
+				$("#answerText5").remove();
+				$("#answer6").remove();
+				$("#answerText5").remove();
+			}
 	});
 }
 /*enable message*/
@@ -169,6 +225,7 @@ function deleteMessage(num){
 		function(data){
 			//do nothing
 			alert("Message " + messageID + " delete");
+			$("#edit").hide();
 			updateTable();
 	});
 }
@@ -183,6 +240,7 @@ function editMessage(num){
 	$.get('/getMessage',
 		{'id': messageID},
 		function(data){
+			$("#edit").show();
 			document.getElementById("messageText").innerHTML = data.text;
 	});
 	
@@ -205,28 +263,28 @@ function editMessage(num){
 			if(data[2].text == ""){
 				//do nothing
 			}else if(data[3].text == ""){
-				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#editanswers").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 				document.getElementById("editedanswer3").value = data[2].text;
 				editAnswers = 3;
 			}else if(data[4].text == ""){
-				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#editanswers").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
 				document.getElementById("editedanswer3").value = data[2].text;
 				document.getElementById("editedanswer4").value = data[3].text;
 				editAnswers = 4;
 			}else if(data[5].text== ""){
-				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
-				$("#edit").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
+				$("#editanswers").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#editanswers").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#editanswers").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
 				document.getElementById("editedanswer3").value = data[2].text;
 				document.getElementById("editedanswer4").value = data[3].text;
 				document.getElementById("editedanswer5").value = data[4].text;
 				editAnswers = 5;
 			}else{
-				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
-				$("#edit").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
-				$("#edit").append("<div id='edit6'>Answer 6<input type='text' id='editedanswer6' name='editedanswer6'/></div>");
+				$("#editanswers").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#editanswers").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#editanswers").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
+				$("#editanswers").append("<div id='edit6'>Answer 6<input type='text' id='editedanswer6' name='editedanswer6'/></div>");
 				document.getElementById("editedanswer3").value = data[2].text;
 				document.getElementById("editedanswer4").value = data[3].text;
 				document.getElementById("editedanswer5").value = data[4].text;
@@ -404,28 +462,50 @@ function logout() {
 }
 
 function qr_code(id) {
-	// delete content of qrcode-div
-	var qr = document.getElementById("qrcode");
 	// load new QR-Code  
 	var pos1 = id.indexOf('/');
 	q_id = id.slice(2, pos1);
 	q_pw = id.slice(pos1+1);
 	
-	// google chart api 
-	//var s = "'localhost:9000/getQuestion?id=" + q_id + "&pw=" + q_pw + "'";
-	//var s2 = "<img src=\"https://chart.googleapis.com/chart?cht=qr&chs=250x250&chl=" + s + "\" alt=\"QR-Code\" width=\"250\" height=\"250\" />"
+	var qr = document.getElementById("qrcode");	        		
 	
-	qr.innerHTML = '';
-	
-	//q_id = id;
-	//q_pw = password;
-	
+	// create QR
 	$('#qrcode').qrcode({
-        text    : "localhost:9000/getQuestion?id=" + q_id + "&pw=" + q_pw,
-        render    : "canvas",  // 'canvas' or 'table'. Default value is 'canvas'
-        background : "#ffffff",
-        foreground : "#000000",
-        width : 250,
-        height: 250
-    });
+		text    : "localhost:9000/getQuestion?id=" + q_id + "&pw=" + q_pw,
+		render    : "canvas",
+		background : "#ffffff",
+		foreground : "#000000",
+		width : 350,
+		height: 350
+	});
+	
+	// convert canvas to image
+	var canvas = document.getElementsByTagName("canvas")[0];
+	var img    = canvas.toDataURL("image/png");
+	qr.innerHTML = "<div><img src='" + img + "'/></div><div><button onclick='download_qr()' id='qrButton'>Download Picture</button></div>"
+	
+	loadPopup(q_id, q_pw); // function show popup
+}
+
+function loadPopup() {
+	if(popupStatus == 0) { 
+		// show QR
+	    $("#toPopup").fadeIn(0500);
+	    $("#backgroundPopup").css("opacity", "0.7");
+	    $("#backgroundPopup").fadeIn(0001);
+	    popupStatus = 1;
+	}
+}
+
+function disablePopup() {
+    if(popupStatus == 1) { 
+    	// hide QR
+        $("#toPopup").fadeOut("normal");
+        $("#backgroundPopup").fadeOut("normal");
+        popupStatus = 0;
+    }
+}
+
+function download_qr() {
+	
 }
