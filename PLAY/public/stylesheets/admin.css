@@ -45,6 +45,7 @@ textarea{
     font-size: 14px;
     left: 50%;
     margin-left: auto;
+    margin-bottom: 300px;
     position: fixed;
     width: 350px;
     height: 370px;
@@ -92,4 +93,6 @@ span.arrow {
 
 #qrButton {
 	width: 350px;
+	height: 350px;
+	padding: 50px;
 }

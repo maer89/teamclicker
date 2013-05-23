@@ -6,6 +6,9 @@
 	<link type="text/css" rel="stylesheet" href='@routes.Assets.at("stylesheets/admin.css")' >
 	<!--JQuery-->
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<!-- QR-Code -->
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.qrcode-0.2.min.js")'></script>
 	<!-- storage.js -->
@@ -36,6 +39,11 @@
 				<input type="button" id="delanswer" value="delete answer" />
 			</p>
 			<p>
+				Group:<br />
+				<div id='groups'>
+				</div>
+			</p>
+			<p>
 				<input type="button" onclick="saveMessage()" value="save message" />
 				<input type="reset" value="reset" />
 			</p>
@@ -52,9 +60,6 @@
 		<div class="close"></div>
         <span class="ecs_tooltip">Press Esc to close <span class="arrow"></span></span>
 		<div id="qrcode">
-			<p>viel Gteagsagasg</p>
-			<br>
-			<p>noch mehr Text</p>
         </div>	
 	</div>
 	<div id="backgroundPopup"></div>

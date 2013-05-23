@@ -11,19 +11,12 @@ import java.util.*;
 
 import javax.sql.DataSource;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.JsonToken;
-import org.codehaus.jackson.JsonParser.NumberType;
 import org.codehaus.jackson.node.ObjectNode;
 
 import play.db.DB;
-import play.libs.Comet;
 import play.libs.Json;
 import models.*;
 import play.mvc.*;
-import scala.util.parsing.json.JSONArray;
-import scala.util.parsing.json.JSONObject;
 
 public class Application extends Controller {
 	
@@ -69,6 +62,7 @@ public class Application extends Controller {
     	Answer ans5 = new Answer(queryParameters.get("ans5")[0]);
     	Answer ans6 = new Answer(queryParameters.get("ans6")[0]);
     	int userID = Integer.parseInt(queryParameters.get("userID")[0]);
+    	msg.group = queryParameters.get("group")[0]; 
     			
 
     	msg.addAnswer(ans1);
@@ -77,7 +71,7 @@ public class Application extends Controller {
     	msg.addAnswer(ans4);
     	msg.addAnswer(ans5);
     	msg.addAnswer(ans6);
-    	
+   	
     	msg.saveMessage(userID);
     	return ok();
     }
@@ -121,7 +115,6 @@ public class Application extends Controller {
     public static Result getMessage(){
     	Map<String, String[]> queryParameters = request().queryString();
     	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
-    	
     	Message msg = m.getMessageWithID(messageID);
     	
     	return ok(Json.toJson(msg));
@@ -132,7 +125,7 @@ public class Application extends Controller {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
     	Message mes = new Message();
-    	mes.setID(messageID);
+    	mes.id = messageID;
     	ArrayList<Answer> a = mes.getAnswers();
     	Answer message = new Answer();
     	message.setText(mes.getTextFromDB());
@@ -155,7 +148,7 @@ public class Application extends Controller {
     	msg.updateAnswer(4, queryParameters.get("ans5")[0]);
     	msg.updateAnswer(5, queryParameters.get("ans6")[0]);
     	
-    	msg.updateMessage(text);
+    	msg.updateMessage(text, queryParameters.get("group")[0]);
     	
     	return ok();
     }
@@ -165,8 +158,9 @@ public class Application extends Controller {
     	m.clear();
     	Map<String, String[]> queryParameters = request().queryString();
     	int userID = Integer.parseInt(queryParameters.get("id")[0]);
-    	m.ReadFromDB(userID);
-    	return ok(Json.toJson(m.getList()));
+    	//m.ReadFromDB(userID);
+		String content = m.ReadFromDBString(userID);			
+    	return ok(content);
     }
     
     /*get Question */
@@ -183,8 +177,8 @@ public class Application extends Controller {
     	
     	int res;
     	Message mes = new Message();
-    	mes.setID(messageID);
-    	mes.setPassword(messagePW);
+    	mes.id = messageID ;
+    	mes.password = messagePW;
     	res = mes.check();
     	return ok(String.valueOf(res));
     }
@@ -199,7 +193,7 @@ public class Application extends Controller {
     	if (mes == null) {
     		// message isn't in list --> add it
     		mes = new Message();
-    		mes.setID(q_id);
+    		mes.id = q_id;
     		m.addMessage(mes);
     	} 
     	
@@ -406,5 +400,93 @@ public class Application extends Controller {
 
     public static Result popup(Integer id, String pw) {
     	return ok(views.html.popup.render(id, pw)); 
+    }
+    
+    public static Result loadGroups() {
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	int uid = Integer.parseInt(queryParameters.get("uid")[0]);
+    	
+    	// load the groups
+    	
+    	// openDB
+    	DataSource ds = DB.getDataSource();
+		Connection con = DB.getConnection();
+		
+		Statement stmt = null;
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+    	
+		String sql = "SELECT * FROM groups WHERE userID = " + uid;
+		ArrayList<String> a = new ArrayList<String>();
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				a.add(rs.getString("name"));
+			}
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// closeDB
+		if (con != null) {
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        }
+
+		// return ArrayList
+    	return ok(Json.toJson(a));
+    }
+
+    public static Result addGroup() {
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	int uid = Integer.parseInt(queryParameters.get("uid")[0]);
+    	String name = queryParameters.get("groupName")[0];
+    	
+    	// openDB
+    	DataSource ds = DB.getDataSource();
+		Connection con = DB.getConnection();
+		
+		Statement stmt = null;
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+    	
+		// check if group already exists
+		String sql = "SELECT * FROM groups WHERE userID = " + uid + " AND name = '" + name + "'";
+		ArrayList<String> a = new ArrayList<String>();
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			if(!rs.next()) {
+				sql = "INSERT INTO groups (name, userID) VALUES ('" + name + "'," + uid + ")";
+				
+				try {
+					int res = stmt.executeUpdate(sql);
+				}catch (SQLException e1) {
+					System.out.println(e1.toString());
+				}
+			}
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// closeDB
+		if (con != null) {
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        }
+
+		// return ArrayList
+    	return ok();
     }
 }

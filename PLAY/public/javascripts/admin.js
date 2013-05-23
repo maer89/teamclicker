@@ -20,7 +20,9 @@ $(document).ready(function(){
 		window.open(page, "_self");
 		return;
 	}  
-	loadMessages();
+	//loadMessages();
+	
+	loadGroups();
 	
 	$("#showAllMessages").hide();
 	
@@ -103,6 +105,7 @@ $(document).ready(function(){
 function saveMessage(){
 	var text = document.getElementById("message").value;
 	var userID = user_id;
+	var group = document.getElementById("groupsList").options[document.getElementById("groupsList").selectedIndex].text;
 	var ans1 = "";
 	var ans2 = "";
 	var ans3 = "";
@@ -145,10 +148,12 @@ function saveMessage(){
 		 'ans4': ans4,
 		 'ans5': ans5,
 		 'ans6': ans6,
-		 'userID': user_id},
+		 'userID': user_id,
+		 'group': group},
 		function(data){
 			alert("message saved");
 			document.getElementById("message").value = "";
+			document.getElementById("group").value = "";
 			
 			if(i-1 == 2){
 				document.getElementById("answerText1").value = "";
@@ -191,20 +196,24 @@ function saveMessage(){
 /*enable message*/
 function enable(num){
 	var messageID = document.getElementById("id"+num).innerHTML;
+	var pw = '';
 	$.get('/enable',
 		{'id': messageID},
 		function(data){
+			pw = data.password;
 			alert("Message " + messageID + " enabled password: " + data.password);
 			updateTable();
 	});
 	
 	// show QR-Button
-	var s = 'qr' + messageID;
+	var s = 'qr' + messageID + '/';
 	document.getElementById(s).style.visibility = "visible";
+	document.getElementById(s).id = 'qr' + messageID + '/' + pw;
 }
 /*disable message*/
 function disable(num){
 	var messageID = document.getElementById("id"+num).innerHTML;
+	var messagePW = document.getElementById("pw"+num).innerHTML;
 	$.get('/disable',
 		{'id': messageID},
 		function(data){
@@ -213,8 +222,9 @@ function disable(num){
 	});
 	
 	// hide QR-Button
-	var s = 'qr' + messageID;
+	var s = 'qr' + messageID + '/' + messagePW;
 	document.getElementById(s).style.visibility = "hidden";
+	document.getElementById(s).id = 'qr' + messageID + '/';
 }
 
 /*delete message*/
@@ -236,22 +246,25 @@ function editMessage(num){
 	}
 
 	var messageID = document.getElementById("id"+num).innerHTML;
+	var group = "";
 	var message;
+	$("#edit").append("<form action='edit.php' method='POST'>" +
+			"<p>Message:<br />" +
+			"<textarea id='messageText' name='editedmessage' cols='35' rows='5'></textarea>" +
+			"</p><p>Group:<br /><input type='text' id='messageGroup'>" +
+			"</p><p>Answers:<br />" +
+			"<div id='editanswers'>" +
+			"<div id='edit1'>Answer 1<input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
+			"<div id='edit2'>Answer 2<input type='text' id='editedanswer2' name='editedanswer2'/></div>");
+	
 	$.get('/getMessage',
 		{'id': messageID},
 		function(data){
 			$("#edit").show();
 			document.getElementById("messageText").innerHTML = data.text;
+			document.getElementById("messageGroup").value = data.group;
 	});
 	
-	$("#edit").append("<form action='edit.php' method='POST'>" +
-		"<p>Message:<br />" +
-		"<textarea id='messageText' name='editedmessage' cols='35' rows='5'></textarea>" +
-		"</p><p>Answers:<br />" +
-		"<div id='editanswers'>" +
-		"<div id='edit1'>Answer 1<input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
-		"<div id='edit2'>Answer 2<input type='text' id='editedanswer2' name='editedanswer2'/></div>");
-		
 	$.post('/getAnswers',
 		{'id': messageID},
 		function(data){
@@ -323,7 +336,7 @@ function deleditanswer(){
 		$test="edit"+j;
 		$('div[id="'+$test+'"]').remove();
 	}else{
-		alert("Es k�nnen nicht mehr Antworten entfernt werden");
+		alert("Es koennen nicht mehr Antworten entfernt werden");
 	}
 }
 
@@ -331,6 +344,7 @@ function deleditanswer(){
 function saveChanges(num){
 	var messageID = document.getElementById("id"+num).innerHTML;
 	var text = document.getElementById("messageText").value;
+	var group = document.getElementById("messageGroup").value;
 	var ans1 = "";
 	var ans2 = "";
 	var ans3 = "";
@@ -373,7 +387,8 @@ function saveChanges(num){
 		'ans3': ans3,
 		'ans4': ans4,
 		'ans5': ans5,
-		'ans6': ans6},
+		'ans6': ans6,
+		'group': group},
 		function(data){
 			alert("changes saved");
 	});
@@ -400,13 +415,16 @@ function saveChanges(num){
 
 /*update table*/
 function updateTable(){
+	// show loading symbol
+	document.getElementById("edit").innerHTML = ("<img src='assets/images/load.gif' width='100' height='100' />");
+	
 	$("#showAllMessages").empty();
 	var userID = user_id;
 	
 	$.get('/updateTable',
 		{'id': userID},
 		function(data){
-			var content = "<table border='1'>"+
+			/*var content = "<table border='1'>"+
 				"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>";
 			
 			
@@ -422,10 +440,10 @@ function updateTable(){
 				
 				content = content + "<td><a><img src='assets/images/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
 					"<td><img src='assets/images/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
-					"<td>"+data[i].password+"</td>";
+					"<td id='pw" + i + "'>"+data[i].password+"</td>";
 				
 				if (data[i].enabled == false) {
-					content = content + "<td><button id='qr" + data[i].id + "/" + data[i].password + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td></tr>";
+					content = content + "<td><button id='qr" + data[i].id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td></tr>";
 				} else {
 					content = content + "<td><button id='qr" + data[i].id + "/" + data[i].password + "' onclick='qr_code(id)' style='visibility: visible' >Generate QR-Code</button></td></tr>";
 				}
@@ -433,15 +451,18 @@ function updateTable(){
 			}
 			
 			/*$("#showAllMessages").append("</table>");*/
-				content = content + "</table>";
-				
-				$("#showAllMessages").append(content);
+			//content = content + "</table>";
 			
+			// hide loading symbol
+			document.getElementById("edit").innerHTML = "";
+			$("#showAllMessages").append(data);
+			/* Akkordeon */
+			$("#accordion").accordion();
 	}).error(function(){
-		alert("Error");
+		alert("Error updateTable");
 	});
 }
-
+/*
 function loadMessages() {
 	$.get(	'/loadMessages',
 			{'id': user_id},
@@ -449,14 +470,14 @@ function loadMessages() {
 				// do nothing
 			}
 		).error(function(){
-			alert("Error");
+			alert("Error loadMessages");
 		});
 }
-
+*/
 function logout() {
 	// delete cookie
 	// set expire time to past
-	document.cookie = 'uid=' + user_id + "meinwert; expires=Thu, 01-Jan-70 00:00:01 GMT;";
+	document.cookie = 'uid=' + user_id + "; expires=Thu, 01-Jan-70 00:00:01 GMT;";
 	// link to index
 	location.href = "/";
 }
@@ -471,7 +492,7 @@ function qr_code(id) {
 	
 	// create QR
 	$('#qrcode').qrcode({
-		text    : "localhost:9000/getQuestion?id=" + q_id + "&pw=" + q_pw,
+		text    : "http://lit-fjord-5486.herokuapp.com/getQuestion?id=" + q_id + "&pw=" + q_pw,
 		render    : "canvas",
 		background : "#ffffff",
 		foreground : "#000000",
@@ -507,5 +528,30 @@ function disablePopup() {
 }
 
 function download_qr() {
-	
+	// TODO: Implement
+}
+
+// Load groups for acutal user
+function loadGroups() {
+	$.post('/loadGroups',
+			{'uid': user_id},
+			function(data){
+				var content = "<select name='group' id='groupsList' size='1'>";
+				for (var i = 0; i < data.length; i++) {
+					content = content + "<option>" + data[i] + "</option>";
+				}
+				content = content + "</select> <button id='addAGroup' onclick='addGroup()'>Add New Group</button>";
+				$("#groups").append(content);
+	});
+}
+
+// add new Group
+function addGroup() {
+	var groupName = window.prompt("Please enter a group name:", "");
+	$.post('/addGroup',
+			{'uid': user_id,
+			 'groupName': groupName},
+			function(data){
+				alert("Group " + groupName + " added!");
+	 });
 }

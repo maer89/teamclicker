@@ -15,11 +15,13 @@ import play.db.*;
 
 public class Message {
 	
-	private int id = -1;
-	private int uID = -1;
-	private String text = "";
-	private boolean enabled = false;
-	private String password = "";
+	public int id = -1;
+	public int uID = -1;
+	public String text = "";
+	public boolean enabled = false;
+	public String password = "";
+	public String group = "";
+	
 	private Connection con = null;
 	private DataSource ds = null;
 	
@@ -68,14 +70,14 @@ public class Message {
 			System.out.println(e2.toString());
 		}
 		
-		String sql = "INSERT INTO messages VALUES (null, " + userID + " ,'"+this.getText()+"',0,'')";
+		String sql = "INSERT INTO messages VALUES (null, " + userID + " ,'"+this.text+"',0,'', '" + this.group + "')";
 		try {
 			int rs = stmt.executeUpdate(sql);
 		} catch (SQLException e1) {
 			System.out.println(e1.toString());
 		}
 		
-		sql = "SELECT id FROM messages WHERE messageText = '"+this.getText()+"'";
+		sql = "SELECT id FROM messages WHERE messageText = '"+this.text+"'";
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
@@ -106,8 +108,8 @@ public class Message {
 			System.out.println(e2.toString());
 		}
 		
-		String sql = "DELETE FROM messages WHERE id = " + this.getID();
-		String sqlans = "DELETE FROM answers WHERE messageID = " + this.getID();
+		String sql = "DELETE FROM messages WHERE id = " + this.id;
+		String sqlans = "DELETE FROM answers WHERE messageID = " + this.id;
 		try {
 			int rs = stmt.executeUpdate(sql);
 			int rsans = stmt.executeUpdate(sqlans);
@@ -118,9 +120,10 @@ public class Message {
 		closeDB();
 	}
 	
-	public void updateMessage(String text) throws IOException{
+	public void updateMessage(String text, String group) throws IOException{
 		openDB();
-		this.setText(text);
+		this.text = text;
+		this.group = group;
 		
 		Statement stmt = null;
 		String ans1 = answers.get(0).getText();
@@ -137,8 +140,8 @@ public class Message {
 			System.out.println(e2.toString());
 		}
 		
-		String sql = "UPDATE messages SET messageText = '" + this.getText() + "' WHERE id = " + this.getID();
-		String sqlans = "UPDATE answers SET answer1='"+ans1+"',answer2='"+ans2+"',answer3='"+ans3+"',answer4='"+ans4+"',answer5='"+ans5+"',answer6='"+ans6+"' WHERE messageID = " + this.getID();
+		String sql = "UPDATE messages SET messageText = '" + this.text + "', messageGroup = '" + this.group + "' WHERE id = " + this.id;
+		String sqlans = "UPDATE answers SET answer1='"+ans1+"',answer2='"+ans2+"',answer3='"+ans3+"',answer4='"+ans4+"',answer5='"+ans5+"',answer6='"+ans6+"' WHERE messageID = " + this.id;
 		try {
 			int rs = stmt.executeUpdate(sql);
 			rs = stmt.executeUpdate(sqlans);
@@ -152,7 +155,7 @@ public class Message {
 	public void updateAnswer(int id, String text) throws IOException{
 			this.answers.get(id).setText(text);
 	}
-	
+	/*  has to be commented out because with this Json.toJson(Message) doesn't work anymore (don't know why)
 	public void setID(int id) {
 		this.id = id;
 	}
@@ -173,6 +176,23 @@ public class Message {
 		return text;
 	}
 	
+	public void setText(String text) {
+		this.text = text;
+	}
+	
+	public boolean getEnabled() {
+		return this.enabled;
+	}
+	
+	public String getPassword() {
+		return this.password;
+	}
+	
+	public void setPassword(String pw) {
+		this.password = pw;
+	}
+	
+	*/
 	public String getTextFromDB() {
 		String s = "";
 		openDB();
@@ -183,7 +203,7 @@ public class Message {
 			System.out.println(e2.toString());
 		}
 		
-		String sql = "SELECT messageText FROM messages WHERE id = " + getID();
+		String sql = "SELECT messageText FROM messages WHERE id = " + this.id;
 		try{
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()){
@@ -195,14 +215,6 @@ public class Message {
 		closeDB();
 		
 		return s;
-	}
-	
-	public void setText(String text) {
-		this.text = text;
-	}
-	
-	public boolean getEnabled() {
-		return this.enabled;
 	}
 	
 	public void setEnabled(boolean e) {
@@ -219,7 +231,7 @@ public class Message {
 			/*enable*/
 			/*generate password*/
 			String pw="";
-			String getpw = "SELECT password FROM messages WHERE id = " + this.getID();
+			String getpw = "SELECT password FROM messages WHERE id = " + this.id;
 			
 			/*get pw from DB*/
 			try{
@@ -233,8 +245,8 @@ public class Message {
 			
 			if(pw.equals("")){
 				pw = RandomStringUtils.randomAlphanumeric(4);
-				this.setPassword(pw);
-				String sql = "UPDATE messages SET enabled=1, password='"+pw+"' WHERE id=" + this.getID();
+				this.password = pw;
+				String sql = "UPDATE messages SET enabled=1, password='"+pw+"' WHERE id=" + this.id;
 				try {
 					int rs = stmt.executeUpdate(sql);
 				}catch (SQLException e1) {
@@ -245,7 +257,7 @@ public class Message {
 			}
 		}else{
 			/*disable*/
-			String sql = "UPDATE messages SET enabled = 0, password='' WHERE id=" + this.getID();
+			String sql = "UPDATE messages SET enabled = 0, password='' WHERE id=" + this.id;
 			try {
 				int rs = stmt.executeUpdate(sql);
 			}catch (SQLException e1) {
@@ -254,14 +266,6 @@ public class Message {
 		}
 		
 		closeDB();
-	}
-	
-	public String getPassword() {
-		return this.password;
-	}
-	
-	public void setPassword(String pw) {
-		this.password = pw;
 	}
 	
 	public void addAnswer(Answer aAnswer) {
@@ -297,7 +301,7 @@ public class Message {
 			System.out.println(e2.toString());
 		}
 		
-		String sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = " + getID();
+		String sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = " + this.id;
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			if (rs.next()) {
@@ -354,13 +358,13 @@ public class Message {
 			System.out.println(e2.toString());
 		}
 		
-		String sql = "SELECT password FROM messages WHERE id = " + getID() 
+		String sql = "SELECT password FROM messages WHERE id = " + this.id 
 					 + " AND enabled  = 1";
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			if (rs.next()) {
 					// Check pw
-					if (getPassword().equals(rs.getString("password"))) {
+					if (this.password.equals(rs.getString("password"))) {
 						// correct pw
 						res = 1;
 					} else {

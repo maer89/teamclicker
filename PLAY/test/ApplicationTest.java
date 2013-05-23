@@ -79,15 +79,15 @@ public class ApplicationTest {
     @Test
     public void messageID() {
     	Message m = new Message();
-    	m.setID(1);
-    	assertThat(m.getID()).isEqualTo(1);
+    	m.id = 1;
+    	assertThat(m.id).isEqualTo(1);
     }
     
     @Test
     public void messageUID() {
     	Message m = new Message();
-    	m.setUID(1);
-    	assertThat(m.getUID()).isEqualTo(1);
+    	m.uID = 1;
+    	assertThat(m.uID).isEqualTo(1);
     }
    
 }
