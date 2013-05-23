@@ -2,8 +2,8 @@ var editAnswers;
 var j = 3;					/*to add or delete edited answers*/
 var i = 3;					/*to add or delete answers*/
 var user_id;
+var msg;
 $(document).ready(function(){	
-
 	// not in use --> new code beneath
 	//*start* get the UserID
 	/*user_id = -1;
@@ -60,16 +60,16 @@ $(document).ready(function(){
 	/*show Messages*/
 	$("#showMessage").click(function(){
 		$("#edit").empty();
-		$("#newMessage").hide();
+		$("#newMessage").fadeOut("fast");
 		updateTable();
-		$("#showAllMessages").show();
+		$("#showAllMessages").fadeIn();
 	});
 	
 	/*add Message*/
 	$("#addMessage").click(function(){
 		$("#edit").empty();
-		$("#newMessage").show();
-		$("#showAllMessages").hide();
+		$("#newMessage").fadeIn();
+		$("#showAllMessages").fadeOut();
 	});
 	
 	$(".row").click(function(){
@@ -134,7 +134,45 @@ function saveMessage(){
 			'ans6': ans6
 		},
 		success: function(data) {
-			var data_field = $.parseJSON(data);
+			alert("message saved");
+			document.getElementById("message").value = "";
+			
+			if(i-1 == 2){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+			}else if(i-1 == 3){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+				$("#answer3").remove();
+				$("#answerText3").remove();
+			}else if(i-1 == 4){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+				$("#answer3").remove();
+				$("#answerText3").remove();
+				$("#answer4").remove();
+				$("#answerText4").remove();
+			}else if(i-1 == 5){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+				$("#answer3").remove();
+				$("#answerText3").remove();
+				$("#answer4").remove();
+				$("#answerText4").remove();
+				$("#answer5").remove();
+				$("#answerText5").remove();
+			}else if(i-1 == 6){
+				document.getElementById("answerText1").value = "";
+				document.getElementById("answerText2").value = "";
+				$("#answer3").remove();
+				$("#answerText3").remove();
+				$("#answer4").remove();
+				$("#answerText4").remove();
+				$("#answer5").remove();
+				$("#answerText5").remove();
+				$("#answer6").remove();
+				$("#answerText5").remove();
+			}
 		}
 	});
 }
@@ -362,29 +400,11 @@ function updateTable(){
 		},
 		success: function(data){
 			var data_field = $.parseJSON(data);
-			var content = "<table border='1'>"+
+			var content = "<table border='1' class='table table-hover'>"+
 				"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>";
-			/*$("#showAllMessages").append("<table border='1'>"+
-				"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>");					
 			
 			for(var i=0; i< data_field.length;i++){
-				$("#showAllMessages").append("<tr class='row'><td id='id" + i +"'>" + data_field[i].id + "</td>" +
-											"<td>" + data_field[i].userID + "</td>" +
-											"<td>" + data_field[i].message + "</td>");
-				
-				if(data_field[i].enable == 0){
-					$("#showAllMessages").append("<td><input type='radio' onclick='enable("+i+")' /></td>");
-				}else{
-					$("#showAllMessages").append("<td><input type='radio' onclick='disable("+i+")' checked='checked'/></td>");
-				}
-				
-				$("#showAllMessages").append("<td><a><img src='../img/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
-					"<td><img src='../img/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
-					"<td>"+data_field[i].pw+"</td></tr>");
-			}*/
-			
-			for(var i=0; i< data_field.length;i++){
-				content = content + "<tr class='row'><td id='id" + i +"'>" + data_field[i].id + "</td>" +
+				content = content + "<tr><td id='id" + i +"'>" + data_field[i].id + "</td>" +
 											"<td>" + data_field[i].userID + "</td>" +
 											"<td>" + data_field[i].message + "</td>";
 				
@@ -394,9 +414,10 @@ function updateTable(){
 					content = content + "<td><input type='radio' onclick='disable("+i+")' checked='checked'/></td>";
 				}
 				
-				content = content + "<td><a><img src='../img/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
-					"<td><img src='../img/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
-					"<td>"+data_field[i].pw+"</td></tr>";
+				content = content + "<td><a onclick='editMessage("+i+")'><i class='icon-pencil'></i></a></td>" + 
+					"<td><a onclick='deleteMessage("+i+")'><i class='icon-trash'></i></a></td>" + 
+					"<td>"+data_field[i].pw+"</td>" +
+					"<td><button onclick='result("+i+")'>show result</button></td></tr>";
 			}
 			
 			/*$("#showAllMessages").append("</table>");	*/
