@@ -400,8 +400,8 @@ function updateTable(){
 		},
 		success: function(data){
 			var data_field = $.parseJSON(data);
-			var content = "<table border='1' class='table table-hover'>"+
-				"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>";
+			var content = "<table border='1' class='span12 table table-hover'>"+
+				"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td><td><b>result</b></td></tr>";
 			
 			for(var i=0; i< data_field.length;i++){
 				content = content + "<tr><td id='id" + i +"'>" + data_field[i].id + "</td>" +

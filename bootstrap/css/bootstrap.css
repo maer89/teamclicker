@@ -896,8 +896,10 @@ dd {
 hr {
   margin: 20px 0;
   border: 0;
-  border-top: 1px solid #eeeeee;
-  border-bottom: 1px solid #ffffff;
+  /*border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #ffffff;*/
+  border-top: 1px solid #7ddc1f;
+  border-bottom: 1px solid #7ddc1f;
 }
 
 abbr[title],
@@ -4094,8 +4096,8 @@ input[type="submit"].btn.btn-mini {
 .nav-pills > .active > a,
 .nav-pills > .active > a:hover,
 .nav-pills > .active > a:focus {
-  color: #ffffff;
-  background-color: #0088cc;
+  color: #7ddc1f;
+  background-color: #0073e5;
 }
 
 .nav-stacked > li {
