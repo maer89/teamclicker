@@ -31,13 +31,14 @@ a:hover{
 
 h3{
 	color:#7ddc1f;
-	margin-left:15px;
+	margin-left:2%;
+	margin-right:auto;
 	width:100%;
 }
 
 hr{
 	width:100%;
-	margin-bottom:-2px;
+	margin-bottom:2%;
 }
 
 span{
@@ -47,6 +48,17 @@ span{
 
 label{
 	color:#7ddc1f;
+}
+
+ul{
+	text-align:center;
+}
+
+.logo{
+	width: 30%;
+	height: 30%;
+	float:right;
+	margin-right:2%;
 }
 
 .footer{
@@ -60,23 +72,28 @@ label{
 
 .hrbox{
 	margin-left:15px;
-	margin-top:-15px;
+	margin-top:-2%;
+	width:90%;
+}
+
+.hrboxquestion{
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:-3%;
 	width:90%;
 }
 
 .content{
 	/*width:900px;*/
-	border: solid;
-	border-color:#ffffff;
-}
-
-.navi{
-	/*margin-left:53px;
-	margin-bottom:53px;*/
+	/*border: solid;
+	border-color:#ffffff;*/
 }
 
 .menu{
 	/*margin:53px;*/
+	font-size:large;
+	margin:0 auto;
+	margin-bottom:2%;
 }
 
 .box{
@@ -86,6 +103,7 @@ label{
 	background-color: #0073e5;
 	border-radius: 10px;
 	float:left;
+	text-align:left;
 }
 
 .boxright{
@@ -106,6 +124,41 @@ label{
 	float:right;
 }
 
+.questionbox{
+	text-align:center;
+	margin-top:2%;
+}
+
+.question{
+	margin-top:2%;
+	font-size:large;
+}
+
+.ansbutton{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.result{
+	text-align:center;
+	margin-top:2%;
+	margin-bottom:2%;
+}
+
+.resultbox{
+	margin-left:15%;
+	margin-right:auto;
+}
+
+.resbutton{
+	text-align:center;
+	margin-bottom:2%;
+}
+
+.resultbutton{
+	margin-left:auto;
+	margin-right:auto;
+}
 
 /*LOGIN*/
 .login {

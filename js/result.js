@@ -16,18 +16,19 @@ var selectChart = 0;
 
 $(document).ready(function(){
 
+	/*select column chart*/
 	$('#column').click(function(){
 		$('#chart_div').empty();
 		selectChart = 0;
 		drawChart();
 	});
-	
+	/*select bar chart*/
 	$('#bar').click(function(){
 		$('#chart_div').empty();
 		selectChart = 1;
 		drawChart();
 	});
-	
+	/*select pie chart*/
 	$('#pie').click(function(){
 		$('#chart_div').empty();
 		selectChart = 2;
@@ -47,8 +48,9 @@ function connect(){
 		data : {
 			'id': id
 		},
-		success : function(response) {
-			var data_field = $.parseJSON(response);
+		success : function(data) {
+		
+			var data_field = $.parseJSON(data);
 			$("#result").empty();
 			if(data_field.num == 2){
 				$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": " + data_field.ans2 + "</p>");
@@ -124,65 +126,72 @@ google.load('visualization', '1.0', {'packages':['corechart']});
 google.setOnLoadCallback(drawChart);	
 
 function drawChart() {
-// Create the data table.
-var data = new google.visualization.DataTable();
-data.addColumn('string', 'Topping');
-data.addColumn('number', 'Answers');
+	// Create the data table.
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', 'Topping');
+	data.addColumn('number', 'Answers');
 
-if(parseInt(num)==2){
-	data.addRows([
-	  [ans1text, parseInt(ans1)],
-	  [ans2text, parseInt(ans2)]
-	]);
-}else if(parseInt(num)==3){
-	data.addRows([
-	  [ans1text, parseInt(ans1)],
-	  [ans2text, parseInt(ans2)],
-	  [ans3text, parseInt(ans3)]
-	]);
-}else if(parseInt(num)==4){
-	data.addRows([
-	  [ans1text, parseInt(ans1)],
-	  [ans2text, parseInt(ans2)],
-	  [ans3text, parseInt(ans3)],
-	  [ans4text, parseInt(ans4)]
-	]);
-}else if(parseInt(num)==5){
-	data.addRows([
-	  [ans1text, parseInt(ans1)],
-	  [ans2text, parseInt(ans2)],
-	  [ans3text, parseInt(ans3)],
-	  [ans4text, parseInt(ans4)],
-	  [ans5text, parseInt(ans5)]
-	]);
-}else if(parseInt(num)==6){
-	data.addRows([
-	  [ans1text, parseInt(ans1)],
-	  [ans2text, parseInt(ans2)],
-	  [ans3text, parseInt(ans3)],
-	  [ans4text, parseInt(ans4)],
-	  [ans5text, parseInt(ans5)],
-	  [ans6text, parseInt(ans6)]
-	]);
-}else{
-	//do nothing
-}
+	if(parseInt(num)==2){
+		data.addRows([
+		  [ans1text, parseInt(ans1)],
+		  [ans2text, parseInt(ans2)]
+		]);
+	}else if(parseInt(num)==3){
+		data.addRows([
+		  [ans1text, parseInt(ans1)],
+		  [ans2text, parseInt(ans2)],
+		  [ans3text, parseInt(ans3)]
+		]);
+	}else if(parseInt(num)==4){
+		data.addRows([
+		  [ans1text, parseInt(ans1)],
+		  [ans2text, parseInt(ans2)],
+		  [ans3text, parseInt(ans3)],
+		  [ans4text, parseInt(ans4)]
+		]);
+	}else if(parseInt(num)==5){
+		data.addRows([
+		  [ans1text, parseInt(ans1)],
+		  [ans2text, parseInt(ans2)],
+		  [ans3text, parseInt(ans3)],
+		  [ans4text, parseInt(ans4)],
+		  [ans5text, parseInt(ans5)]
+		]);
+	}else if(parseInt(num)==6){
+		data.addRows([
+		  [ans1text, parseInt(ans1)],
+		  [ans2text, parseInt(ans2)],
+		  [ans3text, parseInt(ans3)],
+		  [ans4text, parseInt(ans4)],
+		  [ans5text, parseInt(ans5)],
+		  [ans6text, parseInt(ans6)]
+		]);
+	}else{
+		//do nothing
+	}
 
-// Set chart options
-var options = {'title':msg,
-			   'width':600,
-			   'height':500};
+	// Set chart options
+	var options = {'title':msg,
+				   /*'width':600,*/
+				   'height':500,
+				   slices: [{color:'#0073e5'},{color:'#7ddc1f'},{color:'#00a6fe'},{color:'#64c306'},{color:'#444444'},{color:'#7ddc1f'}],
+				   colors:['#7ddc1f'],
+				   'is3D': true,
+				   animation:{
+					duration: 1000,
+					easing: 'out',
+				   }};
 
-// Instantiate and draw our chart, passing in some options.
-var chart
-if(selectChart == 0){ 
-	chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-}else if(selectChart == 1){
-	chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-}else if(selectChart == 2){
-	chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-}
-chart.draw(data, options);
+	// Instantiate and draw our chart, passing in some options.
+	var chart
+	if(selectChart == 0){ 
+		chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+	}else if(selectChart == 1){
+		chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+	}else if(selectChart == 2){
+		chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+	}
+	chart.draw(data, options);
 }
 
 /*var ans1 = 15;

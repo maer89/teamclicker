@@ -13,19 +13,41 @@
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="../js/result.js"></script>
 	
+	<!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
 	
+	<!-- Responsive Design -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="../bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	
+	<!--CSS-->
+	<link href="../css/index.css" type="text/css" rel="stylesheet">
+		
 </head>
 
 <body onload="connect()">
-	<div id="result">
-	</div>
+	<div class="container">
+		<!--<div id="result">
+		</div>-->
 	
-	<div id="chart_div" style="width:400; height:300"></div>
-	
-	<div>
-		<button id="column">column chart</button>
-		<button id="bar">bar chart</button>
-		<button id="pie">pie chart</button>
+		<!--<div class="row" id="chart_div" style="width:400; height:300"></div>-->
+		<div class="row result">
+			<div class="span8 resultbox" id="chart_div" ></div>
+		</div>
+		
+		<div class="row resbutton">
+			<div class="btn-group resultbutton">
+				<button class="btn" id="column">column chart</button>
+				<button class="btn" id="bar">bar chart</button>
+				<button class="btn" id="pie">pie chart</button>
+			</div>
+		</div>
+		
+		<div class="footer hidden-phone">
+			<span>&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
+			<span class="impressum"><a href="">Impressum</a></span>
+		</div>
 	</div>
 </body>
 </html>
