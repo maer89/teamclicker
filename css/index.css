@@ -51,23 +51,13 @@ label{
 }
 
 ul{
-	text-align:center;
+	
 }
 
 .logo{
-	width: 30%;
-	height: 30%;
-	float:right;
-	margin-right:2%;
-}
-
-.footer{
-	margin-left:auto;
-	margin-right:auto;
-	position:relative;
 	float:left;
-	width:100%;
-	border-top:solid 1px #ffffff;
+	margin-right:2%;
+	margin-left:-1.9%;
 }
 
 .hrbox{
@@ -93,7 +83,17 @@ ul{
 	/*margin:53px;*/
 	font-size:large;
 	margin:0 auto;
+	margin-top:2%;
 	margin-bottom:2%;
+}
+
+.navi{
+	padding-top:8.8%;
+}
+
+.slider{
+	float:none;
+	margin:0 auto;
 }
 
 .box{
@@ -115,13 +115,33 @@ ul{
 	height: auto;
 	background-color: #0073e5;
 	border-radius: 10px;
+	text-align:center;
+}
+
+.footer{
+	margin-left:auto;
+	margin-right:auto;
+	position:relative;
+	float:left;
+	width:100%;
+	border-top:solid 1px #ffffff;
+	text-align:center;
+}
+
+.copyright{
+	margin-top:0.5%;
 	float:left;
 }
 
 .impressum{
-	margin-top:2px;
+	margin-top:0.5%;
 	color:#7ddc1f;
 	float:right;
+}
+
+.socialmedia{
+	margin-top:0.5%;
+	margin-left:-19%;
 }
 
 .questionbox{
@@ -156,6 +176,17 @@ ul{
 }
 
 .resultbutton{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.anstext{
+	color:#7ddc1f;
+}
+
+.form{
+	margin-top:2%;
+	margin-bottom:2%;
 	margin-left:auto;
 	margin-right:auto;
 }

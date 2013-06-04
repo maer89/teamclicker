@@ -38,7 +38,7 @@ $(document).ready(function(){
 	/*add answer*/
 	$("#addanswer").click(function(){
 		if(i <= 6 ){
-			$("#answers").append("<div id='answer" + i + "'>Answer " + i + " <input type='text' name='answer" + i +"' id='answerText" + i + "' /></div>");
+			$("#answers").append("<div id='answer" + i + "'><input type='text' name='answer" + i +"' id='answerText" + i + "' placeholder= 'Answer " + i + "' /></div>");
 			i++;
 		}else{
 			alert("max. Anzahl von Antworten erreicht");
@@ -59,6 +59,8 @@ $(document).ready(function(){
 	
 	/*show Messages*/
 	$("#showMessage").click(function(){
+		$("#showMessage").parent().addClass("active");
+		$("#addMessage").parent().removeClass("active");
 		$("#edit").empty();
 		$("#newMessage").fadeOut("fast");
 		updateTable();
@@ -67,6 +69,8 @@ $(document).ready(function(){
 	
 	/*add Message*/
 	$("#addMessage").click(function(){
+		$("#addMessage").parent().addClass("active");
+		$("#showMessage").parent().removeClass("active");
 		$("#edit").empty();
 		$("#newMessage").fadeIn();
 		$("#showAllMessages").fadeOut();
@@ -400,7 +404,7 @@ function updateTable(){
 		},
 		success: function(data){
 			var data_field = $.parseJSON(data);
-			var content = "<table border='1' class='span12 table table-hover'>"+
+			var content = "<table border='1' class='table table-hover'>"+
 				"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td><td><b>result</b></td></tr>";
 			
 			for(var i=0; i< data_field.length;i++){

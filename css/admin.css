@@ -2,3 +2,38 @@ textarea{
 	resize:none;
 }
 
+table{
+	background-color:#ffffff;
+	color:#000000;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.active a{
+	color: #7ddc1f !important;
+	background-color: #0073e5 !important;
+	border:1px solid #0073e5 !important;
+}
+
+.nav-tabs{
+	border-bottom:1px solid #0073e5 !important;
+}
+
+.btn{
+	width:30% !important;
+}
+
+.btn-group{
+	width: 100% !important;
+	margin: 0 auto !important;
+	margin-top:1% !important;
+}
+
+.row{
+	background-color:transparent !important;
+	color:transparent !important;
+}
+
+#showAllMessages{
+	text-align:center;
+}

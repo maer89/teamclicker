@@ -33,7 +33,7 @@
 	
 	<div class="container content">
 		<div class="row">
-			<div class="span4">
+			<div class="span4 offset4">
 				<ul class="nav nav-tabs">
 					<li class="active"><a  id="addMessage">add message</a></li>
 					<li><a id="showMessage">show messages</a></li>
@@ -42,31 +42,27 @@
 		</div>
 		
 		<div class="row ">
-			<div class="span4 boxadmin" id="newMessage">
-				<form>
-				<p>
-					<label>Question:</label>
-					<textarea type="textarea" id="message" name="message" cols="65" rows="5" placeholder="Question..."></textarea>
-				</p>
-				<p>
-					<label>Answers:</label>
-					<div id="answers">
-						<div id="answer1">Answer 1 <input type="text" name="answer1" id="answerText1" placeholder="Answer 1"/></div>
-						<div id="answer2">Answer 2 <input type="text" name="answer2" id="answerText2" placeholder="Answer 2"/></div>
+			<div class="span4 offset4 box boxadmin" id="newMessage">
+					<div class="form">
+						<label>Question:</label>
+						<textarea type="textarea" id="message" name="message" cols="65" rows="5" placeholder="Question..."></textarea>
 					</div>
-					
-					<div class="btn-group">
-						<input class="btn" type="button" id="addanswer" value="add answer" />
-						<input class="btn" type="button" id="delanswer" value="delete answer" />
+					<div class="form">
+						<label>Answers:</label>
+						<div id="answers">
+							<div id="answer1"><input type="text" name="answer1" id="answerText1" placeholder="Answer 1"/></div>
+							<div id="answer2"><input type="text" name="answer2" id="answerText2" placeholder="Answer 2"/></div>
+						</div>
+						
+						<div class="btn-group">
+							<input class="btn" type="button" id="addanswer" value="add answer" />
+							<input class="btn" type="button" id="delanswer" value="delete answer" />
+						</div>
+						<div class="btn-group">
+							<input class="btn" type="button" onclick="saveMessage()" value="save message" />
+							<input class="btn" type="reset" value="reset" />
+						</div>
 					</div>
-				</p>
-				<p>
-					<div class="btn-group">
-						<input class="btn" type="button" onclick="saveMessage()" value="save message" />
-						<input class="btn" type="reset" value="reset" />
-					</div>
-				</p>
-				</form>
 			</div>
 			<!--show messages-->
 			<div class="span12" id="showAllMessages">
@@ -78,6 +74,12 @@
 			
 			<div id="showresult">
 				<a id="close"></a>
+			</div>
+			
+			<div class="footer hidden-phone">
+				<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
+				<img src="../img/socialmedia.png" class="socialmedia" />
+				<span class="impressum"><a href="">Impressum</a></span>
 			</div>
 			
 		</div>
