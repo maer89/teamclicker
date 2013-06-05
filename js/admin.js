@@ -28,15 +28,14 @@ $(document).ready(function(){
 	//*end*
 	
 	// get the userID from storage
-	user_id=2;
-	/*user_id = storage.get("user_id");
+	user_id = storage.get("user_id");
 	if (user_id == "") {
 		alert("Invalide option");
 		var page = "../HTML/index.html";
 		window.open(page, "_self");
 	} else {
 		storage.set("user_id", "");
-	}*/
+	}
 	
 	$("#showAllMessages").hide();
 	

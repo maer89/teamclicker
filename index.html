@@ -16,189 +16,45 @@
 	
 	<!-- SlideShow-->
 	<script src="iosslider/_src/jquery.iosslider.js"></script>
+	<script src="./js/slider.js"></script>
 	
 	<!-- CSS -->
 	<link rel="stylesheet" type="text/css" href="./css/index.css"/>
+	<link rel="stylesheet" type="text/css" href="./css/slider.css"/>
 	
-	<style type="text/css">
-		.iosSlider {
-			/*width: 900px;*/
-			height: 240px;
-		}
-		
-		.iosSlider .slider {
-			width: 100%;
-			height: 100%;
-		}
-		
-		.iosSlider .slider .item {
-			position: relative;
-			top: 0;
-			left: 0;
-			width: 900px;
-			height: 240px;
-			background: #fff;
-			margin: 0 0 0 0;
-		}
-		
-		.iosSlider .slider #item1 {
-			background: url(img/bild1.jpg) no-repeat 50% 0;
-		}
-		
-		.iosSlider .slider #item2 {
-			background: url(./img/bild2.jpg) no-repeat 50% 0;
-		}
-		
-		.iosSlider .slider #item3 {
-			background: url(./img/bild3.jpg) no-repeat 50% 0;
-		}
-		
-		.iosSlider .slider #item4 {
-			background: url(./img/bild4.jpg) no-repeat 50% 0;
-		}
-		
-		.iosSlider .slider .item .text1 {
-			position: absolute;
-			top: 30px;
-			right: 150px;
-			opacity: 0;
-			filter: alpha(opacity:0);
-			background: #000;
-		}
-		
-		.iosSlider .slider .item .text1 span {
-			color: #fff;
-			font: bold 50px/60px "Helvetica Neue",Helvetica,Arial,sans-serif;
-			padding: 0 8px;
-		}
-		
-		.iosSlider .slider .item .text2 {
-			position: absolute;
-			top: 90px;
-			right: 0;
-			opacity: 0;
-			filter: alpha(opacity:0);
-			background: #000;
-			padding: 5px 7px 7px 7px;
-		}
-		
-		.iosSlider .slider .item .text2 span {
-			color: #fff;
-			font: normal 16px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;	
-		}
-		
-		.iosSliderButtons {
-			position: absolute;
-			bottom: 10px;
-			left: 10px;
-			width: 200px;
-			height: 10px;
-			margin-bottom:10px;
-		}
-		
-		.iosSliderButtons .button {
-			float: left;
-			width: 9px;
-			height: 9px;
-			background: #999;
-			margin: 0 10px 0 0;
-			opacity: 0.25;
-			filter: alpha(opacity:25);
-			border: 1px solid #7ddc1f;
-		}
-		
-		.iosSliderButtons .selected {
-			background: #0073e5;
-			opacity: 1;
-			filter: alpha(opacity:100);
-		}
-	</style>
-	
-	<script>
-	$(document).ready(function() {
-			
-		$('.iosSlider').iosSlider({
-			scrollbar: true,
-			snapToChildren: true,
-			desktopClickDrag: true,
-			scrollbarLocation: 'top',
-			scrollbarMargin: '10px 10px 0 10px',
-			scrollbarBorderRadius: '0',
-			responsiveSlideWidth: true,
-			navSlideSelector: $('.iosSliderButtons .button'),
-			infiniteSlider: true,
-			startAtSlide: '1',
-			autoSlide:true,
-			onSlideChange: slideContentChange,
-			onSlideComplete: slideContentComplete,
-			onSliderLoaded: slideContentLoaded
-		});
-		
-		function slideContentChange(args) {
-			
-			/* indicator */
-			$(args.sliderObject).parent().find('.iosSliderButtons .button').removeClass('selected');
-			$(args.sliderObject).parent().find('.iosSliderButtons .button:eq(' + (args.currentSlideNumber - 1) + ')').addClass('selected');
-			
-		}
-		
-		function slideContentComplete(args) {
-			
-			if(!args.slideChanged) return false;
-			
-			/* animation */
-			$(args.sliderObject).find('.text1, .text2').attr('style', '');
-			
-			$(args.currentSlideObject).children('.text1').animate({
-				right: '100px',
-				opacity: '1'
-			}, 400, 'easeOutQuint');
-			
-			$(args.currentSlideObject).children('.text2').delay(200).animate({
-				right: '50px',
-				opacity: '1'
-			}, 400, 'easeOutQuint');
-			
-		}
-		
-		function slideContentLoaded(args) {
-			
-			/* animation */
-			$(args.sliderObject).find('.text1, .text2').attr('style', '');
-			
-			$(args.currentSlideObject).children('.text1').animate({
-				right: '100px',
-				opacity: '1'
-			}, 400, 'easeOutQuint');
-			
-			$(args.currentSlideObject).children('.text2').delay(200).animate({
-				right: '50px',
-				opacity: '1'
-			}, 400, 'easeOutQuint');
-			
-			/* indicator */
-			$(args.sliderObject).parent().find('.iosSliderButtons .button').removeClass('selected');
-			$(args.sliderObject).parent().find('.iosSliderButtons .button:eq(' + (args.currentSlideNumber - 1) + ')').addClass('selected');
-			
-		}
-		
-	});
-  </script>
 </head>
 <body>
 	<div class="container content">
 		<div class="row menu">
+			<div class="span8 slider">
+				<div class="logo">
+					<a href="./index.html"><img src="./img/logo.png" /></a>
+				</div>
+				<div>
+					<ul class="nav nav-pills navi">
+						<li class="active"><a href="./index.html">Home</a></li>
+						<li><a href="./question.html">Question</a></li>
+						<li><a href="./admin.html">Admin</a></li>
+					</ul>
+				</div>
+			</div>
+		
+			<!--<div class="span4">
+				<div class="logo">
+					<a href="./index.html"><img src="./img/logo.jpg" /></a>
+				</div>
+			</div>
 			<div class="span4">
 				<ul class="nav nav-pills">
 					<li class="active"><a href="./index.html">Home</a></li>
 					<li><a href="./question.html">Question</a></li>
 					<li><a href="./admin.html">Admin</a></li>
 				</ul>
-			</div>
+			</div>-->
 		</div>
 		
-		<div class="row hidden-phone navi" >
-			<div class="span8 iosSlider">
+		<div class="row hidden-phone" >
+			<div class="span8 iosSlider slider">
 				<div id="slider">
 					<div class="item" id="item1"><img src="img/bild1.jpg" /></div>
 					<div class="item" id="item2"><img src="img/bild2.jpg" /></div>
@@ -216,31 +72,32 @@
 		</div>
 		
 		<div class="row">
-			<div class="span4 box">
+			<div class="span6 box">
 				<h3>Easy to use</h3>
 				<hr class="hrbox" >
 			</div>
 			
-			<div class="span4 box boxright">
+			<div class="span6 box boxright">
 				<h3>Headline</h3>
 				<hr class="hrbox">
 			</div>
 		</div>
 		
 		<div class="row">
-			<div class="span4 box">
+			<div class="span6 box">
 				<h3>Headline</h3>
 				<hr class="hrbox">
 			</div>
 			
-			<div class="span4 box boxright">
+			<div class="span6 box boxright">
 				<h3>Headline</h3>
 				<hr class="hrbox">
 			</div>
 		</div>
 		
 		<div class="footer hidden-phone">
-			<span>&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
+			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
+			<img src="./img/socialmedia.png" class="socialmedia" />
 			<span class="impressum"><a href="">Impressum</a></span>
 		</div>
 	</div>	
