@@ -3,6 +3,10 @@ var j = 3;					/*to add or delete edited answers*/
 var i = 3;					/*to add or delete answers*/
 var user_id;
 var msg;
+var startedit = 1;
+var edit;
+var bg_edit;
+var showedit = 1;
 $(document).ready(function(){	
 	// not in use --> new code beneath
 	//*start* get the UserID
@@ -24,14 +28,15 @@ $(document).ready(function(){
 	//*end*
 	
 	// get the userID from storage
-	user_id = storage.get("user_id");
+	user_id=2;
+	/*user_id = storage.get("user_id");
 	if (user_id == "") {
 		alert("Invalide option");
 		var page = "../HTML/index.html";
 		window.open(page, "_self");
 	} else {
 		storage.set("user_id", "");
-	}
+	}*/
 	
 	$("#showAllMessages").hide();
 	
@@ -82,7 +87,18 @@ $(document).ready(function(){
 		$(this).css("background","black");
 		$(this).css("color","white");
 		$(this).getElementBy
-	});			
+	});	
+
+	/*hide edit*/
+	$("#bg_trans_edit").click(function(){
+		$("#edit").css("display","none");
+		$("#bg_trans_edit").css("display","none");
+		$("body").css("overflow-y","visible");
+		edit = $("#edit").detach();
+		bg_edit = $("#bg_trans_edit").detach();
+		startedit = 0;
+		showedit = 0;
+	});
 });
 
 /*save message*/
@@ -231,6 +247,12 @@ function deleteMessage(num){
 }
 /*edit message*/
 function editMessage(num){
+	
+	if(startedit == 0){
+		edit.appendTo("body");
+		bg_edit.appendTo("body");
+	}
+
 	if(document.getElementById("edit").innerHTML != ""){
 		$("#edit").empty();
 	}
@@ -250,12 +272,12 @@ function editMessage(num){
 	});
 	
 	$("#edit").append("<form action='edit.php' method='POST'>" +
-		"<p>Message:<br />" +
-		"<textarea id='messageText' name='editedmessage' cols='35' rows='5'></textarea>" +
-		"</p><p>Answers:<br />" +
+		"<div class='form'><label>Question: </label>" +
+		"<textarea id='messageText' name='editedmessage' cols='35' rows='5'></textarea></div>" +
+		"<div class='form'><label>Answers: </label>" +
 		"<div id='editanswers'>" +
-		"<div id='edit1'>Answer 1<input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
-		"<div id='edit2'>Answer 2<input type='text' id='editedanswer2' name='editedanswer2'/></div>");
+		"<div id='edit1'><input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
+		"<div id='edit2'><input type='text' id='editedanswer2' name='editedanswer2'/></div>");
 		
 	
 	$.ajax({
@@ -273,37 +295,41 @@ function editMessage(num){
 			if(data_field.ans3 == ""){
 				//do nothing
 			}else if(data_field.ans4 == ""){
-				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#edit").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 				document.getElementById("editedanswer3").value = data_field.ans3;
 				editAnswers = 3;
 			}else if(data_field.ans5 == ""){
-				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#edit").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#edit").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
 				document.getElementById("editedanswer3").value = data_field.ans3;
 				document.getElementById("editedanswer4").value = data_field.ans4;
 				editAnswers = 4;
 			}else if(data_field.ans6 == ""){
-				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
-				$("#edit").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
+				$("#edit").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#edit").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#edit").append("<div id='edit5'><input type='text' id='editedanswer5' name='editedanswer5'/></div>");
 				document.getElementById("editedanswer3").value = data_field.ans3;
 				document.getElementById("editedanswer4").value = data_field.ans4;
 				document.getElementById("editedanswer5").value = data_field.ans5;
 				editAnswers = 5;
 			}else{
-				$("#edit").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
-				$("#edit").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
-				$("#edit").append("<div id='edit6'>Answer 6<input type='text' id='editedanswer6' name='editedanswer6'/></div>");
+				$("#edit").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#edit").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#edit").append("<div id='edit5'><input type='text' id='editedanswer5' name='editedanswer5'/></div>");
+				$("#edit").append("<div id='edit6'><input type='text' id='editedanswer6' name='editedanswer6'/></div>");
 				document.getElementById("editedanswer3").value = data_field.ans3;
 				document.getElementById("editedanswer4").value = data_field.ans4;
 				document.getElementById("editedanswer5").value = data_field.ans5;
 				document.getElementById("editedanswer6").value = data_field.ans6;
 				editAnswers = 6;
 			}
-			$("#edit").append("</div><p><input type='button' onclick='addeditanswer()' id='addeditanswer' value='add answer' />"+
-							"<input type='button' onclick='deleditanswer()' id='deleditanswer' value='delete answer' />"+
-							"<input type='button' onclick='saveChanges("+num+")' value='save changes' /></p></form>");
+			$("#edit").append("</div><input class='btn' type='button' onclick='addeditanswer()' id='addeditanswer' value='add answer' />"+
+							"<input class='btn' type='button' onclick='deleditanswer()' id='deleditanswer' value='delete answer' />"+
+							"<input class='btn' type='button' onclick='saveChanges("+num+")' value='save changes' /></form>");
+			
+			$("#edit").css("display","block");
+			$("#bg_trans_edit").css("display","block");
+			$("body").css("overflow-y","hidden");
 			
 			j = editAnswers + 1;
 		}
@@ -315,7 +341,7 @@ function editMessage(num){
 /*addeditanswer*/
 function addeditanswer(){
 	if(j <= 6 ){
-		$("#editanswers").append("<div id='edit"+j+"'>Answer " + j + "<input type='text' id='editedanswer" + j +"' name='editedanswer" + j +"' /></div>");
+		$("#editanswers").append("<div id='edit"+j+"'><input type='text' id='editedanswer" + j +"' name='editedanswer" + j +"' placeholder='Answer " + j + "' /></div>");
 		j++;
 	}else{
 		alert("max. Anzahl von Antworten erreicht");

@@ -26,10 +26,12 @@
 	<link type="text/css" rel="stylesheet" href="../css/index.css" >
 	<link type="text/css" rel="stylesheet" href="../css/admin.css" >
 	<link type="text/css" rel="stylesheet" href="../css/resultadmin.css" >
+	<link type="text/css" rel="stylesheet" href="../css/edit.css" >
 
 </head>
 <body>
 	<div id="bg_trans" style="display:none"></div>
+	<div id="bg_trans_edit" style="display:none"></div>
 	
 	<div class="container content">
 		<div class="row">
@@ -69,13 +71,14 @@
 				
 			</div>
 			<!--edit message-->
-			<div id="edit" >
+			<div class="span4 box boxadmin" id="edit" >
 			</div>
 			
+			<!--show result-->
 			<div id="showresult">
-				<a id="close"></a>
 			</div>
 			
+			<!--footer-->
 			<div class="footer hidden-phone">
 				<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
 				<img src="../img/socialmedia.png" class="socialmedia" />
