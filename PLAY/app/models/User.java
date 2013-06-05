@@ -16,6 +16,7 @@ public class User {
 	private String password = "";
 	
 	private Connection con = null;
+	@SuppressWarnings("unused")
 	private DataSource ds = null;
 	
 	public User() {};

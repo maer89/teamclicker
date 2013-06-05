@@ -1,8 +1,5 @@
 package models;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,6 +17,7 @@ public class Response {
 	private int count;
 	
 	private Connection con = null;
+	@SuppressWarnings("unused")
 	private DataSource ds = null;
 	
 	public Response() {
@@ -91,6 +89,7 @@ public class Response {
 		closeDB();
 	}
 	
+	@SuppressWarnings("unused")
 	public void writeToDB() {
 		openDB();
 		

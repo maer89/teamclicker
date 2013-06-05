@@ -4,39 +4,60 @@
 	<title>Clicker Question</title>
 	<!-- jQuery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	
 	<!-- includes -->
- 	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/index.css")'>
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/storage.js")'></script>
  	<script type="text/javascript" src='@routes.Assets.at("javascripts/index.js")'></script>
 
+	<!-- Bootstrap -->
+    <link href='@routes.Assets.at("bootstrap/css/bootstrap.css")' rel="stylesheet" media="screen">
+    <script src='@routes.Assets.at("bootstrap/js/bootstrap.min.js")'></script>
+	
+	<!-- Responsive Design -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='@routes.Assets.at("bootstrap/css/bootstrap-responsive.css")' rel="stylesheet">
+	
+	<!--CSS-->
+	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/index.css")'>
 </head>
 <body>
-	<div class="header">
-	</div>
-	
-	<div class="nav">
-		<a href="/index">Home</a>
-		<a href="/question">Question</a>
-		<a href="/admin">Admin</a>
-	</div>
-	
-	<div class="content">
-		<div id="question">
-			<form name="question_form" action="" onsubmit="get_Question(); return false;">
-		  		<p>
-		    		<label for="q_id">Question ID: </label>
-		    		<input type="text" name="q_id" id="q_id"/>
-		  		</p>
-		  		<p>
-		    		<label for="q_pw">Password: </label>
-		    		<input type="text" name="q_pw" id="q_pw"/>
-		  		</p>
-		  		<p><input type="submit" value="Get Question"/></p>
-			</form>
+	<div class="container content">
+		<div class="row menu">
+			<div class="span8 slider">
+				<div class="logo">
+					<a href="./index.html"><img src='@routes.Assets.at("images/logo.png")' /></a>
+				</div>
+				<div>
+					<ul class="nav nav-pills navi">
+						<li><a href="/index">Home</a></li>
+						<li class="active"><a href="/question">Question</a></li>
+						<li><a href="/admin">Admin</a></li>
+					</ul>
+				</div>
+			</div>
 		</div>
-	</div>
 	
-	<div class="footer">
+		<div class="row">
+			<div class="span4 offset4 box" id="question">
+				<form name="question_form" action="" onsubmit="get_Question(); return false;">
+					<p>
+						<label for="q_id">Question ID</label>
+						<input type="text" name="q_id" id="q_id"/>
+					</p>
+					<p>
+						<label for="q_pw">Password</label>
+						<input type="text" name="q_pw" id="q_pw"/>
+					</p>
+					<p><input class="btn" type="submit" value="Get Question"/></p>
+				</form>
+			</div>
+		</div>
+	
+		<div class="footer hidden-phone">
+			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
+			<img src='@routes.Assets.at("images/socialmedia.png")' class="socialmedia" />
+			<span class="impressum"><a href="">Impressum</a></span>
+		</div>
 	</div>
 </body>
 </html>

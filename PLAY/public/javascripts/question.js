@@ -40,7 +40,7 @@ function check_Question(q_id, q_pw) {
 						window.open(page, "_self");
 						break;
 					case 1:
-						alert('Question found! Click \'ok\' to see it.');
+						//alert('Question found! Click \'ok\' to see it.');
 	  					get_answers(q_id);
 						break;
 					default:
@@ -56,22 +56,25 @@ function get_answers(q_id) {
 	$.post('/getAnswers',
 		   {'id': q_id},
    		   function(data) {
-			   	var content = "Question: ";
-				content = content + data[6].text + " <br>"
-						  + "<button id=\"1\" onclick=\"sendAnswer(id)\">a: " + data[0].text + "</button>"
-						  + "<br><button id=\"2\" onclick=\"sendAnswer(id)\">b: " + data[1].text + "</button>"
+				var content = "<h3>" + data[6].text + "</h3>"
+						  + "<hr class='hrboxquestion' >"
+						  + "<div class='btn-group btn-group-vertical ansbutton'>"
+						  + "<button class='btn btn-block' id=\"1\" onclick=\"sendAnswer(id)\">a: " + data[0].text + "</button>"
+						  + "<button class='btn btn-block' id=\"2\" onclick=\"sendAnswer(id)\">b: " + data[1].text + "</button>"
 				if(data[2].text != '') {
-					content = content + "<br><button id=\"3\" onclick=\"sendAnswer(id)\">c: " + data[2].text + "</button>";
+					content = content + "<button class='btn btn-block' id=\"3\" onclick=\"sendAnswer(id)\">c: " + data[2].text + "</button>";
 				}
 				if(data[3].text != '') {
-					content = content + "<br><button id=\"4\" onclick=\"sendAnswer(id)\">d: " + data[3].text + "</button>";
+					content = content + "<button class='btn btn-block' id=\"4\" onclick=\"sendAnswer(id)\">d: " + data[3].text + "</button>";
 				}
 				if(data[4].text != '') {
-					content = content + "<br><button id=\"5\" onclick=\"sendAnswer(id)\">e: " + data[4].text + "</button>";
+					content = content + "<button class='btn btn-block' id=\"5\" onclick=\"sendAnswer(id)\">e: " + data[4].text + "</button>";
 				}
 				if(data[5].text != '') {
-					content = content + "<br><button id=\"6\" onclick=\"sendAnswer(id)\">f: " + data[5].text + "</button>";
+					content = content + "<button class='btn btn-block' id=\"6\" onclick=\"sendAnswer(id)\">f: " + data[5].text + "</button>";
 				}
+				
+				content = content + "</div>";
 
 				var html_element = document.getElementById('question_and_Answers');
 				html_element.innerHTML = content;

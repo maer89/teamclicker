@@ -1,7 +1,5 @@
 package models;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -15,6 +13,7 @@ import play.db.DB;
 public class Messages {
 	private ArrayList<Message> messages;
 	private Connection con = null;
+	@SuppressWarnings("unused")
 	private DataSource ds = null;
 	
 	public Messages(){
@@ -156,12 +155,12 @@ public class Messages {
 				if (!rs.getString("messageGroup").equals(group)) {
 					group = rs.getString("messageGroup");
 					if (firstTime) {
-						content = content + "<h3>" + group + "</h3><div><p><table border='1'>"+
-				"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>";
+						content = content + "<h3>" + group + "</h3><div><p><table border='1' class='table table-hover'>"+
+				"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>Reset</b></td><td><b>password</b></td><td><b>QR-Code</b></td><td><b>Result</b></td></tr>";
 						firstTime = false;
 					} else {
-						content = content + "</table></p></div><h3>" + group + "</h3><div><p><table border='1'>"+
-				"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td></tr>";
+						content = content + "</table></p></div><h3>" + group + "</h3><div><p><table border='1' class='table table-hover'>"+
+				"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>Reset</b></td><td><b>password</b></td><td><b>QR-Code</b></td><td><b>Result</b></td></tr>";
 					}
 				}
 				String text = rs.getString("messageText");
@@ -169,7 +168,7 @@ public class Messages {
 				id = rs.getInt("id");
 				String password = rs.getString("password");
 				
-				content = content + "<tr class='row'><td id='id" + i +"'>" + id + "</td>" +
+				content = content + "<tr><td id='id" + i +"'>" + id + "</td>" +
 						"<td>" + text + "</td>";
 				
 				if(enabled) {
@@ -178,15 +177,19 @@ public class Messages {
 					content = content + "<td><input type='radio' onclick='enable("+i+")' /></td>";
 				}
 				
-				content = content + "<td><a><img src='assets/images/edit.png' onclick='editMessage("+i+")'/></a></td>" + 
-				"<td><img src='assets/images/delete.png' onclick='deleteMessage("+i+")'/></td>" + 
+				content = content + "<td><a onclick='editMessage("+i+")'><i class='icon-pencil'></i></a></td>" + 
+				"<td><a onclick='deleteMessage("+i+")'><i class='icon-trash'></i></a></td>" + 
+				"<td><a onclick='resetAnswers("+i+")'><i class='icon-refresh'></i></a></td>" +
 				"<td id='pw" + i + "'>" + password + "</td>";
 				
 				if (enabled) {
-					content = content + "<td><button id='qr" + id + "/" + password + "' onclick='qr_code(id)' style='visibility: visible' >Generate QR-Code</button></td></tr>";
+					content = content + "<td><button id='qr" + id + "/" + password + "' onclick='qr_code(id)' style='visibility: visible' >Generate QR-Code</button></td>";
 				} else {
-					content = content + "<td><button id='qr" + id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td></tr>";
+					content = content + "<td><button id='qr" + id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td>";
 				}
+				
+				content = content + "<td><button onclick='result("+i+")'>show result</button></td></tr>";
+				
 				Message m = new Message();
 				addMessage(m);
 				m.id = id;

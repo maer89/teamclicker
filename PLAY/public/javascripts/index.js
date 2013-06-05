@@ -1,5 +1,16 @@
 $(function() {
- 	$('#btn_login').click(function() {
+ 	// focus first edit element
+	// get actual URL
+	var url = document.URL;
+	var pos = url.lastIndexOf("/");
+	var site = url.slice(pos+1);
+	if (site == 'question') {
+		document.getElementById("q_id").focus();
+	} else if (site == 'admin') {
+		document.getElementById("user").focus();
+	}
+	
+	$('#btn_login').click(function() {
 		var user_name = document.getElementById("user").value;
 		var pw =  document.getElementById("password").value
 		login_ftn(user_name, pw);

@@ -1,7 +1,5 @@
 package models;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.util.ArrayList;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.RandomStringUtils;
-
 
 import play.db.*;
 
@@ -23,6 +20,7 @@ public class Message {
 	public String group = "";
 	
 	private Connection con = null;
+	@SuppressWarnings("unused")
 	private DataSource ds = null;
 	
 	private ArrayList<Answer> answers;
@@ -54,6 +52,7 @@ public class Message {
         }
 	}
 	
+	@SuppressWarnings("unused")
 	public void saveMessage(int userID) {
 		openDB();
 		
@@ -98,6 +97,7 @@ public class Message {
 		closeDB();
 	}
 	
+	@SuppressWarnings("unused")
 	public void delete(){
 		openDB();
 		
@@ -120,6 +120,7 @@ public class Message {
 		closeDB();
 	}
 	
+	@SuppressWarnings("unused")
 	public void updateMessage(String text, String group) throws IOException{
 		openDB();
 		this.text = text;
@@ -200,9 +201,8 @@ public class Message {
 		try {
 			stmt = con.createStatement();
 		} catch (SQLException e2) {
-			System.out.println(e2.toString());
+			//System.out.println(e2.toString());
 		}
-		
 		String sql = "SELECT messageText FROM messages WHERE id = " + this.id;
 		try{
 			ResultSet rs = stmt.executeQuery(sql);
@@ -210,13 +210,13 @@ public class Message {
 				s = rs.getString("messageText");
 			}
 		}catch(SQLException ex){
-			System.out.println(ex.toString());
+			//System.out.println(ex.toString());
 		}
 		closeDB();
-		
 		return s;
 	}
 	
+	@SuppressWarnings("unused")
 	public void setEnabled(boolean e) {
 		this.enabled = e;
 		openDB();
@@ -300,7 +300,7 @@ public class Message {
 		} catch (SQLException e2) {
 			System.out.println(e2.toString());
 		}
-		
+    	
 		String sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = " + this.id;
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
@@ -377,5 +377,35 @@ public class Message {
 		}		
 		closeDB();
 		return res;
+	}
+	
+	@SuppressWarnings("unused")
+	public void resetAnswers() {
+		openDB();
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+		
+		String sql = "UPDATE results " +
+					 "SET answer1 = 0, " +
+					 "answer2 = 0, " +
+					 "answer3 = 0, " +
+					 "answer4 = 0, " +
+					 "answer5 = 0, " +
+					 "answer6 = 0 " +
+					 "WHERE messageID = " + this.id; 
+		try {
+			int rs = stmt.executeUpdate(sql);		
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}	
+		
+		// Delete answers from list
+		answers.clear();
+		
+		closeDB();
 	}
 }

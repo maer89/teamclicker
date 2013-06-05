@@ -14,23 +14,51 @@
 		var id = storage.get("q_id");
 	</script>
 	
+	<!-- Bootstrap -->
+    <link href='@routes.Assets.at("bootstrap/css/bootstrap.css")' rel="stylesheet" media="screen">
+    <script src='@routes.Assets.at("bootstrap/js/bootstrap.min.js")'></script>
+	
+	<!-- Responsive Design -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='@routes.Assets.at("bootstrap/css/bootstrap-responsive.css")' rel="stylesheet">
+	
+	<!--CSS-->
+	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/index.css")'>
 </head>
 
 <body onload="connect()">
-	<div>
-		<button id="main">Back to main</button>	
-	</div>
-	<div id="result">
-	</div>
-	<div id="chart_div" style="width:400; height:300"></div>
+	<div class="container">
+		<div class="row menu">
+			<div class="span8 slider">
+				<div class="logo">
+					<a href="./index.html"><img src='@routes.Assets.at("images/logo.png")' /></a>
+				</div>
+				<div>
+					<ul class="nav nav-pills navi">
+						<li><a href="#" id="main">Home</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row result">
+			<div class="span8 resultbox" id="chart_div" ></div>
+		</div>
+		
+		<div class="row resbutton">
+			<div class="btn-group resultbutton">
+				<button class="btn" id="column">column chart</button>
+				<button class="btn" id="bar">bar chart</button>
+				<button class="btn" id="pie">pie chart</button>
+			</div>
+		</div>
 	
-	<div>
-		<button id="column">column chart</button>
-		<button id="bar">bar chart</button>
-		<button id="pie">pie chart</button>
+		<div class="footer hidden-phone">
+			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
+			<img src='@routes.Assets.at("images/socialmedia.png")' class="socialmedia" />
+			<span class="impressum"><a href="">Impressum</a></span>
+		</div>
 	</div>
-	
-	
 	<!--<script type="text/javascript" charset="utf-8">	
 		var test = function(data){
 			$("#result").empty();

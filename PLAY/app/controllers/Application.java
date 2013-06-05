@@ -1,7 +1,5 @@
 package controllers;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -120,7 +118,7 @@ public class Application extends Controller {
     	return ok(Json.toJson(msg));
     }
     
-    /* get answers for question xy */ 
+    /* get answers and text for question xy */ 
     public static Result getAnswers(){
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
@@ -232,9 +230,9 @@ public class Application extends Controller {
     }
 
     /*get Result*/
-    public static Result outcome(final int id) throws IOException{
-    	//Map<String, String[]> queryParameters = request().queryString();
-    	//int userID = Integer.parseInt(queryParameters.get("id")[0]);
+    public static Result outcome() throws IOException{
+    	Map<String, String[]> queryParameters = request().queryString();
+    	int id = Integer.parseInt(queryParameters.get("id")[0]);
     	ObjectNode response = Json.newObject();
     	
     	//return ok(new Comet("parent.test"){
@@ -242,7 +240,8 @@ public class Application extends Controller {
     		//public void onConnected(){
     			
     			//DB....
-    			DataSource ds = DB.getDataSource();
+    			@SuppressWarnings("unused")
+				DataSource ds = DB.getDataSource();
     			Connection con = DB.getConnection();
     			
     			int ans1=0,ans2=0,ans3=0,ans4=0,ans5=0,ans6 = 0;
@@ -362,7 +361,7 @@ public class Application extends Controller {
     					response.put("answers",answers);
     					response.put("msg", msg);
     					    					
-    					try{
+    					/*try{
 	    					File file = new File("result.txt");
 	    					FileWriter writer = new FileWriter(file,true);
 	    					writer.write("zeit: " + (end-start) + "   i: " + i + "         response: " + response + "     end: "+ end + "      start: " + start + "\n");
@@ -370,7 +369,7 @@ public class Application extends Controller {
 	    					writer.close();
     					}catch(Exception e){
     						
-    					}
+    					}*/
     					
     					//this.sendMessage(Json.toJson(response));
 
@@ -402,7 +401,8 @@ public class Application extends Controller {
     	return ok(views.html.popup.render(id, pw)); 
     }
     
-    public static Result loadGroups() {
+    @SuppressWarnings("unused")
+	public static Result loadGroups() {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int uid = Integer.parseInt(queryParameters.get("uid")[0]);
     	
@@ -421,11 +421,15 @@ public class Application extends Controller {
 		}
     	
 		String sql = "SELECT * FROM groups WHERE userID = " + uid;
-		ArrayList<String> a = new ArrayList<String>();
+		ArrayList<Group> a = new ArrayList<Group>();
+		Group AGroup = null;
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				a.add(rs.getString("name"));
+				AGroup = new Group();
+				AGroup.name = rs.getString("name");
+				AGroup.id = rs.getInt("id");
+				a.add(AGroup);
 			}
 		}catch (SQLException e1) {
 			System.out.println(e1.toString());
@@ -443,7 +447,8 @@ public class Application extends Controller {
     	return ok(Json.toJson(a));
     }
 
-    public static Result addGroup() {
+    @SuppressWarnings("unused")
+	public static Result addGroup() {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int uid = Integer.parseInt(queryParameters.get("uid")[0]);
     	String name = queryParameters.get("groupName")[0];
@@ -462,7 +467,6 @@ public class Application extends Controller {
     	
 		// check if group already exists
 		String sql = "SELECT * FROM groups WHERE userID = " + uid + " AND name = '" + name + "'";
-		ArrayList<String> a = new ArrayList<String>();
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			if(!rs.next()) {
@@ -487,6 +491,80 @@ public class Application extends Controller {
         }
 
 		// return ArrayList
+    	return ok();
+    }
+    
+    @SuppressWarnings("unused")
+	public static Result deleteGroup() {
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	int uid = Integer.parseInt(queryParameters.get("uid")[0]);
+    	//int id = Integer.parseInt(queryParameters.get("id")[0]);
+    	String name = queryParameters.get("name")[0];
+    	
+    	// openDB
+    	DataSource ds = DB.getDataSource();
+		Connection con = DB.getConnection();
+		
+		Statement stmt = null;
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+    	
+		// delete group in groups table
+		String sql = "DELETE FROM groups WHERE userID = " + uid + " AND name = '" + name + "'";
+		try {
+			int res = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// first get all messageIDs to delete the answers to the questions 
+		sql = "SELECT id FROM messages WHERE messageGroup = '" + name + "'";
+		ArrayList<Integer> a = new ArrayList<Integer>();
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()) {
+				a.add(rs.getInt("id"));
+			}
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// delete messages of deleted group in messages
+		sql = "DELETE FROM messages WHERE messageGroup = '" + name + "'";
+		try {
+			int rs = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// delete answers to the deleted questions
+		for (int i = 0; i < a.size()-1; i++) {
+			sql = "DELETE FROM answers WHERE messageID = " + a.get(i);
+			try {
+				int rs = stmt.executeUpdate(sql);
+			}catch (SQLException e1) {
+				System.out.println(e1.toString());
+			}
+		}
+		
+		// closeDB
+		if (con != null) {
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        }
+    	return ok();
+    }
+    
+    public static Result resetAnswers() {
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	int id = Integer.parseInt(queryParameters.get("id")[0]);
+    	m.getMessageWithID(id).resetAnswers();
     	return ok();
     }
 }

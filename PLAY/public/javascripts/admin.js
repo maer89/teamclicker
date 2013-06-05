@@ -3,7 +3,22 @@ var j = 3;					/*to add or delete edited answers*/
 var i = 3;					/*to add or delete answers*/
 var user_id = -1;
 var popupStatus = 0;
+var groupList = new Array();
+var last_num = -1; 
+var edit_Mode;
+var qrcode;
+var bg_qr;
+var start_qr = 1;
+var startedit = 1;
+var edit;
+var bg_edit;
+var showedit = 1;
+var data_length = -1;
+
 $(document).ready(function(){	
+	// focus message edit element
+	document.getElementById("message").focus();
+	
 	// get the userID from cookie
 	if (document.cookie) {
 		// check URL
@@ -24,12 +39,15 @@ $(document).ready(function(){
 	
 	loadGroups();
 	
+	// at the beginning we're not in the edit mode
+	edit_Mode = false;
+	
 	$("#showAllMessages").hide();
 	
 	/*add answer*/
 	$("#addanswer").click(function(){
 		if(i <= 6 ){
-			$("#answers").append("<div id='answer" + i + "'>Answer " + i + " <input type='text' name='answer" + i +"' id='answerText" + i + "' /></div>");
+			$("#answers").append("<div id='answer" + i + "'><input type='text' name='answer" + i +"' id='answerText" + i + "' placeholder= 'Answer " + i + "' /></div>");
 			i++;
 		}else{
 			alert("max. Anzahl von Antworten erreicht");
@@ -50,56 +68,62 @@ $(document).ready(function(){
 	
 	/*show Messages*/
 	$("#showMessage").click(function(){
+		$("#showMessage").parent().addClass("active");
+		$("#addMessage").parent().removeClass("active");
+		$("#logout").parent().removeClass("active");
 		$("#edit").empty();
 		$("#newMessage").hide();
 		updateTable();
 		$("#showAllMessages").show();
+		edit_Mode = true;
 	});
 	
 	/*add Message*/
 	$("#addMessage").click(function(){
+		$("#addMessage").parent().addClass("active");
+		$("#showMessage").parent().removeClass("active");
 		$("#edit").empty();
 		$("#newMessage").show();
 		$("#showAllMessages").hide();
+		edit_Mode = false;
 	});
 	
-	$(".row").click(function(){
-		$(".row").css("background","white");
-		$(".row").css("color","black");
-		$(this).css("background","black");
-		$(this).css("color","white");
-		$(this).getElementBy
-	});		
-	
+	/*logout*/
 	$("#logout").click(function() {
+		$("#logout").parent().addClass("active");
+		$("#addMessage").parent().removeClass("active");
+		$("#showMessage").parent().removeClass("active");
 		logout();
 	})
 	
+	/*hide edit*/
+	$("#bg_trans_edit").click(function(){
+		close_edit();
+	});
 	
-	
-	// for QR-Code
-	$("div.close").click(function() {
-        disablePopup();
-    });
-
-	
-	$("div.close").hover(
-        function() {
-            $('span.ecs_tooltip').show();
-        },
-        function () {
-            $('span.ecs_tooltip').hide();
-        }
-	);
-	
+	// for QR-Code	
 	$(this).keyup(function(event) {
          if (event.which == 27) { // 27 is 'Ecs' in the keyboard
-             disablePopup();
+        	 disablePopup();
          }
 	});
 
-
+	/*close result*/
+	$("#bg_trans_qr").click(function(){
+		disablePopup();
+	});
 });
+
+/* hides the edit window */
+function close_edit() {
+	$("#edit").css("display","none");
+	$("#bg_trans_edit").css("display","none");
+	$("body").css("overflow-y","visible");
+	edit = $("#edit").detach();
+	bg_edit = $("#bg_trans_edit").detach();
+	startedit = 0;
+	showedit = 0;
+}
 
 /*save message*/
 function saveMessage(){
@@ -153,7 +177,7 @@ function saveMessage(){
 		function(data){
 			alert("message saved");
 			document.getElementById("message").value = "";
-			document.getElementById("group").value = "";
+			document.getElementById("groupsList").selectedIndex = 0;
 			
 			if(i-1 == 2){
 				document.getElementById("answerText1").value = "";
@@ -233,38 +257,71 @@ function deleteMessage(num){
 	$.get('/delete',
 		{'id': messageID},
 		function(data){
-			//do nothing
 			alert("Message " + messageID + " delete");
 			$("#edit").hide();
 			updateTable();
 	});
 }
+
+/*reset answers to a specific message*/
+function resetAnswers(num){
+	var messageID = document.getElementById("id"+num).innerHTML;
+	$.post('/resetAnswers',
+			{'id': messageID},
+			function(data){
+				alert("Answers for message " + messageID + " reseted");
+		});
+}
+
 /*edit message*/
 function editMessage(num){
+	if(startedit == 0){
+		edit.appendTo("body");
+		bg_edit.appendTo("body");
+	}
+	
 	if(document.getElementById("edit").innerHTML != ""){
 		$("#edit").empty();
 	}
 
 	var messageID = document.getElementById("id"+num).innerHTML;
-	var group = "";
+	var group = document.getElementById("id0").parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[2].outerText;
 	var message;
+	
 	$("#edit").append("<form action='edit.php' method='POST'>" +
-			"<p>Message:<br />" +
-			"<textarea id='messageText' name='editedmessage' cols='35' rows='5'></textarea>" +
-			"</p><p>Group:<br /><input type='text' id='messageGroup'>" +
-			"</p><p>Answers:<br />" +
-			"<div id='editanswers'>" +
-			"<div id='edit1'>Answer 1<input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
-			"<div id='edit2'>Answer 2<input type='text' id='editedanswer2' name='editedanswer2'/></div>");
+		"<div class='form'><label>Question: </label>" +
+		"<textarea id='messageText' name='editedmessage' cols='35' rows='5'></textarea></div>" +
+		"<div class='form'><label>Group:</label><div id='messageGroupsDiv'></div></div>"+
+		"<div class='form'><label>Answers: </label>" +
+		"<div id='editanswers'>" +
+		"<div id='edit1'><input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
+		"<div id='edit2'><input type='text' id='editedanswer2' name='editedanswer2'/></div>");
 	
 	$.get('/getMessage',
 		{'id': messageID},
 		function(data){
 			$("#edit").show();
 			document.getElementById("messageText").innerHTML = data.text;
-			document.getElementById("messageGroup").value = data.group;
 	});
 	
+	var idx;
+	$.post('/loadGroups',
+			{'uid': user_id},
+			function(data) {
+				var content = build_groups(data);
+				last_num = num;
+				var data_length = data.length;
+				$("#messageGroupsDiv").append(content);
+				var opt = document.getElementById('groupsList').options;
+				for(var i = 0; i < data_length; i++) {
+					if (opt[i].text == group) {
+						opt[i].setAttribute('selected', 'selected');
+						break;
+					}
+				}
+			}
+	);
+		
 	$.post('/getAnswers',
 		{'id': messageID},
 		function(data){
@@ -276,47 +333,50 @@ function editMessage(num){
 			if(data[2].text == ""){
 				//do nothing
 			}else if(data[3].text == ""){
-				$("#editanswers").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#editanswers").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 				document.getElementById("editedanswer3").value = data[2].text;
 				editAnswers = 3;
 			}else if(data[4].text == ""){
-				$("#editanswers").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#edit").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#editanswers").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#edit").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
 				document.getElementById("editedanswer3").value = data[2].text;
 				document.getElementById("editedanswer4").value = data[3].text;
 				editAnswers = 4;
 			}else if(data[5].text== ""){
-				$("#editanswers").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#editanswers").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
-				$("#editanswers").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
+				$("#editanswers").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#editanswers").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#editanswers").append("<div id='edit5'><input type='text' id='editedanswer5' name='editedanswer5'/></div>");
 				document.getElementById("editedanswer3").value = data[2].text;
 				document.getElementById("editedanswer4").value = data[3].text;
 				document.getElementById("editedanswer5").value = data[4].text;
 				editAnswers = 5;
 			}else{
-				$("#editanswers").append("<div id='edit3'>Answer 3<input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#editanswers").append("<div id='edit4'>Answer 4<input type='text' id='editedanswer4' name='editedanswer4'/></div>");
-				$("#editanswers").append("<div id='edit5'>Answer 5<input type='text' id='editedanswer5' name='editedanswer5'/></div>");
-				$("#editanswers").append("<div id='edit6'>Answer 6<input type='text' id='editedanswer6' name='editedanswer6'/></div>");
+				$("#editanswers").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#editanswers").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#editanswers").append("<div id='edit5'><input type='text' id='editedanswer5' name='editedanswer5'/></div>");
+				$("#editanswers").append("<div id='edit6'><input type='text' id='editedanswer6' name='editedanswer6'/></div>");
 				document.getElementById("editedanswer3").value = data[2].text;
 				document.getElementById("editedanswer4").value = data[3].text;
 				document.getElementById("editedanswer5").value = data[4].text;
 				document.getElementById("editedanswer6").value = data[5].text;
 				editAnswers = 6;
 			}
-			$("#edit").append("</div><p><input type='button' onclick='addeditanswer()' id='addeditanswer' value='add answer' />"+
-							"<input type='button' onclick='deleditanswer()' id='deleditanswer' value='delete answer' />"+
-							"<input type='button' onclick='saveChanges("+num+")' value='save changes' /></p></form>");
+			$("#edit").append("</div><div class='btn-group'><input class='btn' type='button' onclick='addeditanswer()' id='addeditanswer' value='add answer' />"+
+							"<input class='btn' type='button' onclick='deleditanswer()' id='deleditanswer' value='delete answer' />"+
+							"<input class='btn' type='button' onclick='saveChanges("+num+")' value='save changes' /></div></form>");
+			
+			$("#edit").css("display","block");
+			$("#bg_trans_edit").css("display","block");
+			$("body").css("overflow-y","hidden");
 			
 			j = editAnswers + 1;
 	});
 }
 
-
 /*addeditanswer*/
 function addeditanswer(){
 	if(j <= 6 ){
-		$("#editanswers").append("<div id='edit"+j+"'>Answer " + j + "<input type='text' id='editedanswer" + j +"' name='editedanswer" + j +"' /></div>");
+		$("#editanswers").append("<div id='edit"+j+"'><input type='text' id='editedanswer" + j +"' name='editedanswer" + j +"' placeholder='Answer " + j + "' /></div>");
 		j++;
 		if(editAnswers < 6){
 			editAnswers++;
@@ -344,7 +404,7 @@ function deleditanswer(){
 function saveChanges(num){
 	var messageID = document.getElementById("id"+num).innerHTML;
 	var text = document.getElementById("messageText").value;
-	var group = document.getElementById("messageGroup").value;
+	var group = document.getElementById('messageGroups').options[document.getElementById('messageGroups').selectedIndex].text;
 	var ans1 = "";
 	var ans2 = "";
 	var ans3 = "";
@@ -411,12 +471,18 @@ function saveChanges(num){
 			updateTable();
 		}
 	});*/
+	
+	// close div
+	close_edit();
+	
+	// reload page
+	updateTable();
 }
 
 /*update table*/
 function updateTable(){
 	// show loading symbol
-	document.getElementById("edit").innerHTML = ("<img src='assets/images/load.gif' width='100' height='100' />");
+	//document.getElementById("showAllMessages").innerHTML = ("<img src='assets/images/load.gif' width='100' height='100' />");
 	
 	$("#showAllMessages").empty();
 	var userID = user_id;
@@ -454,10 +520,13 @@ function updateTable(){
 			//content = content + "</table>";
 			
 			// hide loading symbol
-			document.getElementById("edit").innerHTML = "";
+			//document.getElementById("edit").innerHTML = "";
+			
 			$("#showAllMessages").append(data);
 			/* Akkordeon */
-			$("#accordion").accordion();
+			$("#accordion").accordion({heightStyle: "content",
+									   collapsible: true,
+									   active: false});
 	}).error(function(){
 		alert("Error updateTable");
 	});
@@ -483,15 +552,20 @@ function logout() {
 }
 
 function qr_code(id) {
+	if (start_qr == 0) {
+		qrcode.appendTo("body");
+		bg_qr.appendTo("body");
+	}
+	
 	// load new QR-Code  
 	var pos1 = id.indexOf('/');
 	q_id = id.slice(2, pos1);
 	q_pw = id.slice(pos1+1);
 	
-	var qr = document.getElementById("qrcode");	        		
+	var qr = document.getElementById("qrcode_div");	        		
 	
 	// create QR
-	$('#qrcode').qrcode({
+	$('#qrcode_div').qrcode({
 		text    : "http://lit-fjord-5486.herokuapp.com/getQuestion?id=" + q_id + "&pw=" + q_pw,
 		render    : "canvas",
 		background : "#ffffff",
@@ -503,17 +577,19 @@ function qr_code(id) {
 	// convert canvas to image
 	var canvas = document.getElementsByTagName("canvas")[0];
 	var img    = canvas.toDataURL("image/png");
-	qr.innerHTML = "<div><img src='" + img + "'/></div><div><button onclick='download_qr()' id='qrButton'>Download Picture</button></div>"
+	qr.innerHTML = "<img id='qrImg' src='" + img + "'/>";
+	//<div><button onclick='download_qr()' id='qrButton'>Download Picture</button></div>"
 	
-	loadPopup(q_id, q_pw); // function show popup
+	loadPopup(); // function show popup
 }
 
 function loadPopup() {
 	if(popupStatus == 0) { 
-		// show QR
-	    $("#toPopup").fadeIn(0500);
-	    $("#backgroundPopup").css("opacity", "0.7");
-	    $("#backgroundPopup").fadeIn(0001);
+		// show QR	    
+		$("#qrcode_div").css("display","block");
+	    $("#bg_trans_qr").css("display","block");
+	    $("body").css("overflow-y","hidden");
+	    //$("#backgroundPopup").css("opacity", "0.7");
 	    popupStatus = 1;
 	}
 }
@@ -521,9 +597,13 @@ function loadPopup() {
 function disablePopup() {
     if(popupStatus == 1) { 
     	// hide QR
-        $("#toPopup").fadeOut("normal");
-        $("#backgroundPopup").fadeOut("normal");
+        $("#qrcode_div").css("display","none");
+        $("#bg_trans_qr").css("display","none");
+        $("body").css("overflow-y","visible");
+        qrcode = $("#qrcode_div").detach();
+		bg_qr = $("#bg_trans_qr").detach();
         popupStatus = 0;
+        start_qr = 0;
     }
 }
 
@@ -533,14 +613,11 @@ function download_qr() {
 
 // Load groups for acutal user
 function loadGroups() {
+	$("#groups").empty();
 	$.post('/loadGroups',
 			{'uid': user_id},
 			function(data){
-				var content = "<select name='group' id='groupsList' size='1'>";
-				for (var i = 0; i < data.length; i++) {
-					content = content + "<option>" + data[i] + "</option>";
-				}
-				content = content + "</select> <button id='addAGroup' onclick='addGroup()'>Add New Group</button>";
+				var content = build_groups(data);
 				$("#groups").append(content);
 	});
 }
@@ -552,6 +629,41 @@ function addGroup() {
 			{'uid': user_id,
 			 'groupName': groupName},
 			function(data){
-				alert("Group " + groupName + " added!");
-	 });
+				alert("Group '" + groupName + "' added!");
+				loadGroups();
+	});
+}
+
+function deleteSelectedGroup() {
+	//var groupID = groupList[document.getElementById('groupsList').selectedIndex];
+	var groupName =  document.getElementById('groupsList').options[document.getElementById('groupsList').selectedIndex].text;
+	var res = confirm("Are you sure you want to the delete this group with all it's questions?");
+	if (res) {
+		$.post('/deleteGroup',
+			   {'uid': user_id,
+			    'name': groupName},
+			    function(data) {
+				    if (edit_Mode) {
+				 	    editMessage(last_num);
+				    } else {
+				    	loadGroups();
+				    }
+			    });
+	}
+}
+
+function build_groups(data) {
+	if (edit_Mode) {
+		var content = "<select name='groupEdit' id='messageGroups' size='1'>";
+	} else {
+		var content = "<select name='group' id='groupsList' size='1'>";
+	}
+	for (var i = 0; i < data.length; i++) {
+		content = content + "<option>" + data[i].name + "</option>";
+		//groupList[i] = data[i].id;
+	}
+	content = content + "</select><div class='btn-group'>"
+		+"<input class='btn' type='button' id='addAGroup' onclick='addGroup()' value='Add new group' />"
+		+"<input class='btn' type='button' id='deleteGroup' onclick='deleteSelectedGroup()' value='Delete group' /></div>";
+	return content;
 }

@@ -257,8 +257,10 @@ if(parseInt(num)==2){
 
 // Set chart options
 var options = {'title':msg,
-		   'width':600,
+		   /*'width':600,*/
 		   'height':500,
+		   slices: [{color:'#0073e5'},{color:'#7ddc1f'},{color:'#00a6fe'},{color:'#64c306'},{color:'#444444'},{color:'#7ddc1f'}],
+		   colors:['#7ddc1f'],
 		   'is3D': true,
 		   animation:{
 			   duration: 5000,
