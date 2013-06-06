@@ -21,6 +21,7 @@
 	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/index.css")'>
 </head>
 <body>
+	<div id="bg_trans_register" style="display:none"></div>
 	<div class="container content">
 		<div class="row menu">
 			<div class="span8 slider">
@@ -49,16 +50,42 @@
 						<input type="password" id="password"/>
 					</p>
 					<p>
-						<button class="btn" id="btn_login">Login</button>
+						<button class="btn" id="btn_login">Login</button><button class="btn" id="btn_register">Register</button>
 					</p>
 				</div>
 			</div>
 		</div>
 	
 		<div class="footer hidden-phone">
-			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
+			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stoo&szlig</span>
 			<img src='@routes.Assets.at("images/socialmedia.png")' class="socialmedia" />
 			<span class="impressum"><a href="">Impressum</a></span>
+		</div>
+	</div>
+	
+	<div id="register_form">
+		<div class="span4 offset4 box" >
+			<div>
+				<p>
+					<label for="reg_email">E-Mail:</label>
+					<input type="text" id="reg_email" />	
+				</p>
+				<p>
+					<label for="reg_username">Username:</label>
+					<input type="text" id="reg_username" />
+				</p>
+				<p>
+					<label for="reg_pas">Password:</label>
+					<input type="text" id="reg_pas" />
+				</p>
+				<p>
+					<label for="reg_pas2">Repeat password:</label>
+					<input type="text" id="reg_pas2" />
+				</p>
+				<p>
+					<button class='btn' id='btn_reg_confirm'>Register</button><button class='btn' id='btn_reg_cancel'>Cancel</button>
+				</p>
+			</div>
 		</div>
 	</div>
 </body>

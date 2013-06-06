@@ -28,6 +28,9 @@ POST	/loadGroups					controllers.Application.loadGroups()
 POST	/addGroup					controllers.Application.addGroup()
 POST	/deleteGroup				controllers.Application.deleteGroup()
 POST	/resetAnswers				controllers.Application.resetAnswers()
+POST	/checkEmail					controllers.Application.checkEmail()
+POST	/checkUsername				controllers.Application.checkUsername()
+POST	/writeUserToDB				controllers.Application.writeUserToDB()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -566,7 +566,7 @@ function qr_code(id) {
 	
 	// create QR
 	$('#qrcode_div').qrcode({
-		text    : "http://lit-fjord-5486.herokuapp.com/getQuestion?id=" + q_id + "&pw=" + q_pw,
+		text    : window.location.hostname + "/getQuestion?id=" + q_id + "&pw=" + q_pw,
 		render    : "canvas",
 		background : "#ffffff",
 		foreground : "#000000",

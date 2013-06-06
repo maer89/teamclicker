@@ -1,5 +1,7 @@
 package models;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -133,34 +135,40 @@ public class Messages {
 	}
 	
 	public String ReadFromDBString(int userID) throws IOException {		
-		String content = "";
-		content = "<div id='accordion'>";
-
+    	File file = new File("time.txt");
+    	FileWriter writer = new FileWriter(file);
+    	  
+		StringBuilder content = new StringBuilder();
+		content.append("<div id='accordion'>");
 		openDB();
 		Statement stmt = null;
 		try {
 			stmt = con.createStatement();
+			stmt.setFetchSize(1000);
 		} catch (SQLException e2) {
 			//System.out.println(e2.toString());
 		}
+		
 		int id = -1;
 		String sql = "SELECT * FROM messages WHERE userID = '" + userID + "' ORDER BY messageGroup";
 		int i = 0;
 		String group = "";
-		
+		String head = "</h3><div><p><table border='1' class='table table-hover'><tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>Reset</b></td><td><b>password</b></td><td><b>QR-Code</b></td><td><b>Result</b></td></tr>";
+		String groupOld = "";
 		boolean firstTime = true;
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
+			rs.setFetchSize(1000);
+			writer.write("before while(): "+ String.valueOf(System.currentTimeMillis() + "\n"));
 			while (rs.next()) {
-				if (!rs.getString("messageGroup").equals(group)) {
-					group = rs.getString("messageGroup");
+				groupOld = rs.getString("messageGroup");
+				if (!groupOld.equals(group)) {
+					group = groupOld;
 					if (firstTime) {
-						content = content + "<h3>" + group + "</h3><div><p><table border='1' class='table table-hover'>"+
-				"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>Reset</b></td><td><b>password</b></td><td><b>QR-Code</b></td><td><b>Result</b></td></tr>";
+						content.append("<h3>" + group + head);
 						firstTime = false;
 					} else {
-						content = content + "</table></p></div><h3>" + group + "</h3><div><p><table border='1' class='table table-hover'>"+
-				"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>Reset</b></td><td><b>password</b></td><td><b>QR-Code</b></td><td><b>Result</b></td></tr>";
+						content.append("</table></p></div><h3>" + group + head);
 					}
 				}
 				String text = rs.getString("messageText");
@@ -168,27 +176,27 @@ public class Messages {
 				id = rs.getInt("id");
 				String password = rs.getString("password");
 				
-				content = content + "<tr><td id='id" + i +"'>" + id + "</td>" +
-						"<td>" + text + "</td>";
+				content.append("<tr><td id='id" + i +"'>" + id + "</td>" +
+						"<td>" + text + "</td>");
 				
 				if(enabled) {
-					content = content + "<td><input type='radio' onclick='disable("+i+")' checked='checked'/></td>";
+					content.append("<td><input type='radio' onclick='disable("+i+")' checked='checked'/></td>");
 				} else {
-					content = content + "<td><input type='radio' onclick='enable("+i+")' /></td>";
+					content.append("<td><input type='radio' onclick='enable("+i+")' /></td>");
 				}
 				
-				content = content + "<td><a onclick='editMessage("+i+")'><i class='icon-pencil'></i></a></td>" + 
+				content.append("<td><a onclick='editMessage("+i+")'><i class='icon-pencil'></i></a></td>" + 
 				"<td><a onclick='deleteMessage("+i+")'><i class='icon-trash'></i></a></td>" + 
 				"<td><a onclick='resetAnswers("+i+")'><i class='icon-refresh'></i></a></td>" +
-				"<td id='pw" + i + "'>" + password + "</td>";
+				"<td id='pw" + i + "'>" + password + "</td>");
 				
 				if (enabled) {
-					content = content + "<td><button id='qr" + id + "/" + password + "' onclick='qr_code(id)' style='visibility: visible' >Generate QR-Code</button></td>";
+					content.append("<td><button id='qr" + id + "/" + password + "' onclick='qr_code(id)' style='visibility: visible' >Generate QR-Code</button></td>");
 				} else {
-					content = content + "<td><button id='qr" + id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td>";
+					content.append("<td><button id='qr" + id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td>");
 				}
 				
-				content = content + "<td><button onclick='result("+i+")'>show result</button></td></tr>";
+				content.append("<td><button onclick='result("+i+")'>show result</button></td></tr>");
 				
 				Message m = new Message();
 				addMessage(m);
@@ -200,12 +208,13 @@ public class Messages {
 				m.group = group;
 				i++;
 			}
+			writer.write("after while():  "+ String.valueOf(System.currentTimeMillis() + "\n"));
 		}catch (SQLException e1) {
 
 		}
-		content = content + "</p></div></div>";
-
+		content.append("</p></div></div>");
 		closeDB();
-		return content;
+		writer.close();
+		return content.toString();
 	}
 }

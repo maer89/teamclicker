@@ -156,7 +156,6 @@ public class Application extends Controller {
     	m.clear();
     	Map<String, String[]> queryParameters = request().queryString();
     	int userID = Integer.parseInt(queryParameters.get("id")[0]);
-    	//m.ReadFromDB(userID);
 		String content = m.ReadFromDBString(userID);			
     	return ok(content);
     }
@@ -565,6 +564,131 @@ public class Application extends Controller {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int id = Integer.parseInt(queryParameters.get("id")[0]);
     	m.getMessageWithID(id).resetAnswers();
+    	return ok();
+    }
+    
+    /* Register */
+    @SuppressWarnings("unused")
+	public static Result checkEmail() {
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	String mail = queryParameters.get("mail")[0];
+    	
+    	int res = -1;
+    	
+    	// openDB
+    	DataSource ds = DB.getDataSource();
+		Connection con = DB.getConnection();
+		
+		Statement stmt = null;
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+    	
+		// delete group in groups table
+		String sql = "SELECT id FROM users WHERE email = '" + mail + "'";
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			if (rs.next()) {
+				res = 0;
+			} else {
+				res = 1;
+			}
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// closeDB
+		if (con != null) {
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        }
+    	
+    	return ok(String.valueOf(res));
+    }
+    
+    @SuppressWarnings("unused")
+	public static Result checkUsername() {
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	String name = queryParameters.get("name")[0];
+    	
+    	int res = -1;
+    	
+    	// openDB
+    	DataSource ds = DB.getDataSource();
+		Connection con = DB.getConnection();
+		
+		Statement stmt = null;
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+    	
+		// delete group in groups table
+		String sql = "SELECT id FROM users WHERE name = '" + name + "'";
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			if (rs.next()) {
+				res = 0;
+			} else {
+				res = 1;
+			}
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// closeDB
+		if (con != null) {
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        }
+    	
+    	return ok(String.valueOf(res));
+    }
+    
+    @SuppressWarnings("unused")
+	public static Result writeUserToDB() {
+    	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
+    	String mail = queryParameters.get("mail")[0];
+    	String pass = queryParameters.get("pass")[0];
+    	String name = queryParameters.get("name")[0];
+    	    	
+    	// openDB
+    	DataSource ds = DB.getDataSource();
+		Connection con = DB.getConnection();
+		
+		Statement stmt = null;
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+    	
+		// delete group in groups table
+		String sql = "INSERT INTO users (name, password, email) VALUES ('" + name + "', '" + pass + "', '" + mail + "')";
+		try {
+			int rs = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// closeDB
+		if (con != null) {
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        }
+    	
     	return ok();
     }
 }
