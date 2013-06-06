@@ -5,16 +5,6 @@ $(function() {
 		login_ftn(user_name, pw);
  	});
 
-	// not in use at the moment
-	// Click events for Login- and Get-Question-Button
-	/*
- 	$('#btn_get_q').click(function() {
-		var q_id = document.getElementById("q_id").value;
-		var q_pw =  document.getElementById("q_password").value
-		get_Question(q_id, q_pw);
- 	});
-	 */
-
 	// event for return-button for login and get question
     $("#q_password").keyup(function(event){
        if(event.keyCode == 13){
@@ -57,7 +47,7 @@ function login_ftn(user, pw) {
 }
 
 function get_Question() {
-	storage.set("q_id", document.getElementById("q_id").value);
-	storage.set("q_pw", document.getElementById("q_pw").value);
-	location.href = "./HTML/question.html";
+	var id = document.getElementById("q_id").value;
+	var pw = document.getElementById("q_pw").value;
+	location.href = "./HTML/question.html?id="+id+"&pw="+pw;
 }

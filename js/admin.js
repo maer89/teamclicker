@@ -7,25 +7,11 @@ var startedit = 1;
 var edit;
 var bg_edit;
 var showedit = 1;
+var qrcode;
+var bg_qr;
+var start_qr = 1;
+var popupStatus = 0;
 $(document).ready(function(){	
-	// not in use --> new code beneath
-	//*start* get the UserID
-	/*user_id = -1;
-	
-	var params = decodeURI(document.URL);
-	var pos = params.indexOf('=');
-	if (pos != -1) {
-		// no "=" found in string
-		pos++;
-		user_id = params.slice(pos);
-	}
-	
-	if (user_id == -1) {
-		alert("You\'re not allowed to enter this site!");
-		var page = "../HTML/index.html";
-		window.open(page, "_self");
-	}  */
-	//*end*
 	
 	// get the userID from storage
 	user_id = storage.get("user_id");
@@ -52,7 +38,6 @@ $(document).ready(function(){
 	/*delete answer*/
 	$("#delanswer").click(function(){
 		if(i > 3){	
-			//$(".ans").has("name='answer3'").remove();
 			i--;
 			$test="answer"+i;
 			$('div[id="'+$test+'"]').remove();
@@ -79,14 +64,6 @@ $(document).ready(function(){
 		$("#newMessage").fadeIn();
 		$("#showAllMessages").fadeOut();
 	});
-	
-	$(".row").click(function(){
-		$(".row").css("background","white");
-		$(".row").css("color","black");
-		$(this).css("background","black");
-		$(this).css("color","white");
-		$(this).getElementBy
-	});	
 
 	/*hide edit*/
 	$("#bg_trans_edit").click(function(){
@@ -97,6 +74,11 @@ $(document).ready(function(){
 		bg_edit = $("#bg_trans_edit").detach();
 		startedit = 0;
 		showedit = 0;
+	});
+	
+	/*close result*/
+	$("#bg_trans_qr").click(function(){
+		disablePopup();
 	});
 });
 
@@ -244,6 +226,20 @@ function deleteMessage(num){
 		}
 	});
 }
+
+/*reset answers to a specific message*/
+function resetAnswers(num){
+	var messageID = document.getElementById("id"+num).innerHTML;
+	$.ajax({
+		type: 'POST',
+		url:'../PHP/reset.php',
+		data:{'id': messageID},
+		success: function(data){
+			alert("Answers for message " + messageID + " reseted");
+		}
+	});
+}
+
 /*edit message*/
 function editMessage(num){
 	
@@ -349,7 +345,6 @@ function addeditanswer(){
 /*delete edit answer*/
 function deleditanswer(){
 	if(j > 3){	
-		//$(".ans").has("name='answer3'").remove();
 		j--;
 		$test="edit"+j;
 		$('div[id="'+$test+'"]').remove();
@@ -430,7 +425,7 @@ function updateTable(){
 		success: function(data){
 			var data_field = $.parseJSON(data);
 			var content = "<table border='1' class='table table-hover'>"+
-				"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>password</b></td><td><b>result</b></td></tr>";
+				"<tr><td><b>ID</b></td><td><b>userID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>reset</b></td><td><b>password</b></td><td><b>QR-Code</b></td><td><b>result</b></td></tr>";
 			
 			for(var i=0; i< data_field.length;i++){
 				content = content + "<tr><td id='id" + i +"'>" + data_field[i].id + "</td>" +
@@ -445,11 +440,19 @@ function updateTable(){
 				
 				content = content + "<td><a onclick='editMessage("+i+")'><i class='icon-pencil'></i></a></td>" + 
 					"<td><a onclick='deleteMessage("+i+")'><i class='icon-trash'></i></a></td>" + 
-					"<td>"+data_field[i].pw+"</td>" +
-					"<td><button onclick='result("+i+")'>show result</button></td></tr>";
+					"<td><a onclick='resetAnswers("+i+")'><i class='icon-refresh'></i></a></td>" +
+					"<td>"+data_field[i].pw+"</td>";
+					
+				if(data_field[i].enable != 0){
+					content = content + "<td><button id='qr" + data_field[i].id + "/" + data_field[i].pw + "' onclick='qr_code(id)' style='visibility: visible' >Generate QR-Code</button></td>";
+				}else{
+					content = content + "<td><button id='qr" + data_field[i].id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td>";
+				}	
+				
+				content = content + "<td><button onclick='result("+i+")'>show result</button></td></tr>";
 			}
 			
-			/*$("#showAllMessages").append("</table>");	*/
+			
 				content = content + "</table>";
 				
 				$("#showAllMessages").append(content);
@@ -457,4 +460,61 @@ function updateTable(){
 	}).error(function(){
 		alert("hier");
 	});
+}
+
+/*QR-Code*/
+function qr_code(id) {
+	if (start_qr == 0) {
+		qrcode.appendTo("body");
+		bg_qr.appendTo("body");
+	}
+	
+	// load new QR-Code  
+	var pos1 = id.indexOf('/');
+	q_id = id.slice(2, pos1);
+	q_pw = id.slice(pos1+1);
+	
+	var qr = document.getElementById("qrcode_div");	        		
+	
+	// create QR
+	$('#qrcode_div').qrcode({
+		text    : "http://marcel-erath.de/clicker/HTML/question.html?id=" + q_id + "&pw=" + q_pw,
+		render    : "canvas",
+		background : "#ffffff",
+		foreground : "#000000",
+		width : 350,
+		height: 350
+	});
+	
+	// convert canvas to image
+	var canvas = document.getElementsByTagName("canvas")[0];
+	var img    = canvas.toDataURL("image/png");
+	qr.innerHTML = "<img id='qrImg' src='" + img + "'/>";
+	//<div><button onclick='download_qr()' id='qrButton'>Download Picture</button></div>"
+	
+	loadPopup(); // function show popup
+}
+
+function loadPopup() {
+	if(popupStatus == 0) { 
+		// show QR	    
+		$("#qrcode_div").css("display","block");
+	    $("#bg_trans_qr").css("display","block");
+	    $("body").css("overflow-y","hidden");
+	    //$("#backgroundPopup").css("opacity", "0.7");
+	    popupStatus = 1;
+	}
+}
+
+function disablePopup() {
+    if(popupStatus == 1) { 
+    	// hide QR
+        $("#qrcode_div").css("display","none");
+        $("#bg_trans_qr").css("display","none");
+        $("body").css("overflow-y","visible");
+        qrcode = $("#qrcode_div").detach();
+		bg_qr = $("#bg_trans_qr").detach();
+        popupStatus = 0;
+        start_qr = 0;
+    }
 }

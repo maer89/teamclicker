@@ -42,7 +42,6 @@ function result(num){
 
 /*show Result*/
 function showResult(id){
-	//if(show == 1){
 	var xhr = $.ajax({
 		type: 'POST',
 		url: 'result.php',
@@ -61,7 +60,6 @@ function showResult(id){
 				num = 2;
 			}else if(data_field.num == 3){
 				$("#showresult").append("<p>" + data_field.ans1text + ": "+ data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + "</p>");
-				//document.getElementById("showresult").innerHTML="Hallo was geht ab?";
 				ans1 = data_field.ans1;
 				ans2 = data_field.ans2;
 				ans3 = data_field.ans3;

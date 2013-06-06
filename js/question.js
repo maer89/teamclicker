@@ -1,9 +1,14 @@
 var q_id = "";
+var q_pw = "";
 $(function() {
-
+	var url = document.URL;
+	var pos1 = url.indexOf("=")
+	var pos2 = url.lastIndexOf("=");
+	
+	q_id = url.slice(pos1+1, pos2-3);;
+	q_pw = url.slice(pos2+1);
 	var c = document.cookie;
 	var visited = 0;
-	q_id = storage.get("q_id");
 	var pos = c.indexOf(q_id);
 	if (pos != -1) {
 		alert("You have already voted for this question!");
@@ -11,7 +16,6 @@ $(function() {
 		window.open(page, "_self");
 		return;
 	}
-	var q_pw = storage.get("q_pw");
 	if (q_id != "") {
 		check_Question(q_id, q_pw);
 	} else {
@@ -48,7 +52,7 @@ function check_Question(q_id, q_pw) {
 						window.open(page, "_self");
 						break;
 					case 1:
-						alert('Question found! Click \'ok\' to see it.');
+						//alert('Question found! Click \'ok\' to see it.');
 	  					get_answers(q_id);
 						break;
 					default:
@@ -69,22 +73,25 @@ function get_answers(q_id) {
 			},
    			success: function(data) {
 				var data_field = $.parseJSON(data);
-				var content = "Question: ";
-				content = content + data_field[0].message + " <br>"
-						  + "<button id=\"ans1\" onclick=\"sendAnswer(id)\">a: " + data_field[0].ans1 + "</button>"
-						  + "<br><button id=\"ans2\" onclick=\"sendAnswer(id)\">b: " + data_field[0].ans2 + "</button>"
+				var content = "<h3>" + data_field[0].message + " </h3>"
+						  + "<hr class='hrboxquestion' >"
+						  + "<div class='btn-group btn-group-vertical ansbutton'>"
+						  + "<button class='btn btn-block' id=\"ans1\" onclick=\"sendAnswer(id)\">a: " + data_field[0].ans1 + "</button>"
+						  + "<button class='btn btn-block' id=\"ans2\" onclick=\"sendAnswer(id)\">b: " + data_field[0].ans2 + "</button>"
 				if(data_field[0].ans3 != "") {
-					content = content + "<br><button id=\"ans3\" onclick=\"sendAnswer(id)\">c: " + data_field[0].ans3 + "</button>";
+					content = content + "<button class='btn btn-block' id=\"ans3\" onclick=\"sendAnswer(id)\">c: " + data_field[0].ans3 + "</button>";
 				}
 				if(data_field[0].ans4 != "") {
-					content = content + "<br><button id=\"ans4\" onclick=\"sendAnswer(id)\">d: " + data_field[0].ans4 + "</button>";
+					content = content + "<button class='btn btn-block' id=\"ans4\" onclick=\"sendAnswer(id)\">d: " + data_field[0].ans4 + "</button>";
 				}
 				if(data_field[0].ans5 != "") {
-					content = content + "<br><button id=\"ans5\" onclick=\"sendAnswer(id)\">e: " + data_field[0].ans5 + "</button>";
+					content = content + "<button class='btn btn-block' id=\"ans5\" onclick=\"sendAnswer(id)\">e: " + data_field[0].ans5 + "</button>";
 				}
 				if(data_field[0].ans6 != "") {
-					content = content + "<br><button id=\"ans6\" onclick=\"sendAnswer(id)\">f: " + data_field[0].ans6 + "</button>";
+					content = content + "<button class='btn btn-block' id=\"ans6\" onclick=\"sendAnswer(id)\">f: " + data_field[0].ans6 + "</button>";
 				}
+				
+				content = content + "</div>";
 
 				var html_element = document.getElementById('question_and_Answers');
 				html_element.innerHTML = content;
@@ -104,8 +111,6 @@ function sendAnswer(id) {
 			},
    			success: function(data) {
 				alert("Vote successful!");
-				// that only one vote is possible
-				//storage.set("visited", "1");
 				var expire = new Date();
 				var in12hours = expire.getTime() + (12 * 60 * 60 * 1000);
 				expire.setTime(in12hours);

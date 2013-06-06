@@ -1,6 +1,6 @@
 <?php
 	/*Connect*/
-	mysql_connect("46.4.164.194","web90","maer89");
+	mysql_connect("62.113.225.192","web90","maer89");
 
 	/*select database*/
 	mysql_select_db("usr_web90_3");
@@ -25,8 +25,6 @@
 	}
 	
 	$arr = array('ans1'=>$answer1,'ans2'=>$answer2,'ans3'=>$answer3,'ans4'=>$answer4,'ans5'=>$answer5,'ans6'=>$answer6);
-	
-	//$result = mysql_fetch_array($res);
 	
 	echo json_encode($arr);
 ?>

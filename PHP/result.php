@@ -98,6 +98,5 @@
 		$i = false;
 		
 		$end = mktime();
-		flush();
 	}
 ?>

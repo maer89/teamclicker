@@ -5,8 +5,13 @@
 
 	<!--JQuery-->
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<!--Google Chart Tool-->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<!-- QR-Code -->
+	<script type="text/javascript" src="../js/jquery.qrcode-0.2.min.js"></script>
 	<!-- storage.js -->
 	<script type="text/javascript" src="../js/storage.js"></script>
 	<!--admin.js-->
@@ -31,6 +36,7 @@
 </head>
 <body>
 	<div id="bg_trans" style="display:none"></div>
+	<div id="bg_trans_qr" style="display:none"></div>
 	<div id="bg_trans_edit" style="display:none"></div>
 	
 	<div class="container content">
@@ -72,6 +78,11 @@
 			</div>
 			<!--edit message-->
 			<div class="span4 box boxadmin" id="edit" >
+			</div>
+			
+			<!--qr-code-->
+			<div id="qrcode_div">
+			
 			</div>
 			
 			<!--show result-->

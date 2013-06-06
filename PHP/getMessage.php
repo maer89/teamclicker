@@ -1,6 +1,6 @@
 <?php
 	/*Connect*/
-	mysql_connect("46.4.164.194","web90","maer89");
+	mysql_connect("62.113.225.192","web90","maer89");
 
 	/*select database*/
 	mysql_select_db("usr_web90_3");
