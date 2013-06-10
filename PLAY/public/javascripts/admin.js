@@ -285,7 +285,7 @@ function editMessage(num){
 	}
 
 	var messageID = document.getElementById("id"+num).innerHTML;
-	var group = document.getElementById("id0").parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[2].outerText;
+	var group; /*document.getElementById("id"+num).parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[2].outerText;*/
 	var message;
 	
 	$("#edit").append("<form action='edit.php' method='POST'>" +
@@ -297,14 +297,29 @@ function editMessage(num){
 		"<div id='edit1'><input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
 		"<div id='edit2'><input type='text' id='editedanswer2' name='editedanswer2'/></div>");
 	
-	$.get('/getMessage',
+	/*$.get('/getMessage',
 		{'id': messageID},
 		function(data){
 			$("#edit").show();
 			document.getElementById("messageText").innerHTML = data.text;
-	});
+			group = data.group;
+	});*/
 	
-	var idx;
+	$.ajax({
+        url: "/getMessage",
+        async: false,
+        data: {id: messageID},
+        datatype: "json",
+        type: "GET",
+        success: function(data) {
+        	$("#edit").show();
+			document.getElementById("messageText").innerHTML = data.text;
+			group = data.group;
+        }
+	}).error(function() {
+		alert("Error on getting message!");
+	});
+
 	$.post('/loadGroups',
 			{'uid': user_id},
 			function(data) {
@@ -312,10 +327,10 @@ function editMessage(num){
 				last_num = num;
 				var data_length = data.length;
 				$("#messageGroupsDiv").append(content);
-				var opt = document.getElementById('groupsList').options;
+				var opt = document.getElementById('messageGroups').options;
 				for(var i = 0; i < data_length; i++) {
 					if (opt[i].text == group) {
-						opt[i].setAttribute('selected', 'selected');
+						$("#messageGroups").prop("selectedIndex", i);
 						break;
 					}
 				}

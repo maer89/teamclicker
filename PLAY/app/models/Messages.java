@@ -1,7 +1,5 @@
 package models;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -134,10 +132,7 @@ public class Messages {
 		closeDB();
 	}
 	
-	public String ReadFromDBString(int userID) throws IOException {		
-    	File file = new File("time.txt");
-    	FileWriter writer = new FileWriter(file);
-    	  
+	public String ReadFromDBString(int userID) throws IOException { 
 		StringBuilder content = new StringBuilder();
 		content.append("<div id='accordion'>");
 		openDB();
@@ -159,7 +154,6 @@ public class Messages {
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.setFetchSize(1000);
-			writer.write("before while(): "+ String.valueOf(System.currentTimeMillis() + "\n"));
 			while (rs.next()) {
 				groupOld = rs.getString("messageGroup");
 				if (!groupOld.equals(group)) {
@@ -208,13 +202,11 @@ public class Messages {
 				m.group = group;
 				i++;
 			}
-			writer.write("after while():  "+ String.valueOf(System.currentTimeMillis() + "\n"));
 		}catch (SQLException e1) {
 
 		}
 		content.append("</p></div></div>");
 		closeDB();
-		writer.close();
 		return content.toString();
 	}
 }
