@@ -45,6 +45,7 @@
 				<ul class="nav nav-tabs">
 					<li class="active"><a  id="addMessage">add message</a></li>
 					<li><a id="showMessage">show messages</a></li>
+					<li><a id="logout">Logout</a></li>
 				</ul>
 			</div>
 		</div>
@@ -66,9 +67,18 @@
 							<input class="btn" type="button" id="addanswer" value="add answer" />
 							<input class="btn" type="button" id="delanswer" value="delete answer" />
 						</div>
-						<div class="btn-group">
-							<input class="btn" type="button" onclick="saveMessage()" value="save message" />
-							<input class="btn" type="reset" value="reset" />
+						
+						<div class="form">
+							<label>Group:</label>
+							<div id='groups'>
+							</div>
+						</div>
+						
+						<div class="form">
+							<div class="btn-group">
+								<input class="btn" type="button" onclick="saveMessage()" value="save message" />
+								<input class="btn" type="reset" value="reset" />
+							</div>
 						</div>
 					</div>
 			</div>

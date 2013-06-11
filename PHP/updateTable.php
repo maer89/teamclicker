@@ -6,23 +6,29 @@
 	mysql_select_db("usr_web90_3");
 	
 	$ID = $_POST['userID'];
+	//$ID = 1;
 	$result = array();
 	
-	$res = mysql_query("SELECT * FROM messages WHERE userID = $ID");
+	$res = mysql_query("SELECT * FROM messages WHERE userID = ".intval($ID)." ORDER BY messageGroup");
 	
+	//$data = mysql_fetch_array($res);
+	//var_dump($data );
 	while($data = mysql_fetch_array($res)){
 		$id = $data['id'];
-		$userID = $data['userID'];
 		$message = $data['messageText'];
 		$enable = $data['enabled'];
 		$pw = $data['password'];
+		$group = $data['messageGroup'];
 		
 		$result[] = array('id'=>$id,
-						  'userID'=>$userID,
 						  'message'=>$message,
 						  'enable'=>$enable,
-						  'pw'=>$pw);
+						  'pw'=>$pw,
+						  'messageGroup'=>$group);
 	}
 	
+	
+	
 	echo json_encode($result);
+	//mysql_free_result($result);
 ?>

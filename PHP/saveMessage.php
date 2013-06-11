@@ -1,6 +1,6 @@
 <?php
 	/*Connect*/
-	mysql_connect("46.4.164.194","web90","maer89");
+	mysql_connect("62.113.225.192","web90","maer89");
 	
 	/*select database*/
 	mysql_select_db("usr_web90_3");
@@ -14,9 +14,10 @@
 	$ans4 = $_POST['ans4'];
 	$ans5 = $_POST['ans5'];
 	$ans6 = $_POST['ans6'];
+	$group = $_POST['group'];
 	
 	/*sql query insert message*/
-	mysql_query("INSERT INTO messages VALUES"." (null,$userID,'$message',0,'')");
+	mysql_query("INSERT INTO messages VALUES"." (null,$userID,'$message',0,'','$group')");
 	
 	$res = mysql_query("SELECT id FROM messages WHERE messageText = '$message'");
 	

@@ -4,44 +4,88 @@
 	<title>Clicker Admin</title>
 	<!-- jQuery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+	
 	<!-- includes -->
- 	<link rel="stylesheet" type="text/css" href="./css/index.css"/>
-	<link rel="shortcut icon" href="./img/favicon.ico" >
 	<script type="text/javascript" src="./js/storage.js"></script>
  	<script type="text/javascript" src="./js/index.js"></script>
+	
+	<!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+	
+	<!-- Responsive Design -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="./css/index.css"/>
 
 </head>
 <body>
-	<div class="header">
-	</div>
-	
-	<div class="nav">
-		<a href="./index.html">Home</a>
-		<a href="./question.html">Question</a>
-		<a href="./admin.html">Admin</a>
-	</div>
-	
-	<div class="content">
-		<div class="login">
-			<table>
-				<tr>
-					<td><label for="user">User</label></td>
-					<td><input type="text" id="user" /></td>
-				</tr>
-				<tr>
-					<td><label for="password">Password</label></td>
-					<td><input type="password" id="password"/></td>
-				</tr>
-				<tr>
-					<td colspan="2">
-					<button id="btn_login">Login</button>
-					</td>
-				</tr>
-			</table>
+	<div class="container content">
+		<div class="row menu">
+			<div class="span4 offset4" >
+				<ul class="nav nav-pills">
+					<li><a href="./index.html">Home</a></li>
+					<li><a href="./question.html">Question</a></li>
+					<li class="active"><a href="./admin.html">Admin</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="span4 offset4 box" >
+				<div> 
+					<p>
+						<label for="user">User</label>
+						<input type="text" id="user" />
+					</p>
+					<p>
+						<label for="password">Password</label>
+						<input type="password" id="password"/>
+					</p>
+					<p>
+						<div class="btn-group form">
+							<button class="btn" id="btn_login">Login</button>
+							<button class="btn" id="btn_register">Register</button>
+						</div>
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div id="register_form">
+			<div class="span4 offset4 box" >
+				<div>
+					<p>
+						<label for="reg_email">E-Mail:</label>
+						<input type="text" id="reg_email" />	
+					</p>
+					<p>
+						<label for="reg_username">Username:</label>
+						<input type="text" id="reg_username" />
+					</p>
+					<p>
+						<label for="reg_pas">Password:</label>
+						<input type="text" id="reg_pas" />
+					</p>
+					<p>
+						<label for="reg_pas2">Repeat password:</label>
+						<input type="text" id="reg_pas2" />
+					</p>
+					<p>
+						<button class='btn' id='btn_reg_confirm'>Register</button><button class='btn' id='btn_reg_cancel'>Cancel</button>
+					</p>
+				</div>
+			</div>
+		</div>
+		
+		<div class="footer hidden-phone">
+			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
+			<img src="./img/socialmedia.png" class="socialmedia" />
+			<span class="impressum"><a href="">Impressum</a></span>
 		</div>
 	</div>
 	
-	<div class="footer">
-	</div>
 </body>
 </html>
