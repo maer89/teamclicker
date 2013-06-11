@@ -51,7 +51,7 @@
 		</div>
 		
 		<div class="row ">
-			<div class="span4 offset4 box boxadmin" id="newMessage">
+			<div class="span4 offset4 boxadmin" id="newMessage">
 					<div class="form">
 						<label>Question:</label>
 						<textarea type="textarea" id="message" name="message" cols="65" rows="5" placeholder="Question..."></textarea>

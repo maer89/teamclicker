@@ -5,17 +5,17 @@ html{
 body{
 	height: 100%;
 	margin: 0;
-	background-image: -webkit-linear-gradient(#bebdbd 0%, #444444 100%); 
+	/*background-image: -webkit-linear-gradient(#bebdbd 0%, #444444 100%); 
 	background-image: -moz-linear-gradient(#bebdbd 0%, #444444 100%); 
 	background-image: -o-linear-gradient(#bebdbd 0%, #444444 100%); 
-	background-image: linear-gradient(#bebdbd 0%, #444444 100%);
+	background-image: linear-gradient(#bebdbd 0%, #444444 100%);*/
 	background-repeat: no-repeat;
 	background-attachment:fixed;
 }
 
 p{
-	margin-left:30px;
-	margin-right:30px;
+	margin-left:2%;
+	margin-right:auto;
 }
 
 
@@ -31,6 +31,7 @@ a:hover{
 
 h3{
 	color:#7ddc1f;
+	margin: auto 0;
 	margin-left:2%;
 	margin-right:auto;
 	width:100%;
@@ -47,11 +48,11 @@ span{
 }
 
 label{
-	color:#7ddc1f;
+	color:#0073e5;
 }
 
 ul{
-	
+	margin-top:2%;
 }
 
 .logo{
@@ -76,7 +77,7 @@ ul{
 .content{
 	/*width:900px;*/
 	/*border: solid;
-	border-color:#ffffff;*/
+	border-color:#000000;*/
 }
 
 .menu{
@@ -98,12 +99,40 @@ ul{
 
 .box{
 	height: 240px;
-	/*margin-left: 53px;*/
 	margin-bottom: 2%;
-	background-color: #0073e5;
-	border-radius: 10px;
+	margin-left: 0px !important;
+	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	border-bottom: 1px solid #0073e5;
+	border-left: 1px solid #0073e5;
+	border-right: 1px solid #0073e5;
 	float:left;
 	text-align:left;
+}
+
+.headline{
+	background-color:#0073e5;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-topright: 10px;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-top-right-radius: 10px;
+	height:auto;
+	margin-left: 0px !important;
+	margin-bottom:-1%;
+	border: 1px solid #0073e5;
+	float:left;
+}
+
+.holebox{
+	margin-left: 0 !important;
+	margin-bottom:1%;
+}
+
+.holeboxright{
+	margin-left: 1%;
+	margin-bottom:1%;
 }
 
 .boxright{
@@ -112,9 +141,11 @@ ul{
 }
 
 .boxadmin{
+	margin-bottom: 2%;
+	background-color:#ffffff;
 	height: auto;
-	background-color: #0073e5;
 	border-radius: 10px;
+	border: 1px solid #0073e5;
 	text-align:center;
 }
 
@@ -124,7 +155,7 @@ ul{
 	position:relative;
 	float:left;
 	width:100%;
-	border-top:solid 1px #ffffff;
+	border-top:solid 1px #0073e5;
 	text-align:center;
 }
 
@@ -146,7 +177,15 @@ ul{
 
 .questionbox{
 	text-align:center;
+}
+
+.questionbox h3 {
+	color: #0073e5;
 	margin-top:2%;
+}
+
+.menubox{
+	height:auto !important;
 }
 
 .question{
@@ -191,6 +230,16 @@ ul{
 	margin-right:auto;
 }
 
+.menuform{
+	margin-top:2%;
+	margin-bottom:2%;
+}
+
+.btn-group {
+	margin-left:2%;
+	margin-right:auto;
+}
+
 /*LOGIN*/
 .login {
 	float: right;
@@ -210,20 +259,25 @@ ul{
 	top:0px;
 	left:0px;
 	background-color:#000000;
-	opacity:0.90;
-	filter: alpha(opacity=90);
-	-moz-opacity: 0.9;
+	opacity:0.70;
+	filter: alpha(opacity=70);
+	-moz-opacity: 0.7;
 	z-index: 2;	
 }
 
 #register_form{
-	height:500px;
+	/*height:500px;*/
 	position:fixed;
 	top:50%;
-	left:50%;
+	/*left:50%;*/
 	/*margin:-50px 0 0 -100px;*/ /* [-(height/2)px 0 0 -(width/2)px] */
-	margin-left: -185px;
-	margin-top: -250px;
+	/*margin-left: -1.5%;*/
+	margin-top: -193px;
 	display: none;
 	z-index: 3;
+}
+
+.registerbox{
+	background: #ffffff !important;
+	height: auto !important;
 }

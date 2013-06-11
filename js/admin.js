@@ -391,9 +391,9 @@ function editMessage(num){
 				document.getElementById("editedanswer6").value = data_field.ans6;
 				editAnswers = 6;
 			}
-			$("#edit").append("</div><input class='btn' type='button' onclick='addeditanswer()' id='addeditanswer' value='add answer' />"+
+			$("#edit").append("</div><div class='btn-group' ><input class='btn' type='button' onclick='addeditanswer()' id='addeditanswer' value='add answer' />"+
 							"<input class='btn' type='button' onclick='deleditanswer()' id='deleditanswer' value='delete answer' />"+
-							"<input class='btn' type='button' onclick='saveChanges("+num+")' value='save changes' /></form>");
+							"<input class='btn' type='button' onclick='saveChanges("+num+")' value='save changes' /></div></form>");
 			
 			$("#edit").css("display","block");
 			$("#bg_trans_edit").css("display","block");
