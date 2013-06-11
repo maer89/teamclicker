@@ -320,6 +320,24 @@ public class Message {
 				a6.setText(rs.getString("answer6"));
 				
 				res = true;
+			} else {
+				// no Answers in db
+				// send empty answers
+				Answer a1 = addAnswer();
+				Answer a2 = addAnswer();
+				Answer a3 = addAnswer();
+				Answer a4 = addAnswer();
+				Answer a5 = addAnswer();
+				Answer a6 = addAnswer();
+				
+				a1.setText("");
+				a2.setText("");
+				a3.setText("");
+				a4.setText("");
+				a5.setText("");
+				a6.setText("");
+				
+				res = true;
 			}
 		} catch (SQLException e1) {
 			System.out.println(e1.toString());

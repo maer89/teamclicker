@@ -58,9 +58,13 @@ function get_answers(q_id) {
    		   function(data) {
 				var content = "<h3>" + data[6].text + "</h3>"
 						  + "<hr class='hrboxquestion' >"
-						  + "<div class='btn-group btn-group-vertical ansbutton'>"
-						  + "<button class='btn btn-block' id=\"1\" onclick=\"sendAnswer(id)\">a: " + data[0].text + "</button>"
-						  + "<button class='btn btn-block' id=\"2\" onclick=\"sendAnswer(id)\">b: " + data[1].text + "</button>"
+						  + "<div class='btn-group btn-group-vertical ansbutton'>";
+				if (data[0].text != '') {
+					content = content + "<button class='btn btn-block' id=\"1\" onclick=\"sendAnswer(id)\">a: " + data[0].text + "</button>";
+				}
+				if (data[1].text != '') {
+					content = content + "<button class='btn btn-block' id=\"2\" onclick=\"sendAnswer(id)\">b: " + data[1].text + "</button>";
+				}
 				if(data[2].text != '') {
 					content = content + "<button class='btn btn-block' id=\"3\" onclick=\"sendAnswer(id)\">c: " + data[2].text + "</button>";
 				}

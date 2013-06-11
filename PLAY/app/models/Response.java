@@ -74,7 +74,7 @@ public class Response {
 		}
 		
 		String sql = "SELECT answer" + getID() + " FROM results WHERE messageID = " + getMID();
-		
+
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			if (rs.next()) {
@@ -106,7 +106,7 @@ public class Response {
 			ResultSet rs = stmt.executeQuery(sql);
 			if (rs.next()) {
 				// entry exists --> Update
-				sql = "UPDATE results SET answer" + getID() + "=answer" + getID() + "+1"
+				sql = "UPDATE results SET answer" + getID() + " = " + this.getCount()
 					  + " WHERE messageID = " + getMID();
 			} else {
 				// entry doesn't exist --> insert

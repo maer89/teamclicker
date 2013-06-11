@@ -186,6 +186,7 @@ public class Application extends Controller {
     	int q_id = Integer.parseInt(queryParameters.get("q_id")[0]);
     	int id = Integer.parseInt(queryParameters.get("answer")[0]);
     	
+    	
     	Message mes = m.getMessageWithID(q_id);
     	if (mes == null) {
     		// message isn't in list --> add it
@@ -201,6 +202,7 @@ public class Application extends Controller {
     		r.setMID(q_id);
     		r.setID(id);
     		mes.addResponse(r);
+    		r.readFromDB();
     	} else {
     		// read actual values from DB
     		r.readFromDB();
@@ -328,7 +330,7 @@ public class Application extends Controller {
     					System.out.println(e.toString());
     				}
     				
-    				if(ans1neu > ans1 || ans2neu > ans2 || ans3neu > ans3 || ans4neu > ans4 || ans5neu > ans5 || ans6neu > ans6 || i==true){
+    				if(ans1neu != ans1 || ans2neu != ans2 || ans3neu != ans3 || ans4neu != ans4 || ans5neu != ans5 || ans6neu != ans6 || i==true){
     					/*ArrayList<String> response = new ArrayList<String>();
     					response.add(ans1text);
     					response.add(String.valueOf(ans1neu));

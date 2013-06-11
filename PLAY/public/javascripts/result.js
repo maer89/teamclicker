@@ -139,7 +139,7 @@ function connect(){
 			if(data.answers == 2){
 				$("#result").append("<p>" + data.ans1text + ": " + data.ans1 + "</p><p>" + data.ans2text + ": " + data.ans2 + "</p>");
 				ans1 = data.ans1;
-				ans2 = data.ans3;
+				ans2 = data.ans2;
 				ans1text = data.ans1text;
 				ans2text = data.ans2text;
 				num = 2;

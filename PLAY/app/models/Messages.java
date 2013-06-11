@@ -205,7 +205,7 @@ public class Messages {
 		}catch (SQLException e1) {
 
 		}
-		content.append("</p></div></div>");
+		content.append("</table></p></div></div>");
 		closeDB();
 		return content.toString();
 	}

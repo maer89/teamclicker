@@ -293,9 +293,8 @@ function editMessage(num){
 		"<textarea id='messageText' name='editedmessage' cols='35' rows='5'></textarea></div>" +
 		"<div class='form'><label>Group:</label><div id='messageGroupsDiv'></div></div>"+
 		"<div class='form'><label>Answers: </label>" +
-		"<div id='editanswers'>" +
-		"<div id='edit1'><input type='text' id='editedanswer1' name='editedanswer1'/></div>" +
-		"<div id='edit2'><input type='text' id='editedanswer2' name='editedanswer2'/></div>");
+		"<div id='editanswers'>");
+		
 	
 	/*$.get('/getMessage',
 		{'id': messageID},
@@ -341,9 +340,14 @@ function editMessage(num){
 		{'id': messageID},
 		function(data){
 			editAnswers = 2;
-			var data_field="";
-			document.getElementById("editedanswer1").value = data[0].text;
-			document.getElementById("editedanswer2").value = data[1].text;
+			if (data[0].text != "") {
+				$("#editanswers").append("<div id='edit1'><input type='text' id='editedanswer1' name='editedanswer1'/></div>");
+				document.getElementById("editedanswer1").value = data[0].text;
+			}
+			if (data[1].text != "") {
+				$("#editanswers").append("<div id='edit2'><input type='text' id='editedanswer2' name='editedanswer2'/></div>");
+				document.getElementById("editedanswer2").value = data[1].text;
+			}
 			
 			if(data[2].text == ""){
 				//do nothing
