@@ -14,6 +14,8 @@ var edit;
 var bg_edit;
 var showedit = 1;
 var data_length = -1;
+var group = '';
+var made_changes = false;
 
 $(document).ready(function(){	
 	// focus message edit element
@@ -123,6 +125,10 @@ function close_edit() {
 	bg_edit = $("#bg_trans_edit").detach();
 	startedit = 0;
 	showedit = 0;
+	
+	if (made_changes) {
+		updateTable();
+	}
 }
 
 /*save message*/
@@ -285,7 +291,6 @@ function editMessage(num){
 	}
 
 	var messageID = document.getElementById("id"+num).innerHTML;
-	var group; /*document.getElementById("id"+num).parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[2].outerText;*/
 	var message;
 	
 	$("#edit").append("<form action='edit.php' method='POST'>" +
@@ -319,22 +324,7 @@ function editMessage(num){
 		alert("Error on getting message!");
 	});
 
-	$.post('/loadGroups',
-			{'uid': user_id},
-			function(data) {
-				var content = build_groups(data);
-				last_num = num;
-				var data_length = data.length;
-				$("#messageGroupsDiv").append(content);
-				var opt = document.getElementById('messageGroups').options;
-				for(var i = 0; i < data_length; i++) {
-					if (opt[i].text == group) {
-						$("#messageGroups").prop("selectedIndex", i);
-						break;
-					}
-				}
-			}
-	);
+	loadGroups();
 		
 	$.post('/getAnswers',
 		{'id': messageID},
@@ -626,36 +616,53 @@ function disablePopup() {
     }
 }
 
-function download_qr() {
-	// TODO: Implement
-}
-
 // Load groups for acutal user
 function loadGroups() {
-	$("#groups").empty();
 	$.post('/loadGroups',
 			{'uid': user_id},
 			function(data){
 				var content = build_groups(data);
-				$("#groups").append(content);
+				if (edit_Mode) {
+					$("#messageGroupsDiv").empty();
+					last_num = num;
+					var data_length = data.length;
+					$("#messageGroupsDiv").append(content);
+					var opt = document.getElementById('messageGroups').options;
+					for(var i = 0; i < data_length; i++) {
+						if (opt[i].text == group) {
+							$("#messageGroups").prop("selectedIndex", i);
+							break;
+						}
+					}
+				} else {	
+					$("#groups").empty();
+					$("#groups").append(content);
+				}
 	});
 }
 
 // add new Group
 function addGroup() {
 	var groupName = window.prompt("Please enter a group name:", "");
-	$.post('/addGroup',
-			{'uid': user_id,
-			 'groupName': groupName},
-			function(data){
-				alert("Group '" + groupName + "' added!");
-				loadGroups();
-	});
+	if (groupName != null) {
+		$.post('/addGroup',
+				{'uid': user_id,
+				 'groupName': groupName},
+				function(data){
+					loadGroups();
+		});
+	}
 }
 
+// deletes the selected Group with all of its questions and answers for the actual user
 function deleteSelectedGroup() {
 	//var groupID = groupList[document.getElementById('groupsList').selectedIndex];
-	var groupName =  document.getElementById('groupsList').options[document.getElementById('groupsList').selectedIndex].text;
+	var groupName;
+	if (edit_Mode) {
+		groupName = document.getElementById('messageGroups').options[document.getElementById('messageGroups').selectedIndex].text;
+	} else {
+		groupName =  document.getElementById('groupsList').options[document.getElementById('groupsList').selectedIndex].text;
+	}
 	var res = confirm("Are you sure you want to the delete this group with all it's questions?");
 	if (res) {
 		$.post('/deleteGroup',
@@ -663,7 +670,8 @@ function deleteSelectedGroup() {
 			    'name': groupName},
 			    function(data) {
 				    if (edit_Mode) {
-				 	    editMessage(last_num);
+				 	   	editMessage(last_num);
+				 	   	made_changes = true;
 				    } else {
 				    	loadGroups();
 				    }
