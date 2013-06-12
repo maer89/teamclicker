@@ -57,7 +57,6 @@ function get_answers(q_id) {
 		   {'id': q_id},
    		   function(data) {
 				var content = "<h3>" + data[6].text + "</h3>"
-						  + "<hr class='hrboxquestion' >"
 						  + "<div class='btn-group btn-group-vertical ansbutton'>";
 				if (data[0].text != '') {
 					content = content + "<button class='btn btn-block' id=\"1\" onclick=\"sendAnswer(id)\">a: " + data[0].text + "</button>";

@@ -24,34 +24,71 @@
 	<div id="bg_trans_register" style="display:none"></div>
 	<div class="container content">
 		<div class="row menu">
-			<div class="span8 slider">
-				<div class="logo">
-					<a href="./index.html"><img src='@routes.Assets.at("images/logo.png")' /></a>
-				</div>
-				<div>
-					<ul class="nav nav-pills navi">
-						<li><a href="/index">Home</a></li>
-						<li><a href="/question">Question</a></li>
-						<li class="active"><a href="/admin">Admin</a></li>
-					</ul>
-				</div>
+			<div class="span4 offset4">
+				<ul class="nav nav-pills navi">
+					<li><a href="/index">Home</a></li>
+					<li><a href="/question">Question</a></li>
+					<li class="active"><a href="/admin">Admin</a></li>
+				</ul>
 			</div>
 		</div>
 	
 		<div class="row">
-			<div class="span4 offset4 box" >
-				<div> 
-					<p>
-						<label for="user">User</label>
-						<input type="text" id="user" />
-					</p>
-					<p>
-						<label for="password">Password</label>
-						<input type="password" id="password"/>
-					</p>
-					<p>
-						<button class="btn" id="btn_login">Login</button><button class="btn" id="btn_register">Register</button>
-					</p>
+			<div class="span4 offset4" >
+				<div class="span4 headline">
+					<h3>Login</h3>
+				</div>
+				<div class="span4 box menubox">
+					<div> 
+						<p>
+							<label for="user">User</label>
+							<input type="text" id="user" />
+						</p>
+						<p>
+							<label for="password">Password</label>
+							<input type="password" id="password"/>
+						</p>
+						<p>
+							<div class="btn-group">
+								<button class="btn" id="btn_login">Login</button>
+								<button class="btn" id="btn_register">Register</button>
+							</div>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+		<div id="register_form">
+			<div class="span4 offset4" >
+				<div class="span4 headline">
+					<h3>Register</h3>
+				</div>
+				<div class="span4 box registerbox">
+					<div>
+						<p>
+							<label for="reg_email">E-Mail:</label>
+							<input type="text" id="reg_email" />	
+						</p>
+						<p>
+							<label for="reg_username">Username:</label>
+							<input type="text" id="reg_username" />
+						</p>
+						<p>
+							<label for="reg_pas">Password:</label>
+							<input type="text" id="reg_pas" />
+						</p>
+						<p>
+							<label for="reg_pas2">Repeat password:</label>
+							<input type="text" id="reg_pas2" />
+						</p>
+						<p>
+							<div class="btn-group">
+								<button class='btn' id='btn_reg_confirm'>Register</button>
+								<button class='btn' id='btn_reg_cancel'>Cancel</button>
+							</div>
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -60,32 +97,6 @@
 			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stoo&szlig</span>
 			<img src='@routes.Assets.at("images/socialmedia.png")' class="socialmedia" />
 			<span class="impressum"><a href="">Impressum</a></span>
-		</div>
-	</div>
-	
-	<div id="register_form">
-		<div class="span4 offset4 box" >
-			<div>
-				<p>
-					<label for="reg_email">E-Mail:</label>
-					<input type="text" id="reg_email" />	
-				</p>
-				<p>
-					<label for="reg_username">Username:</label>
-					<input type="text" id="reg_username" />
-				</p>
-				<p>
-					<label for="reg_pas">Password:</label>
-					<input type="text" id="reg_pas" />
-				</p>
-				<p>
-					<label for="reg_pas2">Repeat password:</label>
-					<input type="text" id="reg_pas2" />
-				</p>
-				<p>
-					<button class='btn' id='btn_reg_confirm'>Register</button><button class='btn' id='btn_reg_cancel'>Cancel</button>
-				</p>
-			</div>
 		</div>
 	</div>
 </body>

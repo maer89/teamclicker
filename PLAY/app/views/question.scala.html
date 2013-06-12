@@ -23,33 +23,33 @@
 <body>
 	<div class="container content">
 		<div class="row menu">
-			<div class="span8 slider">
-				<div class="logo">
-					<a href="./index.html"><img src='@routes.Assets.at("images/logo.png")' /></a>
-				</div>
-				<div>
-					<ul class="nav nav-pills navi">
-						<li><a href="/index">Home</a></li>
-						<li class="active"><a href="/question">Question</a></li>
-						<li><a href="/admin">Admin</a></li>
-					</ul>
-				</div>
+			<div class="span4 offset4">
+				<ul class="nav nav-pills navi">
+					<li><a href="/index">Home</a></li>
+					<li class="active"><a href="/question">Question</a></li>
+					<li><a href="/admin">Admin</a></li>
+				</ul>
 			</div>
 		</div>
 	
 		<div class="row">
-			<div class="span4 offset4 box" id="question">
-				<form name="question_form" action="" onsubmit="get_Question(); return false;">
-					<p>
-						<label for="q_id">Question ID</label>
-						<input type="text" name="q_id" id="q_id"/>
-					</p>
-					<p>
-						<label for="q_pw">Password</label>
-						<input type="text" name="q_pw" id="q_pw"/>
-					</p>
-					<p><input class="btn" type="submit" value="Get Question"/></p>
-				</form>
+			<div class="span4 offset4" id="question">
+				<div class="span4 headline">
+					<h3>Question</h3>
+				</div>
+				<div class="span4 box menubox">
+					<form name="question_form" action="" onsubmit="get_Question(); return false;">
+						<p>
+							<label for="q_id">Question ID</label>
+							<input type="text" name="q_id" id="q_id"/>
+						</p>
+						<p>
+							<label for="q_pw">Password</label>
+							<input type="text" name="q_pw" id="q_pw"/>
+						</p>
+						<p><input class="btn" type="submit" value="Get Question"/></p>
+					</form>
+				</div>
 			</div>
 		</div>
 	

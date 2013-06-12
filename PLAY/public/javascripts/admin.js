@@ -347,7 +347,7 @@ function editMessage(num){
 				editAnswers = 3;
 			}else if(data[4].text == ""){
 				$("#editanswers").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#edit").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#editanswers").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
 				document.getElementById("editedanswer3").value = data[2].text;
 				document.getElementById("editedanswer4").value = data[3].text;
 				editAnswers = 4;
