@@ -4,7 +4,6 @@ var i = 3;					/*to add or delete answers*/
 var user_id = -1;
 var popupStatus = 0;
 var groupList = new Array();
-var last_num = -1; 
 var edit_Mode;
 var qrcode;
 var bg_qr;
@@ -82,6 +81,7 @@ $(document).ready(function(){
 	
 	/*add Message*/
 	$("#addMessage").click(function(){
+		loadGroups();
 		$("#addMessage").parent().addClass("active");
 		$("#showMessage").parent().removeClass("active");
 		$("#edit").empty();
@@ -624,7 +624,6 @@ function loadGroups() {
 				var content = build_groups(data);
 				if (edit_Mode) {
 					$("#messageGroupsDiv").empty();
-					last_num = num;
 					var data_length = data.length;
 					$("#messageGroupsDiv").append(content);
 					var opt = document.getElementById('messageGroups').options;
@@ -670,11 +669,9 @@ function deleteSelectedGroup() {
 			    'name': groupName},
 			    function(data) {
 				    if (edit_Mode) {
-				 	   	editMessage(last_num);
 				 	   	made_changes = true;
-				    } else {
-				    	loadGroups();
 				    }
+				    loadGroups();
 			    });
 	}
 }
