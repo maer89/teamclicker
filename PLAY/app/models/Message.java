@@ -76,7 +76,7 @@ public class Message {
 			System.out.println(e1.toString());
 		}
 		
-		sql = "SELECT id FROM messages WHERE messageText = '"+this.text+"'";
+		sql = "SELECT id FROM messages WHERE messageText = '"+this.text+"' AND userID = " + userID;
 		try {
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
