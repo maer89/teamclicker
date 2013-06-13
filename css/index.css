@@ -53,6 +53,7 @@ label{
 
 ul{
 	margin-top:2%;
+	float:left;
 }
 
 .logo{
@@ -126,7 +127,7 @@ ul{
 }
 
 .holebox{
-	margin-left: 0 !important;
+	margin-left:0.7%;
 	margin-bottom:1%;
 }
 
@@ -239,6 +240,11 @@ ul{
 	margin-left:2%;
 	margin-right:auto;
 }
+
+.row {
+	margin-left:0px !important;
+}
+
 
 /*LOGIN*/
 .login {

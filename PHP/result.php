@@ -1,4 +1,7 @@
 <?php
+	
+	//header('Content-type: application/json');
+
 	/*Connect*/
 	mysql_connect("62.113.225.192","web90","maer89");
 		
@@ -22,7 +25,7 @@
 	$space = str_repeat(" ",5000);
 	
 	/*get answers*/
-	$res = mysql_query("SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = '$id'");
+	$res = mysql_query("SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = ".intval($id));
 	
 	while($data = mysql_fetch_array($res)){
 		if($data['answer3'] == ""){
@@ -61,6 +64,7 @@
 		$msg = $data['messageText'];
 	}
 	
+	
 	/*timestamp*/
 	$start = mktime();
 	$end = mktime();
@@ -78,21 +82,21 @@
 		}
 		
 		if($ans1neu > $ans1 || $ans2neu > $ans2 || $ans3neu > $ans3 || $ans4neu > $ans4 || $ans5neu > $ans5 || $ans6neu > $ans6 || $i==true){
-			$response = array('ans1'=>$ans1neu, 
-							'ans1text'=>$ans1text,
-							'ans2'=>$ans2neu,
-							'ans2text'=>$ans2text,
-							'ans3'=>$ans3neu,
-							'ans3text'=>$ans3text,
-							'ans4'=>$ans4neu,
-							'ans4text'=>$ans4text,
-							'ans5'=>$ans5neu,
-							'ans5text'=>$ans5text,
-							'ans6'=>$ans6neu,
-							'ans6text'=>$ans6text,
-							'num'=>$answers,
-							'msg'=>$msg,
-							'space'=>$space);
+			$response = array("ans1"=>$ans1neu, 
+							"ans1text"=>$ans1text,
+							"ans2"=>$ans2neu,
+							"ans2text"=>$ans2text,
+							"ans3"=>$ans3neu,
+							"ans3text"=>$ans3text,
+							"ans4"=>$ans4neu,
+							"ans4text"=>$ans4text,
+							"ans5"=>$ans5neu,
+							"ans5text"=>$ans5text,
+							"ans6"=>$ans6neu,
+							"ans6text"=>$ans6text,
+							"num"=>$answers,
+							"msg"=>$msg,
+							"space"=>$space);
 			echo json_encode($response);
 		} 
 		$i = false;

@@ -47,8 +47,10 @@ function connect(){
 		},
 		success : function(data) {
 		
-			var data_field = $.parseJSON(data);
 			$("#result").empty();
+			var data_field = $.parseJSON(data);
+			
+			
 			if(data_field.num == 2){
 				$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": " + data_field.ans2 + "</p>");
 				ans1 = data_field.ans1;

@@ -19,7 +19,7 @@
 	/*sql query insert message*/
 	mysql_query("INSERT INTO messages VALUES"." (null,$userID,'$message',0,'','$group')");
 	
-	$res = mysql_query("SELECT id FROM messages WHERE messageText = '$message'");
+	$res = mysql_query("SELECT id FROM messages WHERE messageText = '$message' AND userID = $userID");
 	
 	while($data = mysql_fetch_array($res)){
 		$messageID = $data['id'];
