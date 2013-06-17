@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.sql.DataSource;
 
+import controllers.Application;
+import controllers.routes;
 import play.db.DB;
 
 public class Messages {
@@ -148,7 +150,7 @@ public class Messages {
 		String sql = "SELECT * FROM messages WHERE userID = '" + userID + "' ORDER BY messageGroup";
 		int i = 0;
 		String group = "";
-		String head = "</h3><div><p><table border='1' class='table table-hover'><tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>Reset</b></td><td><b>password</b></td><td><b>QR-Code</b></td><td><b>Result</b></td></tr>";
+		String head = "</h3><div><p><table border='1' class='table table-hover'><tr><td><b>ID</b></td><td><b>Text</b></td><td><b>Enable</b></td><td><b>Edit</b></td><td><b>Delete</b></td><td><b>Reset</b></td><td><b>Password</b></td><td><b>Link</b></td><td><b>QR</b></td><td><b>Result</b></td></tr>";
 		String groupOld = "";
 		boolean firstTime = true;
 		try {
@@ -185,12 +187,21 @@ public class Messages {
 				"<td id='pw" + i + "'>" + password + "</td>");
 				
 				if (enabled) {
-					content.append("<td><button id='qr" + id + "/" + password + "' onclick='qr_code(id)' style='visibility: visible' >Generate QR-Code</button></td>");
+					content.append("<td><a href='");
+					content.append(routes.Application.getQuestion(id, password).absoluteURL(Application.request()));
+					content.append("'>");
+					content.append(routes.Application.getQuestion(id, password).absoluteURL(Application.request()));
+					content.append("</a></td>");
 				} else {
-					content.append("<td><button id='qr" + id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td>");
+					content.append("<td> - </td>");
 				}
 				
-				content.append("<td><button onclick='result("+i+")'>show result</button></td></tr>");
+				if (enabled) {
+					content.append("<td><a id='qr" + id + "/" + password + "' onclick='qr_code(id)' style='visibility: visible' ><i class='icon-qrcode'></i></a></td>");
+				} else {
+					content.append("<td><a id='qr" + id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' ><i class='icon-qrcode'></i></a></td>");
+				}
+				content.append("<td><a onclick='result("+i+")'><i class='icon-align-left'></i></a></td></tr>");
 				
 				Message m = new Message();
 				addMessage(m);
