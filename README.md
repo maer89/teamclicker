@@ -49,5 +49,5 @@ The clicker is a nice application ;-)
 
 
 ###Manual###
-
+Marci stinkt
 
