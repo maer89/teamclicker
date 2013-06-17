@@ -6,6 +6,7 @@
 3. Manual
 
 ###Description###
+The clicker is a nice application ;-)
 
 ###Getting started###
 * Requirements
@@ -30,7 +31,7 @@
 		After that you can run the DB_install.php script to create the required tables.
   	
 	- For the play-version:
-		You also have to edit the database informations into the application.conf file:
+		You have to edit the database informations into the application.conf file:
 
 		```
 			# Database configuration
@@ -44,7 +45,7 @@
 			db.default.password="my password"
 			#
 		```
-		After that you cann run the blabla script to create the required tables.
+		After that you can run the blabla script to create the required database tables.
 
 
 ###Manual###
