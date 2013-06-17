@@ -26,8 +26,7 @@
 			  $database = "my database";
 		  ?>
 		```
-
-  	After that you can run the DB_install.php script.
+		After that you can run the DB_install.php script.
   	
 	- For the play-version:
 		You also have to edit the database informations into the application.conf file:
@@ -44,6 +43,7 @@
 			db.default.password="my password"
 			#
 		```
+		After that you cann run the blabla script.
 
 
 ###Manual###
