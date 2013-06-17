@@ -16,12 +16,15 @@
   To setup your MySQL database you have to edit the database 
   informations in DB_data.php like into the example.  
   
-  <?php
-    $ServerAdr = "my server adress;
-	  $UserName = "my username";
-	  $pw = "my password";
-	  $database = "my database";
-  ?>
+
+	```php
+	  <?php
+	    $ServerAdr = "my server adress";
+		  $UserName = "my username";
+		  $pw = "my password";
+		  $database = "my database";
+	  ?>
+	```
 
   After that you can run the DB_install.php script.
 
