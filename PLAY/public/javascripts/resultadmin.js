@@ -43,7 +43,6 @@ function result(num){
 
 /*show Result*/
 function showResult(){
-	//if(show == 1){
 	var xhr = $.ajax({
 		url: '/outcome',
 		type: 'GET',
@@ -130,7 +129,6 @@ function showResult(){
 			}
 		}
 	});
-	//}
 }
 
 google.load('visualization', '1.0', {'packages':['corechart']});
@@ -183,7 +181,6 @@ function drawChart() {
 
 	// Set chart options
 	var options = {'title':msg,
-				   /*'width':600,*/
 				   'height':500,
 				   slices: [{color:'#0073e5'},{color:'#7ddc1f'},{color:'#00a6fe'},{color:'#64c306'},{color:'#444444'},{color:'#7ddc1f'}],
 				   colors:['#7ddc1f'],
@@ -204,8 +201,7 @@ function drawChart() {
 		chart = new google.visualization.PieChart(document.getElementById('showresult'));
 	}
 	
-	$("#showresult").append("<div id='close'></div>");
-	
+	$("#showresult").append("<div id='close'></div>");	
 	
 	chart.draw(data, options);
 }

@@ -13,8 +13,8 @@ import play.db.DB;
 public class Response {
 	
 	private int id = -1;
-	private int mID = -1;
-	private int count;
+	private int mID = -1; // messageID
+	private int count; // counts the votes for this question
 	
 	private Connection con = null;
 	@SuppressWarnings("unused")
@@ -63,6 +63,7 @@ public class Response {
         }
 	}
 	
+	/* get the actual value from the DB */
 	public void readFromDB() {
 		openDB();
 		
@@ -89,6 +90,7 @@ public class Response {
 		closeDB();
 	}
 	
+	/* write new value to DB */
 	@SuppressWarnings("unused")
 	public void writeToDB() {
 		openDB();
@@ -120,6 +122,8 @@ public class Response {
 		closeDB();		
 	}
 
+	/* get all results for messageID */
+	// not in use
 	public ArrayList<Integer> getResult(){
 		openDB();
 		int ans1=0,ans2=0,ans3=0,ans4=0,ans5=0,ans6 = 0;

@@ -5,10 +5,6 @@ html{
 body{
 	height: 100%;
 	margin: 0;
-	/*background-image: -webkit-linear-gradient(#bebdbd 0%, #444444 100%); 
-	background-image: -moz-linear-gradient(#bebdbd 0%, #444444 100%); 
-	background-image: -o-linear-gradient(#bebdbd 0%, #444444 100%); 
-	background-image: linear-gradient(#bebdbd 0%, #444444 100%);*/
 	background-repeat: no-repeat;
 	background-attachment:fixed;
 }
@@ -272,12 +268,8 @@ ul{
 }
 
 #register_form{
-	/*height:500px;*/
 	position:fixed;
 	top:50%;
-	/*left:50%;*/
-	/*margin:-50px 0 0 -100px;*/ /* [-(height/2)px 0 0 -(width/2)px] */
-	/*margin-left: -1.5%;*/
 	margin-top: -193px;
 	display: none;
 	z-index: 3;
@@ -286,4 +278,12 @@ ul{
 .registerbox{
 	background: #ffffff !important;
 	height: auto !important;
+}
+
+/* content */
+.index_content{
+	margin-left: 8%;
+	margin-top: 5%;
+	margin-right: 5%;
+	font-size: 18px;
 }

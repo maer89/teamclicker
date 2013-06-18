@@ -29,18 +29,17 @@ function check_Question(q_id, q_pw) {
 				switch(data_field) {
 					case -1:
 						alert('Question doesn\'t exist or isn\'t enabled!');
-						// link back to index.html
+						// link back to question
 						var page = "/question";
 						window.open(page, "_self");
 						break;
 					case 0:
 						alert('You entered the wrong password for the ID  ' + q_id);
-						// link back to index.html
+						// link back to question
 						var page = "/question";
 						window.open(page, "_self");
 						break;
 					case 1:
-						//alert('Question found! Click \'ok\' to see it.');
 	  					get_answers(q_id);
 						break;
 					default:
@@ -94,7 +93,6 @@ function sendAnswer(id) {
 			'q_id': q_id
 			},
    			function(data) {
-				alert("Vote successful!");
 				// that only one vote is possible --> set cookie
 				var expire = new Date();
 				var in12hours = expire.getTime() + (12 * 60 * 60 * 1000);

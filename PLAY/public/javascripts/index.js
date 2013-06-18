@@ -89,7 +89,7 @@ $(function() {
 
 function login_ftn(user, pw) {
 	if (navigator.cookieEnabled == false) {
-		alert("Bitte aktivieren Sie Ihre Cookies,\n da der Vorgang sonst nicht fortgesetzt werden kann.");
+		alert("Please activate your cookies!");
 		return;
 	}
 	$.post( '/login',
@@ -100,7 +100,6 @@ function login_ftn(user, pw) {
    			function(data) {
 				var data_field = $.parseJSON(data);
 				if ((data_field != -1) && (data_field >= 1)) {
-					alert('Welcome ' + user + '!');
 					// set cookie for login
 					var expire = new Date();
 					var in1hour = expire.getTime() + (1 * 60 * 60 * 1000);
@@ -197,7 +196,6 @@ function writeUserToDB(userName, email, pass) {
 		    'mail': email,
 		    'pass': pass},
 		   function(data){
-			   alert("You can now login!");
 			   hideRegForm();
 		   });
 }

@@ -13,7 +13,7 @@ import controllers.routes;
 import play.db.DB;
 
 public class Messages {
-	private ArrayList<Message> messages;
+	private ArrayList<Message> messages;  // A list with all the messages of this user
 	private Connection con = null;
 	@SuppressWarnings("unused")
 	private DataSource ds = null;
@@ -143,7 +143,6 @@ public class Messages {
 			stmt = con.createStatement();
 			stmt.setFetchSize(1000);
 		} catch (SQLException e2) {
-			//System.out.println(e2.toString());
 		}
 		
 		int id = -1;
@@ -214,7 +213,6 @@ public class Messages {
 				i++;
 			}
 		}catch (SQLException e1) {
-
 		}
 		content.append("</table></p></div></div>");
 		closeDB();

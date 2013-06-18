@@ -20,25 +20,28 @@ public class Application extends Controller {
 	
 	private static Messages m = new Messages();
 	
-  
+	/* shows index.html */
     public static Result index() {
         return ok(views.html.index.render());
     }
     
+    /* shows admin.html */
     public static Result admin(){
     	return ok(views.html.admin.render());
     }
     
+    /* shows question.html */
     public static Result question(){
     	return ok(views.html.question.render());
     }
     
+    /* shows adminarea.html */
     public static Result adminarea() {
     	m = new Messages();
     	return ok(views.html.adminarea.render());
     }
     
-    /* loads messages for specific user */
+    /* loads messages/questions for a specific user */
     public static Result loadMessages() throws IOException {
     	Map<String, String[]> queryParameters = request().queryString();
     	int userID = Integer.parseInt(queryParameters.get("id")[0]);
@@ -46,9 +49,11 @@ public class Application extends Controller {
     	return ok();
     }
     
+    /* shows result.html */
     public static Result result(){
     	return ok(views.html.result.render());
     }
+    
     /*save Message*/
     public static Result saveMessage(){
     	Map<String, String[]> queryParameters = request().queryString();
@@ -98,10 +103,13 @@ public class Application extends Controller {
     public static Result delete() throws IOException{
     	Map<String, String[]> queryParameters = request().queryString();
     	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
+    	
     	/*get message*/
     	Message msg = m.getMessageWithID(messageID);
+    	
     	/*delete message from DB*/
     	msg.delete();
+    	
     	/*delete message from messages*/
     	int idx = m.getMessageIdx(messageID);
     	m.deleteMessage(idx);
@@ -118,7 +126,7 @@ public class Application extends Controller {
     	return ok(Json.toJson(msg));
     }
     
-    /* get answers and text for question xy */ 
+    /* get answers and text for message/question xy */ 
     public static Result getAnswers(){
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
@@ -131,7 +139,7 @@ public class Application extends Controller {
     	return ok(Json.toJson(a));
     }
     
-    /*save Changes*/
+    /*save changes*/
     public static Result saveChanges() throws IOException{
     	Map<String, String[]> queryParameters = request().queryString();
     	int messageID = Integer.parseInt(queryParameters.get("id")[0]);
@@ -151,7 +159,7 @@ public class Application extends Controller {
     	return ok();
     }
     
-    /*update Table*/
+    /*update table*/
     public static Result updateTable() throws IOException{
     	m.clear();
     	Map<String, String[]> queryParameters = request().queryString();
@@ -180,7 +188,7 @@ public class Application extends Controller {
     	return ok(String.valueOf(res));
     }
     
-    /* send the selected answer to DB */
+    /* write the selected answer to DB */
     public static Result sendAnswer() {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int q_id = Integer.parseInt(queryParameters.get("q_id")[0]);
@@ -235,179 +243,136 @@ public class Application extends Controller {
     	Map<String, String[]> queryParameters = request().queryString();
     	int id = Integer.parseInt(queryParameters.get("id")[0]);
     	ObjectNode response = Json.newObject();
-    	
-    	//return ok(new Comet("parent.test"){
-    	//Comet comet = new Comet("callback"){
-    		//public void onConnected(){
     			
-    			//DB....
-    			@SuppressWarnings("unused")
-				DataSource ds = DB.getDataSource();
-    			Connection con = DB.getConnection();
-    			
-    			int ans1=0,ans2=0,ans3=0,ans4=0,ans5=0,ans6 = 0;
-    			int ans1neu=0,ans2neu=0,ans3neu=0,ans4neu=0,ans5neu=0,ans6neu=0;
-    			String ans1text="",ans2text="",ans3text="",ans4text="",ans5text="",ans6text="";
-    			int answers = 0;
-    			String msg = "";
-    			
-    			Statement stmt = null;
-    			try {
-    				stmt = con.createStatement();
-    			} catch (SQLException e2) {
-    				System.out.println(e2.toString());
-    			}
-    			/*get answers*/
-    			String res ="SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = " + id;
-    			try{
-	    			ResultSet result = stmt.executeQuery(res);
-	    			while(result.next()){
-	    				if(result.getString("answer3").compareTo("") == 0){ 
-	    					answers = 2;
-	    				}else if(result.getString("answer4").compareTo("")  == 0){
-	    					answers = 3;
-	    				}else if(result.getString("answer5").compareTo("")  == 0){
-	    					answers = 4;
-	    				}else if(result.getString("answer6").compareTo("")  == 0){
-	    					answers = 5;
-	    				}else{
-	    					answers = 6;
-	    				}
-	    				ans1text = result.getString("answer1");
-	    				ans2text = result.getString("answer2");
-	    				ans3text = result.getString("answer3");
-	    				ans4text = result.getString("answer4");
-	    				ans5text = result.getString("answer5");
-	    				ans6text = result.getString("answer6");
-	    			}
-    			}catch(Exception e){
-    				
-    			}
-    			
-    			String sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID =" + id;
-    			try {
-    				ResultSet rs = stmt.executeQuery(sql);
-    				while(rs.next()){
-    					ans1 = rs.getInt("answer1");
-    					ans2 = rs.getInt("answer2");
-    					ans3 = rs.getInt("answer3");
-    					ans4 = rs.getInt("answer4");
-    					ans5 = rs.getInt("answer5");
-    					ans6 = rs.getInt("answer6");
-    				}
-    			} catch (SQLException e) {
-    				System.out.println(e.toString());
-    			}	
-    			
-    			sql= "SELECT messageText FROM messages WHERE id = " + id;
-    			try{
-    				ResultSet rs = stmt.executeQuery(sql);
-    				while(rs.next()){
-    					msg = rs.getString("messageText");
-    				}
-    				
-    			}catch(SQLException esql){
-    				
-    			}
-    			
-    			long start = System.currentTimeMillis();
-    			long end = System.currentTimeMillis();
-    			
-    			boolean i = true;
-    			while(end-start < 2000){
-    				sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = " + id;
-    				try {
-    					ResultSet rs = stmt.executeQuery(sql);
-    					while(rs.next()){
-    						ans1neu = rs.getInt("answer1");
-    						ans2neu = rs.getInt("answer2");
-    						ans3neu = rs.getInt("answer3");
-    						ans4neu = rs.getInt("answer4");
-    						ans5neu = rs.getInt("answer5");
-    						ans6neu = rs.getInt("answer6");
-    					}
-    				} catch (SQLException e) {
-    					System.out.println(e.toString());
-    				}
-    				
-    				if(ans1neu != ans1 || ans2neu != ans2 || ans3neu != ans3 || ans4neu != ans4 || ans5neu != ans5 || ans6neu != ans6 || i==true){
-    					/*ArrayList<String> response = new ArrayList<String>();
-    					response.add(ans1text);
-    					response.add(String.valueOf(ans1neu));
-    					response.add(ans2text);
-    					response.add(String.valueOf(ans2neu));
-    					response.add(ans3text);
-    					response.add(String.valueOf(ans3neu));
-    					response.add(ans4text);
-    					response.add(String.valueOf(ans4neu));
-    					response.add(ans5text);
-    					response.add(String.valueOf(ans5neu));
-    					response.add(ans6text);
-    					response.add(String.valueOf(ans6neu));
-    					response.add(String.valueOf(answers));
-    					response.add(msg);*/
-    					
-    					response.put("ans1text",ans1text);
-    					response.put("ans1", ans1neu);
-    					response.put("ans2text", ans2text);
-    					response.put("ans2", ans2neu);
-    					response.put("ans3text", ans3text);
-    					response.put("ans3", ans3neu);
-    					response.put("ans4text", ans4text);
-    					response.put("ans4", ans4neu);
-    					response.put("ans5text", ans5text);
-    					response.put("ans5", ans5neu);
-    					response.put("ans6text", ans6text);
-    					response.put("ans6", ans6neu);
-    					response.put("answers",answers);
-    					response.put("msg", msg);
-    					    					
-    					/*try{
-	    					File file = new File("result.txt");
-	    					FileWriter writer = new FileWriter(file,true);
-	    					writer.write("zeit: " + (end-start) + "   i: " + i + "         response: " + response + "     end: "+ end + "      start: " + start + "\n");
-	    					writer.flush();
-	    					writer.close();
-    					}catch(Exception e){
-    						
-    					}*/
-    					
-    					//this.sendMessage(Json.toJson(response));
-
-        				//break;
-        				if(!i){
-        					return created(response);
-        				}
-        				
-    	    			//close();
-    				}
-    				i = false;
-    				end = System.currentTimeMillis();
-    			}
-    			
-    			if (con != null) {
-    	            try {
-    	                con.close();
-    	            } catch (Exception e) {
-    	            }
-    	        }
-    			//this.sendMessage("Text...");
-    		//}
-    	//};
-    			
+		//DB....
+		@SuppressWarnings("unused")
+		DataSource ds = DB.getDataSource();
+		Connection con = DB.getConnection();
+		
+		int ans1=0,ans2=0,ans3=0,ans4=0,ans5=0,ans6 = 0;
+		int ans1neu=0,ans2neu=0,ans3neu=0,ans4neu=0,ans5neu=0,ans6neu=0;
+		String ans1text="",ans2text="",ans3text="",ans4text="",ans5text="",ans6text="";
+		int answers = 0;
+		String msg = "";
+		
+		Statement stmt = null;
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+		
+		/*get answers*/
+		String res ="SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = " + id;
+		try{
+			ResultSet result = stmt.executeQuery(res);
+			while(result.next()){
+				if(result.getString("answer3").compareTo("") == 0){ 
+					answers = 2;
+				}else if(result.getString("answer4").compareTo("")  == 0){
+					answers = 3;
+				}else if(result.getString("answer5").compareTo("")  == 0){
+					answers = 4;
+				}else if(result.getString("answer6").compareTo("")  == 0){
+					answers = 5;
+				}else{
+					answers = 6;
+				}
+				ans1text = result.getString("answer1");
+				ans2text = result.getString("answer2");
+				ans3text = result.getString("answer3");
+				ans4text = result.getString("answer4");
+				ans5text = result.getString("answer5");
+				ans6text = result.getString("answer6");
+			}
+		}catch(Exception e){
+		}
+		
+		/* get answers from results */
+		String sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID =" + id;
+		try {
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				ans1 = rs.getInt("answer1");
+				ans2 = rs.getInt("answer2");
+				ans3 = rs.getInt("answer3");
+				ans4 = rs.getInt("answer4");
+				ans5 = rs.getInt("answer5");
+				ans6 = rs.getInt("answer6");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.toString());
+		}	
+		
+		/* get the message text */
+		sql= "SELECT messageText FROM messages WHERE id = " + id;
+		try{
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				msg = rs.getString("messageText");
+			}
+		}catch(SQLException esql){
+		}
+		
+		long start = System.currentTimeMillis();
+		long end = System.currentTimeMillis();
+		
+		boolean i = true;
+		while(end-start < 2000){
+			sql = "SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = " + id;
+			try {
+				ResultSet rs = stmt.executeQuery(sql);
+				while(rs.next()){
+					ans1neu = rs.getInt("answer1");
+					ans2neu = rs.getInt("answer2");
+					ans3neu = rs.getInt("answer3");
+					ans4neu = rs.getInt("answer4");
+					ans5neu = rs.getInt("answer5");
+					ans6neu = rs.getInt("answer6");
+				}
+			} catch (SQLException e) {
+				System.out.println(e.toString());
+			}
+			
+			if(ans1neu != ans1 || ans2neu != ans2 || ans3neu != ans3 || ans4neu != ans4 || ans5neu != ans5 || ans6neu != ans6 || i==true){
+				response.put("ans1text",ans1text);
+				response.put("ans1", ans1neu);
+				response.put("ans2text", ans2text);
+				response.put("ans2", ans2neu);
+				response.put("ans3text", ans3text);
+				response.put("ans3", ans3neu);
+				response.put("ans4text", ans4text);
+				response.put("ans4", ans4neu);
+				response.put("ans5text", ans5text);
+				response.put("ans5", ans5neu);
+				response.put("ans6text", ans6text);
+				response.put("ans6", ans6neu);
+				response.put("answers",answers);
+				response.put("msg", msg);
+				    					
+				
+				if(!i){
+					return created(response);
+				}
+			}
+			i = false;
+			end = System.currentTimeMillis();
+		}
+		
+		if (con != null) {
+            try {
+                con.close();
+            } catch (Exception e) {
+            }
+        }    			
     	return created(response);
     }
-
-    public static Result popup(Integer id, String pw) {
-    	return ok(views.html.popup.render(id, pw)); 
-    }
     
+    /* load groups for this user */
     @SuppressWarnings("unused")
 	public static Result loadGroups() {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int uid = Integer.parseInt(queryParameters.get("uid")[0]);
-    	
-    	// load the groups
     	
     	// openDB
     	DataSource ds = DB.getDataSource();
@@ -448,6 +413,7 @@ public class Application extends Controller {
     	return ok(Json.toJson(a));
     }
 
+    /* add a new Group to this users groupslist */
     @SuppressWarnings("unused")
 	public static Result addGroup() {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
@@ -495,11 +461,11 @@ public class Application extends Controller {
     	return ok();
     }
     
+    /* delete a group from this user */
     @SuppressWarnings("unused")
 	public static Result deleteGroup() {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int uid = Integer.parseInt(queryParameters.get("uid")[0]);
-    	//int id = Integer.parseInt(queryParameters.get("id")[0]);
     	String name = queryParameters.get("name")[0];
     	
     	// openDB
@@ -562,6 +528,7 @@ public class Application extends Controller {
     	return ok();
     }
     
+    /* set all answer-counts for this question to 0 */
     public static Result resetAnswers() {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
     	int id = Integer.parseInt(queryParameters.get("id")[0]);
@@ -613,6 +580,7 @@ public class Application extends Controller {
     	return ok(String.valueOf(res));
     }
     
+    /* check if username is already in use */
     @SuppressWarnings("unused")
 	public static Result checkUsername() {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
@@ -656,6 +624,7 @@ public class Application extends Controller {
     	return ok(String.valueOf(res));
     }
     
+    /* write this user to the DB */
     @SuppressWarnings("unused")
 	public static Result writeUserToDB() {
     	Map<String, String[]> queryParameters = request().body().asFormUrlEncoded();
@@ -693,4 +662,109 @@ public class Application extends Controller {
     	
     	return ok();
     }
+    
+    /* Creates all the tables which are needed to get started with this Application */
+   @SuppressWarnings("unused")
+public static Result dbInstall() {
+	   // openDB
+   		DataSource ds = DB.getDataSource();
+		Connection con = DB.getConnection();
+		
+		Statement stmt = null;
+		
+		try {
+			stmt = con.createStatement();
+		} catch (SQLException e2) {
+			System.out.println(e2.toString());
+		}
+   	
+		// create table 'answers'
+		String sql = "CREATE TABLE IF NOT EXISTS `answers` ("
+					 + "`id` int(11) NOT NULL AUTO_INCREMENT, "
+					 + "`messageID` int(11) DEFAULT NULL, "
+					 + "`answer1` char(30) COLLATE utf8_bin DEFAULT NULL, "
+				 	 + "`answer2` char(30) COLLATE utf8_bin DEFAULT NULL, "
+			 	 	 + "`answer3` char(30) COLLATE utf8_bin DEFAULT NULL, "
+		 	 		 + "`answer4` char(30) COLLATE utf8_bin DEFAULT NULL, "
+		 	 		 + "`answer5` char(30) COLLATE utf8_bin DEFAULT NULL, "
+		 	 		 + "`answer6` char(30) COLLATE utf8_bin DEFAULT NULL, "
+		 	 		 + "PRIMARY KEY (`id`)"
+		 	 		 + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=0 ;";
+		try {
+			int rs = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// create table 'groups'
+		sql = "CREATE TABLE IF NOT EXISTS `groups` ("
+			  + "`id` int(11) NOT NULL AUTO_INCREMENT, "
+			  + "`name` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '', "
+			  + "`userID` int(11) NOT NULL, "
+			  + "PRIMARY KEY (`id`) "
+			  + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=0 ;";
+		try {
+			int rs = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// create table 'messages'
+		sql = "CREATE TABLE IF NOT EXISTS `messages` ("
+			  + "`id` int(11) NOT NULL AUTO_INCREMENT, "
+			  + "`userID` int(11) DEFAULT NULL, "
+			  + "`messageText` char(250) COLLATE utf8_bin DEFAULT NULL, "
+			  + "`enabled` tinyint(1) NOT NULL, "
+			  + "`password` varchar(4) COLLATE utf8_bin NOT NULL, "	
+			  + "`messageGroup` varchar(50) COLLATE utf8_bin DEFAULT '', "
+			  + "PRIMARY KEY (`id`) "
+			  + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC AUTO_INCREMENT=0 ;";
+		try {
+			int rs = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// create table 'results'
+		sql = "CREATE TABLE IF NOT EXISTS `results` ("
+			  + "`id` int(11) NOT NULL AUTO_INCREMENT,"
+			  + "`messageID` int(11) NOT NULL, "
+			  + "`answer1` int(50) NOT NULL DEFAULT '0', "
+			  + "`answer2` int(50) NOT NULL DEFAULT '0', "
+			  + "`answer3` int(50) NOT NULL DEFAULT '0', "
+			  + "`answer4` int(50) NOT NULL DEFAULT '0', "
+			  + "`answer5` int(50) NOT NULL DEFAULT '0', "
+			  + "`answer6` int(50) NOT NULL DEFAULT '0', "
+			  + "PRIMARY KEY (`id`) "
+			  + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=0 ;";
+		try {
+			int rs = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+
+		}
+		
+		// create table 'users'
+		sql = "CREATE TABLE IF NOT EXISTS `users` ("
+			  + "`id` int(11) NOT NULL AUTO_INCREMENT, "
+			  + "`name` char(20) COLLATE utf8_bin NOT NULL DEFAULT '', "
+			  + "`password` char(20) COLLATE utf8_bin DEFAULT NULL, "
+			  + "`email` varchar(50) COLLATE utf8_bin NOT NULL, "
+			  + "PRIMARY KEY (`id`,`name`) "
+			  + ") ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=0 ;";
+		try {
+			int rs = stmt.executeUpdate(sql);
+		}catch (SQLException e1) {
+			System.out.println(e1.toString());
+		}
+		
+		// closeDB
+		if (con != null) {
+           try {
+               con.close();
+           } catch (Exception e) {
+           }
+       }
+   	
+		return ok("All tables were created!");
+   }
 }

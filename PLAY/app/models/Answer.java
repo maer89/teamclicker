@@ -2,9 +2,9 @@ package models;
 
 public class Answer {
 	
-	private int id = -1;
-	private int mID = -1;
-	private String text = "";
+	private int id = -1; // id
+	private int mID = -1;  // messageID
+	private String text = ""; // Text for this answer
 	
 	public Answer() {};
 	

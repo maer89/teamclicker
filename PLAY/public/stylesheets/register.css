@@ -13,9 +13,10 @@
 }
 
 #register_form{
-	height:800px;
-	width: 300px
-	position:fixed;
+	display: block;
+	height: 800px;
+	width: 300px;
+	position: fixed;
 	top:50%;
 	left:50%;
 	margin-left: -150px;

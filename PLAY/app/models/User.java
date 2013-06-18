@@ -36,7 +36,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 		// write to DB
-		// TODO: implement
+		// Function not in use at the moment
 	}
 	
 	public String getPassword() {
@@ -57,6 +57,7 @@ public class User {
         }
 	}
 	
+	/* check if username and password are correct */
 	public boolean checkUser() {
 		openDB();
 		
@@ -78,7 +79,7 @@ public class User {
 					return false;
 				}
 			} else {
-				// no User with this name in table
+				// no user with this name in table
 				return false;
 			}
 		}catch (SQLException e1) {

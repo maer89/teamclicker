@@ -3,8 +3,6 @@
 	width: 770px !important;
 	height: 240px;
 	margin-bottom: 2%;
-	/*margin-left:17.2%;
-	margin-right:17.2%;*/
 	margin-left:auto;
 	margin-right:auto;
 }
@@ -18,7 +16,6 @@
 	position: relative;
 	top: 0;
 	left: 0;
-	/*width: 900px;*/
 	height: 240px;
 	background: #fff;
 	margin: 0 0 0 0;
@@ -39,36 +36,6 @@
 .iosSlider .slider #item4 {
 	background: url(./img/bild4.jpg) no-repeat 50% 0;
 }
-
-/*.iosSlider .slider .item .text1 {
-	position: absolute;
-	top: 30px;
-	right: 150px;
-	opacity: 0;
-	filter: alpha(opacity:0);
-	background: #000;
-}
-
-.iosSlider .slider .item .text1 span {
-	color: #fff;
-	font: bold 50px/60px "Helvetica Neue",Helvetica,Arial,sans-serif;
-	padding: 0 8px;
-}
-
-.iosSlider .slider .item .text2 {
-	position: absolute;
-	top: 90px;
-	right: 0;
-	opacity: 0;
-	filter: alpha(opacity:0);
-	background: #000;
-	padding: 5px 7px 7px 7px;
-}
-
-.iosSlider .slider .item .text2 span {
-	color: #fff;
-	font: normal 16px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;	
-}*/
 
 .iosSliderButtons {
 	position: absolute;

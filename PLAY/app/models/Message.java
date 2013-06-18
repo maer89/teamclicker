@@ -13,7 +13,7 @@ import play.db.*;
 public class Message {
 	
 	public int id = -1;
-	public int uID = -1;
+	public int uID = -1; // userID
 	public String text = "";
 	public boolean enabled = false;
 	public String password = "";
@@ -84,9 +84,8 @@ public class Message {
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		}		
-		
-		// in Answers eigene Methode writeToDB (oder so ähnlich) implementieren
-		// und diese dann von hier mit den einzelnen Answer-Objekten aufrufen
+
+		// insert answers
 		sql = "INSERT INTO answers VALUES(null,"+id+",'"+ans1+"','"+ans2+"','"+ans3+"','"+ans4+"','"+ans5+"','"+ans6+"')";
 		try {
 			int rs = stmt.executeUpdate(sql);
@@ -156,44 +155,7 @@ public class Message {
 	public void updateAnswer(int id, String text) throws IOException{
 			this.answers.get(id).setText(text);
 	}
-	/*  has to be commented out because with this Json.toJson(Message) doesn't work anymore (don't know why)
-	public void setID(int id) {
-		this.id = id;
-	}
 	
-	public int getID() {
-		return this.id;
-	}
-	
-	public int getUID() {
-		return this.uID;
-	}
-	
-	public void setUID(int uID) {
-		this.uID = uID;
-	}
-	
-	public String getText() {
-		return text;
-	}
-	
-	public void setText(String text) {
-		this.text = text;
-	}
-	
-	public boolean getEnabled() {
-		return this.enabled;
-	}
-	
-	public String getPassword() {
-		return this.password;
-	}
-	
-	public void setPassword(String pw) {
-		this.password = pw;
-	}
-	
-	*/
 	public String getTextFromDB() {
 		String s = "";
 		openDB();
@@ -201,7 +163,6 @@ public class Message {
 		try {
 			stmt = con.createStatement();
 		} catch (SQLException e2) {
-			//System.out.println(e2.toString());
 		}
 		String sql = "SELECT messageText FROM messages WHERE id = " + this.id;
 		try{
@@ -210,7 +171,6 @@ public class Message {
 				s = rs.getString("messageText");
 			}
 		}catch(SQLException ex){
-			//System.out.println(ex.toString());
 		}
 		closeDB();
 		return s;
@@ -365,8 +325,8 @@ public class Message {
 		results.add(r);
 	}
 	
-	public int check() {
-		
+	/* check if message is enabled and if password and id are correct */
+	public int check() {		
 		openDB();
 		int res = -1;
 		Statement stmt = null;
@@ -397,6 +357,7 @@ public class Message {
 		return res;
 	}
 	
+	/* set answers for this message/question to 0 */
 	@SuppressWarnings("unused")
 	public void resetAnswers() {
 		openDB();

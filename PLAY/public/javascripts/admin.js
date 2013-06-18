@@ -31,7 +31,6 @@ $(document).ready(function(){
 			return;
 		}
 	} else {
-		alert("You're not allowed to enter this site!");
 		var page = "/";
 		window.open(page, "_self");
 		return;
