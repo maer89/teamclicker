@@ -6,8 +6,8 @@
 3. Manual
 
 ###Description###
-The clicker is a nice application to make surveys. You can free login and can create your own questions easily.
-Then you can people let answer a question and display the results in beautiful diagrams.
+The clicker is a nice application to make polls. You can free login and create your own questions easily.
+Then people can answer a question and display the results in beautiful diagrams.
 
 ###Getting started###
 * #####Requirements#####
