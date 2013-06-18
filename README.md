@@ -10,12 +10,12 @@ The clicker is a nice application to make surveys. You can free login and can cr
 Then you can people let answer a question and display the results in beautiful diagrams.
 
 ###Getting started###
-* Requirements
+* #####Requirements#####
   - For the php-version you only need a MySQL database and an apache server.
   - For the play-version you have to download and install the play-framework in version 2.1 as you can see 
   	[here](http://www.playframework.com/documentation/2.1.1/Installing). As in the php-version you also need 
 		a MySQL database.
-* Setup database	
+* #####Setup database#####	
 	- For the php-versions:
   	To setup your MySQL database you have to edit the database 
   	informations in DB_data.php like into the example: 
