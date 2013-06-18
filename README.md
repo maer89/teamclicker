@@ -52,8 +52,8 @@ Then you can people let answer a question and display the results in beautiful d
 
 ###Manual###
 * Registration
-	First register by enter your email, your username and your password. Please klick the button "Register"
-	to confirm your entys.
+First register by enter your email, your username and your password. Please klick the button "Register"
+to confirm your entys.
 * Login
 	Now you can login with your registered username and password.
 * Create question
