@@ -1,13 +1,21 @@
 <?php
-	/*Connect*/
-	mysql_connect("62.113.225.192","web90","maer89");
+	include 'DB_data.php';
 
-	/*select database*/
-	mysql_select_db("usr_web90_3");
+	// Connect with DB
+	$con = mysql_connect($ServerAdr, $UserName, $pw);
+	if(!$con) {
+		die('Cold not connect: ' .mysql_error());
+	}
+
+	mysql_select_db($database, $con);
 	
 	$id = $_POST['id'];
 	
 	$res = mysql_query("SELECT messageText FROM messages WHERE id = $id");
+	
+	if (!$res) {
+		die('Error: ' . mysql_error());
+	}
 	
 	while($data = mysql_fetch_array($res)){
 		$text = $data['messageText'];

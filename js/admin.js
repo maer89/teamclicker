@@ -1,6 +1,6 @@
 var editAnswers;
-var j = 3;					/*to add or delete edited answers*/
-var i = 3;					/*to add or delete answers*/
+var j = 3;					
+var i = 3;					
 var user_id;
 var msg;
 var startedit = 1;
@@ -12,8 +12,6 @@ var bg_qr;
 var start_qr = 1;
 var popupStatus = 0;
 var edit_Mode;
-var made_changes = false;
-
 $(document).ready(function(){	
 	// focus message edit element
 	document.getElementById("message").focus();
@@ -47,7 +45,7 @@ $(document).ready(function(){
 			$("#answers").append("<div id='answer" + i + "'><input type='text' name='answer" + i +"' id='answerText" + i + "' placeholder= 'Answer " + i + "' /></div>");
 			i++;
 		}else{
-			alert("max. Anzahl von Antworten erreicht");
+			//do nothing
 		}
 	});
 	
@@ -58,7 +56,7 @@ $(document).ready(function(){
 			$test="answer"+i;
 			$('div[id="'+$test+'"]').remove();
 		}else{
-			alert("Es können nicht mehr Antworten entfernt werden");
+			//do nothing
 		}
 	});
 	
@@ -85,7 +83,13 @@ $(document).ready(function(){
 
 	/*hide edit*/
 	$("#bg_trans_edit").click(function(){
-		close_edit();
+		$("#edit").css("display","none");
+		$("#bg_trans_edit").css("display","none");
+		$("body").css("overflow-y","visible");
+		edit = $("#edit").detach();
+		bg_edit = $("#bg_trans_edit").detach();
+		startedit = 0;
+		showedit = 0;
 	});
 	
 	/*close result*/
@@ -102,21 +106,6 @@ $(document).ready(function(){
 	})
 });
 
-/* hides the edit window */
-function close_edit() {
-	$("#edit").css("display","none");
-	$("#bg_trans_edit").css("display","none");
-	$("body").css("overflow-y","visible");
-	edit = $("#edit").detach();
-	bg_edit = $("#bg_trans_edit").detach();
-	startedit = 0;
-	showedit = 0;
-	
-	if (made_changes) {
-		updateTable();
-	}
-}
-
 /* logout */
 function logout() {
 	// delete cookie
@@ -130,7 +119,6 @@ function logout() {
 function saveMessage(){
 	var text = document.getElementById("message").value;
 	var userID = user_id;
-	var group = document.getElementById("groupsList").options[document.getElementById("groupsList").selectedIndex].text;
 	var ans1 = "";
 	var ans2 = "";
 	var ans3 = "";
@@ -157,7 +145,6 @@ function saveMessage(){
 		ans4 = document.getElementById("answerText4").value;
 		ans5 = document.getElementById("answerText5").value;
 	}else if(i-1 == 6){
-		alert("hier");
 		ans1 = document.getElementById("answerText1").value;
 		ans2 = document.getElementById("answerText2").value;
 		ans3 = document.getElementById("answerText3").value;
@@ -177,13 +164,10 @@ function saveMessage(){
 			'ans3': ans3,
 			'ans4': ans4,
 			'ans5': ans5,
-			'ans6': ans6,
-			'group': group
+			'ans6': ans6
 		},
 		success: function(data) {
-			//alert("message saved");
 			document.getElementById("message").value = "";
-			document.getElementById("groupsList").selectedIndex = 0;
 			
 			if(i-1 == 2){
 				document.getElementById("answerText1").value = "";
@@ -235,7 +219,6 @@ function enable(num){
 		},
 		success: function(data) {
 			var data_field = $.parseJSON(data);
-			alert("message enabled");
 			updateTable();
 		}
 	});
@@ -251,7 +234,6 @@ function disable(num){
 		},
 		success: function(data) {
 			var data_field = $.parseJSON(data);
-			alert("message disabled");
 			updateTable();
 		}
 	});
@@ -268,7 +250,6 @@ function deleteMessage(num){
 		},
 		success: function(data) {
 			var data_field = $.parseJSON(data);
-			alert("message delete");
 			updateTable();
 		}
 	});
@@ -282,7 +263,7 @@ function resetAnswers(num){
 		url:'../PHP/reset.php',
 		data:{'id': messageID},
 		success: function(data){
-			alert("Answers for message " + messageID + " reseted");
+			//do nothing
 		}
 	});
 }
@@ -300,7 +281,7 @@ function editMessage(num){
 	}
 
 	var messageID = document.getElementById("id"+num).innerHTML;
-	var group;
+	var group = document.getElementById("id0").parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[2].outerText;
 	var message;
 	
 	$("#edit").append("<form action='edit.php' method='POST'>" +
@@ -320,18 +301,14 @@ function editMessage(num){
 		},
 		success: function(data) {
 			message = $.parseJSON(data);
-			$("#edit").show();
 			document.getElementById("messageText").innerHTML = message;
-			group = data.group;
 		}
 	});
 	
-	loadGroups();
-	
-	/*var idx;
+	var idx;
 	$.ajax({
 		type: 'POST',
-		url: '../PHP/loadGroups.php',
+		url: '../PHP/loadGroups',
 		data: {'uid': user_id},
 		success: function (data){
 			var content = build_groups(data);
@@ -346,7 +323,7 @@ function editMessage(num){
 				}
 			}
 		}
-	});*/
+	});
 	
 	$.ajax({
 		type: 'POST',
@@ -363,37 +340,37 @@ function editMessage(num){
 			if(data_field.ans3 == ""){
 				//do nothing
 			}else if(data_field.ans4 == ""){
-				$("#editanswers").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#edit").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
 				document.getElementById("editedanswer3").value = data_field.ans3;
 				editAnswers = 3;
 			}else if(data_field.ans5 == ""){
-				$("#editanswers").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#editanswers").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#edit").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#edit").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
 				document.getElementById("editedanswer3").value = data_field.ans3;
 				document.getElementById("editedanswer4").value = data_field.ans4;
 				editAnswers = 4;
 			}else if(data_field.ans6 == ""){
-				$("#editanswers").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#editanswers").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
-				$("#editanswers").append("<div id='edit5'><input type='text' id='editedanswer5' name='editedanswer5'/></div>");
+				$("#edit").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#edit").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#edit").append("<div id='edit5'><input type='text' id='editedanswer5' name='editedanswer5'/></div>");
 				document.getElementById("editedanswer3").value = data_field.ans3;
 				document.getElementById("editedanswer4").value = data_field.ans4;
 				document.getElementById("editedanswer5").value = data_field.ans5;
 				editAnswers = 5;
 			}else{
-				$("#editanswers").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
-				$("#editanswers").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
-				$("#editanswers").append("<div id='edit5'><input type='text' id='editedanswer5' name='editedanswer5'/></div>");
-				$("#editanswers").append("<div id='edit6'><input type='text' id='editedanswer6' name='editedanswer6'/></div>");
+				$("#edit").append("<div id='edit3'><input type='text' id='editedanswer3' name='editedanswer3'/></div>");
+				$("#edit").append("<div id='edit4'><input type='text' id='editedanswer4' name='editedanswer4'/></div>");
+				$("#edit").append("<div id='edit5'><input type='text' id='editedanswer5' name='editedanswer5'/></div>");
+				$("#edit").append("<div id='edit6'><input type='text' id='editedanswer6' name='editedanswer6'/></div>");
 				document.getElementById("editedanswer3").value = data_field.ans3;
 				document.getElementById("editedanswer4").value = data_field.ans4;
 				document.getElementById("editedanswer5").value = data_field.ans5;
 				document.getElementById("editedanswer6").value = data_field.ans6;
 				editAnswers = 6;
 			}
-			$("#edit").append("</div><div class='btn-group' ><input class='btn' type='button' onclick='addeditanswer()' id='addeditanswer' value='add answer' />"+
+			$("#edit").append("</div><input class='btn' type='button' onclick='addeditanswer()' id='addeditanswer' value='add answer' />"+
 							"<input class='btn' type='button' onclick='deleditanswer()' id='deleditanswer' value='delete answer' />"+
-							"<input class='btn' type='button' onclick='saveChanges("+num+")' value='save changes' /></div></form>");
+							"<input class='btn' type='button' onclick='saveChanges("+num+")' value='save changes' /></form>");
 			
 			$("#edit").css("display","block");
 			$("#bg_trans_edit").css("display","block");
@@ -411,11 +388,8 @@ function addeditanswer(){
 	if(j <= 6 ){
 		$("#editanswers").append("<div id='edit"+j+"'><input type='text' id='editedanswer" + j +"' name='editedanswer" + j +"' placeholder='Answer " + j + "' /></div>");
 		j++;
-		if(editAnswers < 6){
-			editAnswers++;
-		}
 	}else{
-		alert("max. Anzahl von Antworten erreicht");
+		//do nothing
 	}
 }
 /*delete edit answer*/
@@ -423,12 +397,9 @@ function deleditanswer(){
 	if(j > 3){	
 		j--;
 		$test="edit"+j;
-		if(editAnswers > 2){
-			editAnswers--;
-		}
 		$('div[id="'+$test+'"]').remove();
 	}else{
-		alert("Es können nicht mehr Antworten entfernt werden");
+		//do nothing
 	}
 }
 
@@ -436,7 +407,6 @@ function deleditanswer(){
 function saveChanges(num){
 	var messageID = document.getElementById("id"+num).innerHTML;
 	var text = document.getElementById("messageText").value;
-	var group = document.getElementById('messageGroups').options[document.getElementById('messageGroups').selectedIndex].text;
 	var ans1 = "";
 	var ans2 = "";
 	var ans3 = "";
@@ -482,22 +452,10 @@ function saveChanges(num){
 			'ans3': ans3,
 			'ans4': ans4,
 			'ans5': ans5,
-			'ans6': ans6,
-			'group': group
+			'ans6': ans6
 		},
 		success: function(data) {
 			var data_field = $.parseJSON(data);
-			//alert("changes saved");
-			
-			//hide edit window
-			$("#edit").css("display","none");
-			$("#bg_trans_edit").css("display","none");
-			$("body").css("overflow-y","visible");
-			edit = $("#edit").detach();
-			bg_edit = $("#bg_trans_edit").detach();
-			startedit = 0;
-			showedit = 0;
-			
 			updateTable();
 		}
 	});
@@ -524,11 +482,11 @@ function updateTable(){
 					group = data_field[i].messageGroup;
 					if(firstTime == 1){
 						content = content + "<h3>" + group + "</h3><div><p><table border='1' class='table table-hover'>"+
-						"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>reset</b></td><td><b>password</b></td><td><b>QR-Code</b></td><td><b>result</b></td></tr>";
+						"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>Enable</b></td><td><b>Edit</b></td><td><b>Delete</b></td><td><b>Reset</b></td><td><b>Password</b></td><td><b>Link</b></td><td><b>QR-Code</b></td><td><b>Result</b></td></tr>";
 						firstTime = 0;
 					}else{
 						content = content + "</table></p></div><h3>" + group + "</h3><div><p><table border='1' class='table table-hover'>"+
-						"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>enable</b></td><td><b>edit</b></td><td><b>delete</b></td><td><b>reset</b></td><td><b>password</b></td><td><b>QR-Code</b></td><td><b>result</b></td></tr>";
+						"<tr><td><b>ID</b></td><td><b>Text</b></td><td><b>Enable</b></td><td><b>Edit</b></td><td><b>Delete</b></td><td><b>Reset</b></td><td><b>Password</b></td><td><b>Link</b></td><td><b>QR-Code</b></td><td><b>Result</b></td></tr>";
 					}
 				}
 				
@@ -545,14 +503,22 @@ function updateTable(){
 					"<td><a onclick='deleteMessage("+i+")'><i class='icon-trash'></i></a></td>" + 
 					"<td><a onclick='resetAnswers("+i+")'><i class='icon-refresh'></i></a></td>" +
 					"<td>"+data_field[i].pw+"</td>";
+
+				if (data_field[i].enable != 0) {
+					content = content + "<td><a href='" + window.location.origin + "/clicker/HTML/question.html?id=" + data_field[i].id + "&pw=" + data_field[i].pw
+							  + "' >" + window.location.origin + "/clicker/HTML/question.html?id=" + data_field[i].id + "&pw=" + data_field[i].pw
+							  + "</a></td>";
+				} else {
+					content = content + "<td> - </td>";
+				}
 					
 				if(data_field[i].enable != 0){
-					content = content + "<td><button id='qr" + data_field[i].id + "/" + data_field[i].pw + "' onclick='qr_code(id)' style='visibility: visible' >Generate QR-Code</button></td>";
+					content = content + "<td><a id='qr" + data_field[i].id + "/" + data_field[i].pw + "' onclick='qr_code(id)' style='visibility: visible' ><i class='icon-qrcode'></i></a></td>";
 				}else{
-					content = content + "<td><button id='qr" + data_field[i].id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' >Generate QR-Code</button></td>";
+					content = content + "<td><a id='qr" + data_field[i].id + "/" + "' onclick='qr_code(id)' style='visibility: hidden' ><i class='icon-qrcode'></i></a></td>";
 				}	
 				
-				content = content + "<td><button onclick='result("+i+")'>show result</button></td></tr>";
+				content = content + "<td><a onclick='result("+i+")'><i class='icon-align-left'></i></a></td></tr>";
 			}
 			
 			
@@ -565,7 +531,7 @@ function updateTable(){
 											active:false});
 		}
 	}).error(function(){
-		alert("hier");
+		alert("Error updateTable");
 	});
 }
 
@@ -597,9 +563,8 @@ function qr_code(id) {
 	var canvas = document.getElementsByTagName("canvas")[0];
 	var img    = canvas.toDataURL("image/png");
 	qr.innerHTML = "<img id='qrImg' src='" + img + "'/>";
-	//<div><button onclick='download_qr()' id='qrButton'>Download Picture</button></div>"
 	
-	loadPopup(); // function show popup
+	loadPopup();
 }
 
 function loadPopup() {
@@ -608,14 +573,12 @@ function loadPopup() {
 		$("#qrcode_div").css("display","block");
 	    $("#bg_trans_qr").css("display","block");
 	    $("body").css("overflow-y","hidden");
-	    //$("#backgroundPopup").css("opacity", "0.7");
 	    popupStatus = 1;
 	}
 }
 
 function disablePopup() {
     if(popupStatus == 1) { 
-    	// hide QR
         $("#qrcode_div").css("display","none");
         $("#bg_trans_qr").css("display","none");
         $("body").css("overflow-y","visible");
@@ -635,22 +598,7 @@ function loadGroups() {
 		data: {'uid': user_id},
 		success:function(data){
 				var content = build_groups(data);
-				if (edit_Mode) {
-					$("#messageGroupsDiv").empty();
-					last_num = num;
-					var data_length = data.length;
-					$("#messageGroupsDiv").append(content);
-					var opt = document.getElementById('messageGroups').options;
-					for(var i = 0; i < data_length; i++) {
-						if (opt[i].text == group) {
-							$("#messageGroups").prop("selectedIndex", i);
-							break;
-						}
-					}
-				} else {	
-					$("#groups").empty();
-					$("#groups").append(content);
-				}
+				$("#groups").append(content);
 		}
 	});
 }
@@ -664,14 +612,12 @@ function addGroup() {
 		data:{'uid': user_id,
 			 'groupName': groupName},
 		success:function(data){
-				alert("Group '" + groupName + "' added!");
 				loadGroups();
 		}
 	});
 }
 
 function deleteSelectedGroup() {
-	//var groupID = groupList[document.getElementById('groupsList').selectedIndex];
 	var groupName =  document.getElementById('groupsList').options[document.getElementById('groupsList').selectedIndex].text;
 	var res = confirm("Are you sure you want to the delete this group with all it's questions?");
 	if (res) {
@@ -701,7 +647,6 @@ function build_groups(data) {
 	}
 	for (var i = 0; i < data_field.length; i++) {
 		content = content + "<option>" + data_field[i].name + "</option>";
-		//groupList[i] = data[i].id;
 	}
 	content = content + "</select><div class='btn-group'>"
 		+"<input class='btn' type='button' id='addAGroup' onclick='addGroup()' value='Add new group' />"

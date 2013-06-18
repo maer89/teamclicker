@@ -29,12 +29,10 @@ $(function() {
 	
 	/* Register */
     $("#btn_register").click(function(event){
-    	// show form for registration
     	showRegForm();
      });
     
     $("#bg_trans_register").click(function(){
-    	// hide form for registration
 		hideRegForm();
 	});
     
@@ -45,7 +43,6 @@ $(function() {
 	});
     
     $("#btn_reg_cancel").click(function(){
-    	// hide form for registration
 		hideRegForm();
 	});
     
@@ -72,7 +69,6 @@ $(function() {
     		alert("Passwords should be equal!");
     	}
 	});
-    /* Register End */
 });
 
 function login_ftn(user, pw) {
@@ -86,7 +82,6 @@ function login_ftn(user, pw) {
    			success: function(data) {
 				var data_field = $.parseJSON(data);
 				if ((data_field != -1) && (data_field >= 1)) {
-					alert('Welcome ' + user + '!');
   					// set cookie for login
 					var expire = new Date();
 					var in1hour = expire.getTime() + (1 * 60 * 60 * 1000);
@@ -146,7 +141,6 @@ function checkEmail(email) {
         success: function(data) {
 			data_field = $.parseJSON(data);
         	res = data_field[0].res;
-				alert("test: " + res);
         }
 	}).error(function() {
 		alert("Error on checking email for registration!");

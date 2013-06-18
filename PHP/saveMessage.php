@@ -1,9 +1,13 @@
 <?php
-	/*Connect*/
-	mysql_connect("62.113.225.192","web90","maer89");
-	
-	/*select database*/
-	mysql_select_db("usr_web90_3");
+	include 'DB_data.php';
+
+	// Connect with DB
+	$con = mysql_connect($ServerAdr, $UserName, $pw);
+	if(!$con) {
+		die('Cold not connect: ' .mysql_error());
+	}
+
+	mysql_select_db($database, $con);
 	
 	$message = $_POST['text'];
 	$messageID;
@@ -20,6 +24,10 @@
 	mysql_query("INSERT INTO messages VALUES"." (null,$userID,'$message',0,'','$group')");
 	
 	$res = mysql_query("SELECT id FROM messages WHERE messageText = '$message' AND userID = $userID");
+	
+	if (!$res) {
+		die('Error: ' . mysql_error());
+	}
 	
 	while($data = mysql_fetch_array($res)){
 		$messageID = $data['id'];

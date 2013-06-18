@@ -1,9 +1,13 @@
 <?php
-	/*Connect*/
-	mysql_connect("62.113.225.192","web90","maer89");
+	include 'DB_data.php';
 
-	/*select database*/
-	mysql_select_db("usr_web90_3");
+	// Connect with DB
+	$con = mysql_connect($ServerAdr, $UserName, $pw);
+	if(!$con) {
+		die('Cold not connect: ' .mysql_error());
+	}
+
+	mysql_select_db($database, $con);
 	
 	$id = $_POST['id'];
 	$text = $_POST['text'];
@@ -16,6 +20,10 @@
 	$group = $_POST['group'];
 	
 	$res = mysql_query("UPDATE messages SET messageText = '$text', messageGroup = '$group' WHERE id = $id");
+	
+	if (!$res) {
+		die('Error: ' . mysql_error());
+	}
 	
 	mysql_query("UPDATE answers SET answer1='$ans1',answer2='$ans2',answer3='$ans3',answer4='$ans4',answer5='$ans5',answer6='$ans6' WHERE messageID = $id");
 	

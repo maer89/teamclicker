@@ -1,9 +1,13 @@
 <?php
-	/*Connect*/
-	mysql_connect("62.113.225.192","web90","maer89");
+	include 'DB_data.php';
 
-	/*select database*/
-	mysql_select_db("usr_web90_3");
+	// Connect with DB
+	$con = mysql_connect($ServerAdr, $UserName, $pw);
+	if(!$con) {
+		die('Cold not connect: ' .mysql_error());
+	}
+
+	mysql_select_db($database, $con);
 	
 	$id = $_POST['id'];
 	$answer1;
@@ -14,6 +18,10 @@
 	$answer6;
 	
 	$res = mysql_query("SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = $id");
+	
+	if (!$res) {
+		die('Error: ' . mysql_error());
+	}
 	
 	while($data = mysql_fetch_array($res)){
 		$answer1 = $data['answer1'];

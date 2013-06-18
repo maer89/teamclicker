@@ -1,5 +1,6 @@
 var q_id = "";
 var q_pw = "";
+
 $(function() {
 	var url = document.URL;
 	var pos1 = url.indexOf("=")
@@ -28,6 +29,7 @@ $(function() {
 	storage.set("q_pw", "");
 });
 
+
 function check_Question(q_id, q_pw) {
   	$.ajax({
 			type: 'POST',
@@ -52,7 +54,6 @@ function check_Question(q_id, q_pw) {
 						window.open(page, "_self");
 						break;
 					case 1:
-						//alert('Question found! Click \'ok\' to see it.');
 	  					get_answers(q_id);
 						break;
 					default:
@@ -74,7 +75,6 @@ function get_answers(q_id) {
    			success: function(data) {
 				var data_field = $.parseJSON(data);
 				var content = "<h3>" + data_field[0].message + " </h3>"
-						  + "<hr class='hrboxquestion' >"
 						  + "<div class='btn-group btn-group-vertical ansbutton'>"
 						  + "<button class='btn btn-block' id=\"ans1\" onclick=\"sendAnswer(id)\">a: " + data_field[0].ans1 + "</button>"
 						  + "<button class='btn btn-block' id=\"ans2\" onclick=\"sendAnswer(id)\">b: " + data_field[0].ans2 + "</button>"
@@ -110,7 +110,6 @@ function sendAnswer(id) {
 				'q_id': q_id
 			},
    			success: function(data) {
-				alert("Vote successful!");
 				var expire = new Date();
 				var in12hours = expire.getTime() + (12 * 60 * 60 * 1000);
 				expire.setTime(in12hours);
@@ -123,3 +122,4 @@ function sendAnswer(id) {
 		alert("Error sending answer!");
 	});
 }
+

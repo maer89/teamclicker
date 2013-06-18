@@ -1,9 +1,13 @@
 <?php
-	/*Connect*/
-	mysql_connect("62.113.225.192","web90","maer89");
-
-	/*select database*/
-	mysql_select_db("usr_web90_3");
+	include 'DB_data.php';
+	
+	// Connect with DB
+	$con = mysql_connect($ServerAdr, $UserName, $pw);
+	if(!$con) {
+		die('Cold not connect: ' .mysql_error());
+	}
+	
+	mysql_select_db($database,$con);
 	
 	$userid = $_POST["uid"];
 	$name = $_POST["groupName"];
@@ -16,6 +20,9 @@
 	
 	if( $rows == 0){
 		$sql = mysql_query("INSERT INTO groups (name, userID) VALUES ('".$name."', $userid )");
+		if(!$sql){
+			die('Error: ' . mysql_error());
+		}
 	}
 	
 	echo json_encode($result);

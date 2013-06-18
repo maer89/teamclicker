@@ -8,14 +8,19 @@
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
   	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	
 	<!--Google Chart Tool-->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	
 	<!-- QR-Code -->
 	<script type="text/javascript" src="../js/jquery.qrcode-0.2.min.js"></script>
+	
 	<!-- storage.js -->
 	<script type="text/javascript" src="../js/storage.js"></script>
+	
 	<!--admin.js-->
 	<script type="text/javascript" src="../js/admin.js"></script>
+	
 	<!--resultadmin.js-->
 	<script type="text/javascript" src="../js/resultadmin.js"></script>
 	

@@ -287,3 +287,11 @@ ul{
 	background: #ffffff !important;
 	height: auto !important;
 }
+
+/* content */
+.index_content{
+	margin-left: 8%;
+	margin-top: 5%;
+	margin-right: 5%;
+	font-size: 18px;
+}

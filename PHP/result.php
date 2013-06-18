@@ -1,12 +1,13 @@
 <?php
-	
-	//header('Content-type: application/json');
+	include 'DB_data.php';
 
-	/*Connect*/
-	mysql_connect("62.113.225.192","web90","maer89");
-		
-	/*select database*/
-	mysql_select_db("usr_web90_3");
+	// Connect with DB
+	$con = mysql_connect($ServerAdr, $UserName, $pw);
+	if(!$con) {
+		die('Cold not connect: ' .mysql_error());
+	}
+
+	mysql_select_db($database, $con);
 	
 	$answers; 
 	$ans1;
@@ -64,8 +65,6 @@
 		$msg = $data['messageText'];
 	}
 	
-	
-	/*timestamp*/
 	$start = mktime();
 	$end = mktime();
 	$i = true;
@@ -95,12 +94,12 @@
 							"ans6"=>$ans6neu,
 							"ans6text"=>$ans6text,
 							"num"=>$answers,
-							"msg"=>$msg,
-							"space"=>$space);
+							"msg"=>$msg);
 			echo json_encode($response);
 		} 
 		$i = false;
 		
 		$end = mktime();
 	}
+	
 ?>

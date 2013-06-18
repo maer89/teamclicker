@@ -40,7 +40,7 @@
 					<h3>Login</h3>
 				</div>
 				<div class="span4 box menubox">
-					<div class="menuform"> 
+					<div class="menuform">
 						<p>
 							<label for="user">User</label>
 							<input type="text" id="user" />
@@ -50,7 +50,7 @@
 							<input type="password" id="password"/>
 						</p>
 						<p>
-							<div class="btn-group">
+							<div class="btn-group form">
 								<button class="btn" id="btn_login">Login</button>
 								<button class="btn" id="btn_register">Register</button>
 							</div>
@@ -60,36 +60,35 @@
 			</div>
 		</div>
 		
-		<div id="register_form">
+		<div id="register_form" style="display: hidden;">
 			<div class="span4 offset4" >
 				<div class="span4 headline">
-					<h3>Question</h3>
+					<h3>Register</h3>
 				</div>
 				<div class="span4 box registerbox">
-					<div>
+					<p>
+						<label for="reg_email">E-Mail:</label>
+						<input type="text" id="reg_email" />
+					</p>
+					<p>
+						<label for="reg_username">Username:</label>
+						<input type="text" id="reg_username" />
+					</p>
+					<p>
+						<label for="reg_pas">Password:</label>
+						<input type="password" id="reg_pas" />
+					</p>
+					<p>
+						<label for="reg_pas2">Repeat password:</label>
+						<input type="password" id="reg_pas2" />
+					</p>
+					<div class="btn-group">
 						<p>
-							<label for="reg_email">E-Mail:</label>
-							<input type="text" id="reg_email" />	
-						</p>
-						<p>
-							<label for="reg_username">Username:</label>
-							<input type="text" id="reg_username" />
-						</p>
-						<p>
-							<label for="reg_pas">Password:</label>
-							<input type="text" id="reg_pas" />
-						</p>
-						<p>
-							<label for="reg_pas2">Repeat password:</label>
-							<input type="text" id="reg_pas2" />
-						</p>
-						<p>
-							<div class="btn-group">
-								<button class='btn' id='btn_reg_confirm'>Register</button>
-								<button class='btn' id='btn_reg_cancel'>Cancel</button>
-							</div>
+							<button class='btn' id='btn_reg_confirm'>Register</button>
+							<button class='btn' id='btn_reg_cancel'>Cancel</button>
 						</p>
 					</div>
+					<p></p>
 				</div>
 			</div>
 		</div>
