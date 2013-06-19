@@ -119,6 +119,7 @@ function logout() {
 function saveMessage(){
 	var text = document.getElementById("message").value;
 	var userID = user_id;
+	var group = document.getElementById("groupsList").options[document.getElementById("groupsList").selectedIndex].text;
 	var ans1 = "";
 	var ans2 = "";
 	var ans3 = "";
@@ -164,7 +165,8 @@ function saveMessage(){
 			'ans3': ans3,
 			'ans4': ans4,
 			'ans5': ans5,
-			'ans6': ans6
+			'ans6': ans6,
+			'group': group
 		},
 		success: function(data) {
 			document.getElementById("message").value = "";
@@ -281,7 +283,7 @@ function editMessage(num){
 	}
 
 	var messageID = document.getElementById("id"+num).innerHTML;
-	var group = document.getElementById("id0").parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[2].outerText;
+	var group = document.getElementById("id"+num).parentNode.parentNode.parentNode.parentNode.parentNode.childNodes[2].outerText;
 	var message;
 	
 	$("#edit").append("<form action='edit.php' method='POST'>" +
@@ -308,7 +310,7 @@ function editMessage(num){
 	var idx;
 	$.ajax({
 		type: 'POST',
-		url: '../PHP/loadGroups',
+		url: '../PHP/loadGroups.php',
 		data: {'uid': user_id},
 		success: function (data){
 			var content = build_groups(data);

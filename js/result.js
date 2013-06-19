@@ -42,77 +42,77 @@ function connect(){
 	$.ajax({
 		type : 'POST',
 		url : '../PHP/result.php',
+		dataType:'json',
 		data : {
 			'id': id
 		},
 		success : function(data) {
 		
 			$("#result").empty();
-			var data_field = $.parseJSON(data);
+			//var data_field = $.parseJSON(data);
 			
-			
-			if(data_field.num == 2){
-				$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": " + data_field.ans2 + "</p>");
-				ans1 = data_field.ans1;
-				ans2 = data_field.ans2;
-				ans1text = data_field.ans1text;
-				ans2text = data_field.ans2text;
+			if(data.num == 2){
+				$("#result").append("<p>" + data.ans1text + ": " + data.ans1 + "</p><p>" + data.ans2text + ": " + data.ans2 + "</p>");
+				ans1 = data.ans1;
+				ans2 = data.ans2;
+				ans1text = data.ans1text;
+				ans2text = data.ans2text;
 				num = 2;
-			}else if(data_field.num == 3){
-				$("#result").append("<p>" + data_field.ans1text + ": "+ data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + "</p>");
-				ans1 = data_field.ans1;
-				ans2 = data_field.ans2;
-				ans3 = data_field.ans3;
-				ans1text = data_field.ans1text;
-				ans2text = data_field.ans2text;
-				ans3text = data_field.ans3text;
+			}else if(data.num == 3){
+				$("#result").append("<p>" + data.ans1text + ": "+ data.ans1 + "</p><p>" + data.ans2text + ": "  + data.ans2 + "</p><p>" + data.ans3text + ": " + data.ans3 + "</p>");
+				ans1 = data.ans1;
+				ans2 = data.ans2;
+				ans3 = data.ans3;
+				ans1text = data.ans1text;
+				ans2text = data.ans2text;
+				ans3text = data.ans3text;
 				num = 3;
-			}else if(data_field.num == 4){
-				$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + 
-									"</p><p>" + data_field.ans4text + ": " + data_field.ans4 + "</p>");
-				ans1 = data_field.ans1;
-				ans2 = data_field.ans2;
-				ans3 = data_field.ans3;
-				ans4 = data_field.ans4;
-				ans1text = data_field.ans1text;
-				ans2text = data_field.ans2text;
-				ans3text = data_field.ans3text;
-				ans4text = data_field.ans4text;
+			}else if(data.num == 4){
+				$("#result").append("<p>" + data.ans1text + ": " + data.ans1 + "</p><p>" + data.ans2text + ": "  + data.ans2 + "</p><p>" + data.ans3text + ": " + data.ans3 + 
+									"</p><p>" + data.ans4text + ": " + data.ans4 + "</p>");
+				ans1 = data.ans1;
+				ans2 = data.ans2;
+				ans3 = data.ans3;
+				ans4 = data.ans4;
+				ans1text = data.ans1text;
+				ans2text = data.ans2text;
+				ans3text = data.ans3text;
+				ans4text = data.ans4text;
 				num = 4;
-			}else if(data_field.num == 5){
-				$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + 
-									"</p><p>" + data_field.ans4text + ": "+ data_field.ans4 + "</p><p>" + data_field.ans5text + ": " + data_field.ans5 + "</p>");
-				ans1 = data_field.ans1;
-				ans2 = data_field.ans2;
-				ans3 = data_field.ans3;
-				ans4 = data_field.ans4;
-				ans5 = data_field.ans5;
-				ans1text = data_field.ans1text;
-				ans2text = data_field.ans2text;
-				ans3text = data_field.ans3text;
-				ans4text = data_field.ans4text;
-				ans5text = data_field.ans5text;
+			}else if(data.num == 5){
+				$("#result").append("<p>" + data.ans1text + ": " + data.ans1 + "</p><p>" + data.ans2text + ": "  + data.ans2 + "</p><p>" + data.ans3text + ": " + data.ans3 + 
+									"</p><p>" + data.ans4text + ": "+ data.ans4 + "</p><p>" + data.ans5text + ": " + data.ans5 + "</p>");
+				ans1 = data.ans1;
+				ans2 = data.ans2;
+				ans3 = data.ans3;
+				ans4 = data.ans4;
+				ans5 = data.ans5;
+				ans1text = data.ans1text;
+				ans2text = data.ans2text;
+				ans3text = data.ans3text;
+				ans4text = data.ans4text;
+				ans5text = data.ans5text;
 				num = 5;
-			}else if(data_field.num == 6){
-				$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p>" + data_field.ans3text + ": " + data_field.ans3 + 
-									"</p><p>" + data_field.ans4text + ": " + data_field.ans4 + "</p><p>" + data_field.ans5text + ": " + data_field.ans5 + "</p><p>" + data_field.ans6text + ": " + data_field.ans6 + "</p>");
-				ans1 = data_field.ans1;
-				ans2 = data_field.ans2;
-				ans3 = data_field.ans3;
-				ans4 = data_field.ans4;
-				ans5 = data_field.ans5;
-				ans6 = data_field.ans6;
-				ans1text = data_field.ans1text;
-				ans2text = data_field.ans2text;
-				ans3text = data_field.ans3text;
-				ans4text = data_field.ans4text;
-				ans5text = data_field.ans5text;
-				ans6text = data_field.ans6text;
+			}else if(data.num == 6){
+				$("#result").append("<p>" + data.ans1text + ": " + data.ans1 + "</p>" + data.ans2text + ": "  + data.ans2 + "</p>" + data.ans3text + ": " + data.ans3 + 
+									"</p><p>" + data.ans4text + ": " + data.ans4 + "</p><p>" + data.ans5text + ": " + data.ans5 + "</p><p>" + data.ans6text + ": " + data.ans6 + "</p>");
+				ans1 = data.ans1;
+				ans2 = data.ans2;
+				ans3 = data.ans3;
+				ans4 = data.ans4;
+				ans5 = data.ans5;
+				ans6 = data.ans6;
+				ans1text = data.ans1text;
+				ans2text = data.ans2text;
+				ans3text = data.ans3text;
+				ans4text = data.ans4text;
+				ans5text = data.ans5text;
+				ans6text = data.ans6text;
 				num = 6;
 			}else{
 				//do nothing
 			}
-			msg = data_field.msg;
+			msg = data.msg;
 			drawChart();
 		},
 		complete : function(response) {

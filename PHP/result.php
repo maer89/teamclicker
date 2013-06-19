@@ -23,10 +23,9 @@
 	$ans6;
 	$ans6text;
 	$id = $_POST['id'];
-	$space = str_repeat(" ",5000);
 	
 	/*get answers*/
-	$res = mysql_query("SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = ".intval($id));
+	$res = mysql_query("SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = '$id'");
 	
 	while($data = mysql_fetch_array($res)){
 		if($data['answer3'] == ""){
@@ -68,6 +67,7 @@
 	$start = mktime();
 	$end = mktime();
 	$i = true;
+	$file = fopen("test.txt",w);
 	while(($end-$start) <  2){
 		$numb = mysql_query("SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = '$id'");
 	
@@ -80,7 +80,7 @@
 			$ans6neu = $data['answer6'];
 		}
 		
-		if($ans1neu > $ans1 || $ans2neu > $ans2 || $ans3neu > $ans3 || $ans4neu > $ans4 || $ans5neu > $ans5 || $ans6neu > $ans6 || $i==true){
+		if(($ans1neu != $ans1) || ($ans2neu != $ans2) || ($ans3neu != $ans3) || ($ans4neu != $ans4) || ($ans5neu != $ans5) || ($ans6neu != $ans6) || ($i)){
 			$response = array("ans1"=>$ans1neu, 
 							"ans1text"=>$ans1text,
 							"ans2"=>$ans2neu,
@@ -95,11 +95,16 @@
 							"ans6text"=>$ans6text,
 							"num"=>$answers,
 							"msg"=>$msg);
+			fwrite($file,json_encode($response)."\n");
+			//$x = "[".json_encode($response)."]";
+			//echo $x;
 			echo json_encode($response);
 		} 
+
 		$i = false;
 		
 		$end = mktime();
+		//fclose($file);
 	}
 	
 ?>
