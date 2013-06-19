@@ -1,0 +1,14 @@
+.content {
+	width: 80%;
+}
+
+.login {
+	float: right;
+	width: 20%;
+	margin-right: 10%;
+}
+
+#btn_login {
+	margin-left: 80%;
+	margin-right: auto;
+}
