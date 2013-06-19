@@ -25,9 +25,9 @@ Then people can answer a question and display the results in beautiful diagrams.
 		```php
 		  <?php
 		    $ServerAdr = "my server address";
-			  $UserName = "my username";
-			  $pw = "my password";
-			  $database = "my database";
+			$UserName = "my username";
+			$pw = "my password";
+			$database = "my database";
 		  ?>
 		```
 		After that you can run the PHP/DB_install.php script to create the required tables.
@@ -50,12 +50,13 @@ Then people can answer a question and display the results in beautiful diagrams.
 		```
 		After that you can run localhost:9000/db_install to create the required database tables.
 		To start a play project you can read the documentation on the [play framework website](http://www.playframework.com/documentation/2.1.1/PlayConsole).
+
 * #####Working Version#####
 	
-		- Play:
-			You can find a working version of the "Clicker" at [herokuapp](http://lit-fjord-5486.herokuapp.com/).
-		- PHP:
-			You can find a working version of the "Clicker" [here](http://marcel-erath.de/clicker/).
+	- Play:
+		You can find a working version of the "Clicker" at [herokuapp](http://lit-fjord-5486.herokuapp.com/).
+	- PHP:
+		You can find a working version of the "Clicker" [here](http://marcel-erath.de/clicker/).
 
 
 ###Manual###
