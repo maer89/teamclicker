@@ -52,7 +52,10 @@ Then people can answer a question and display the results in beautiful diagrams.
 		To start a play project you can read the documentation on the [play framework website](http://www.playframework.com/documentation/2.1.1/PlayConsole).
 * #####Working Version#####
 	
-	You can find a working version of the "Clicker" at [herokuapp](http://lit-fjord-5486.herokuapp.com/).
+		- Play:
+			You can find a working version of the "Clicker" at [herokuapp](http://lit-fjord-5486.herokuapp.com/).
+		- PHP:
+			You can find a working version of the "Clicker" [here](http://marcel-erath.de/clicker/).
 
 
 ###Manual###
