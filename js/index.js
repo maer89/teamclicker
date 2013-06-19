@@ -1,8 +1,11 @@
+<<<<<<< HEAD
 var startReg = 1;
 var popupStatReg = 0;
 var reg;
 var bg_reg;
 
+=======
+>>>>>>> Dani
 $(function() {
  	$('#btn_login').click(function() {
 		var user_name = document.getElementById("user").value;
@@ -10,6 +13,19 @@ $(function() {
 		login_ftn(user_name, pw);
  	});
 
+<<<<<<< HEAD
+=======
+	// not in use at the moment
+	// Click events for Login- and Get-Question-Button
+	/*
+ 	$('#btn_get_q').click(function() {
+		var q_id = document.getElementById("q_id").value;
+		var q_pw =  document.getElementById("q_password").value
+		get_Question(q_id, q_pw);
+ 	});
+	 */
+
+>>>>>>> Dani
 	// event for return-button for login and get question
     $("#q_password").keyup(function(event){
        if(event.keyCode == 13){
@@ -26,6 +42,7 @@ $(function() {
 			login_ftn(user_name, pw);
        }
     });
+<<<<<<< HEAD
 	
 	/* Register */
     $("#btn_register").click(function(event){
@@ -69,12 +86,18 @@ $(function() {
     		alert("Passwords should be equal!");
     	}
 	});
+=======
+>>>>>>> Dani
 });
 
 function login_ftn(user, pw) {
   	$.ajax({
 			type: 'POST',
+<<<<<<< HEAD
 			url: './PHP/index_login.php',
+=======
+			url: '../PHP/index_login.php',
+>>>>>>> Dani
 			data: {
 				'user': user,
 				'pw': pw
@@ -82,12 +105,18 @@ function login_ftn(user, pw) {
    			success: function(data) {
 				var data_field = $.parseJSON(data);
 				if ((data_field != -1) && (data_field >= 1)) {
+<<<<<<< HEAD
   					// set cookie for login
 					var expire = new Date();
 					var in1hour = expire.getTime() + (1 * 60 * 60 * 1000);
 					expire.setTime(in1hour);
 					document.cookie = 'uid=' + data_field + '; expires=' + expire.toGMTString();
 	 				location.href = "./PHP/admin.php";
+=======
+					alert('Welcome ' + user + '!');
+  					storage.set("user_id", data_field);
+	 				location.href = "../PHP/admin.php";
+>>>>>>> Dani
 				} else {
 					alert('Wrong username or password');
 				}
@@ -98,6 +127,7 @@ function login_ftn(user, pw) {
 }
 
 function get_Question() {
+<<<<<<< HEAD
 	var id = document.getElementById("q_id").value;
 	var pw = document.getElementById("q_pw").value;
 	location.href = "./HTML/question.html?id="+id+"&pw="+pw;
@@ -185,4 +215,9 @@ function writeUserToDB(userName, email, pass) {
 			   hideRegForm();
 		}
 	});
+=======
+	storage.set("q_id", document.getElementById("q_id").value);
+	storage.set("q_pw", document.getElementById("q_pw").value);
+	location.href = "question.html";
+>>>>>>> Dani
 }

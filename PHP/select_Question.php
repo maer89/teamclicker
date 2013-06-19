@@ -1,4 +1,13 @@
 <?php
+<<<<<<< HEAD
+=======
+
+
+
+
+
+?><?php
+>>>>>>> Dani
 	include 'DB_data.php';
 
 	// Connect with DB
@@ -45,4 +54,8 @@
 	mysql_close($con);
 
 	echo json_encode($result);
+<<<<<<< HEAD
+=======
+
+>>>>>>> Dani
 ?>
