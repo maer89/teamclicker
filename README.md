@@ -50,7 +50,7 @@ Then people can answer a question and display the results in beautiful diagrams.
 		```
 		After that you can run localhost:9000/db_install to create the required database tables.
 		To start a play project you can read the documentation on the [play framework website](http://www.playframework.com/documentation/2.1.1/PlayConsole).
-* ####Working Version####
+* #####Working Version#####
 	You can find a working version of the "Clicker" at [herokuapp](http://lit-fjord-5486.herokuapp.com/)
 
 
