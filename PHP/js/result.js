@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var ans1;
 var ans2;
 var ans3;

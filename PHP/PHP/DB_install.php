@@ -22,7 +22,7 @@
 		  `answer5` char(30) COLLATE utf8_bin DEFAULT NULL,
 		  `answer6` char(30) COLLATE utf8_bin DEFAULT NULL,
 		  PRIMARY KEY (`id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=190 ;");
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=0 ;");
 	
 	if (!$answers) {
 		die('Error: ' . mysql_error());
@@ -36,7 +36,7 @@
 		  `name` varchar(50) COLLATE utf8_bin NOT NULL DEFAULT '',
 		  `userID` int(11) NOT NULL,
 		  PRIMARY KEY (`id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=59 ;");
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=0 ;");
 
 	if (!$groups) {
 		die('Error: ' . mysql_error());
@@ -53,7 +53,7 @@
 		  `password` varchar(4) COLLATE utf8_bin NOT NULL,
 		  `messageGroup` varchar(50) COLLATE utf8_bin DEFAULT '',
 		  PRIMARY KEY (`id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC AUTO_INCREMENT=3642 ;");
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin ROW_FORMAT=DYNAMIC AUTO_INCREMENT=0 ;");
 
 	if (!$messages) {
 		die('Error: ' . mysql_error());
@@ -72,7 +72,7 @@
 		  `answer5` int(50) NOT NULL DEFAULT '0',
 		  `answer6` int(50) NOT NULL DEFAULT '0',
 		  PRIMARY KEY (`id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=71 ;");
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=0 ;");
 
 	if (!$results) {
 		die('Error: ' . mysql_error());
@@ -87,7 +87,7 @@
 		  `password` char(20) COLLATE utf8_bin DEFAULT NULL,
 		  `email` varchar(50) COLLATE utf8_bin NOT NULL,
 		  PRIMARY KEY (`id`,`name`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=12 ;");
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=0 ;");
 	
 	if (!$users) {
 		die('Error: ' . mysql_error());

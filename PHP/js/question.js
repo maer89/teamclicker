@@ -1,5 +1,4 @@
 var q_id = "";
-<<<<<<< HEAD
 var q_pw = "";
 
 $(function() {
@@ -18,22 +17,17 @@ $(function() {
 		window.open(page, "_self");
 		return;
 	}
-
 	if (q_id != "") {
 		check_Question(q_id, q_pw);
 	} else {
 		alert("Invalide option");
-<<<<<<< HEAD
 		var page = "../index.html";
-
 		window.open(page, "_self");
 		return;
 	}
   	storage.set("q_id", "");
 	storage.set("q_pw", "");
 });
-
-<<<<<<< HEAD
 
 
 function check_Question(q_id, q_pw) {
@@ -50,20 +44,16 @@ function check_Question(q_id, q_pw) {
 					case -1:
 						alert('Question doesn\'t exist or isn\'t enabled!');
 						// link back to index.html
-<<<<<<< HEAD
 						var page = "../index.html";
-
 						window.open(page, "_self");
 						break;
 					case 0:
 						alert('You entered the wrong password for the ID  ' + q_id);
 						// link back to index.html
-<<<<<<< HEAD
 						var page = "../index.html";
 						window.open(page, "_self");
 						break;
 					case 1:
-
 	  					get_answers(q_id);
 						break;
 					default:
@@ -84,7 +74,6 @@ function get_answers(q_id) {
 			},
    			success: function(data) {
 				var data_field = $.parseJSON(data);
-<<<<<<< HEAD
 				var content = "<h3>" + data_field[0].message + " </h3>"
 						  + "<div class='btn-group btn-group-vertical ansbutton'>"
 						  + "<button class='btn btn-block' id=\"ans1\" onclick=\"sendAnswer(id)\">a: " + data_field[0].ans1 + "</button>"
@@ -104,7 +93,6 @@ function get_answers(q_id) {
 				
 				content = content + "</div>";
 
-
 				var html_element = document.getElementById('question_and_Answers');
 				html_element.innerHTML = content;
 			}
@@ -122,8 +110,6 @@ function sendAnswer(id) {
 				'q_id': q_id
 			},
    			success: function(data) {
-<<<<<<< HEAD
-
 				var expire = new Date();
 				var in12hours = expire.getTime() + (12 * 60 * 60 * 1000);
 				expire.setTime(in12hours);
@@ -135,5 +121,5 @@ function sendAnswer(id) {
 	}).error(function() {
 		alert("Error sending answer!");
 	});
-<<<<<<< HEAD
 }
+

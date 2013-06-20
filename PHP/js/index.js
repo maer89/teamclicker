@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 var startReg = 1;
 var popupStatReg = 0;
 var reg;
 var bg_reg;
-
 
 $(function() {
  	$('#btn_login').click(function() {
@@ -11,8 +9,6 @@ $(function() {
 		var pw =  document.getElementById("password").value
 		login_ftn(user_name, pw);
  	});
-
-<<<<<<< HEAD
 
 	// event for return-button for login and get question
     $("#q_password").keyup(function(event){
@@ -30,7 +26,6 @@ $(function() {
 			login_ftn(user_name, pw);
        }
     });
-<<<<<<< HEAD
 	
 	/* Register */
     $("#btn_register").click(function(event){
@@ -79,7 +74,6 @@ $(function() {
 function login_ftn(user, pw) {
   	$.ajax({
 			type: 'POST',
-<<<<<<< HEAD
 			url: './PHP/index_login.php',
 			data: {
 				'user': user,
@@ -88,7 +82,6 @@ function login_ftn(user, pw) {
    			success: function(data) {
 				var data_field = $.parseJSON(data);
 				if ((data_field != -1) && (data_field >= 1)) {
-<<<<<<< HEAD
   					// set cookie for login
 					var expire = new Date();
 					var in1hour = expire.getTime() + (1 * 60 * 60 * 1000);
@@ -105,7 +98,6 @@ function login_ftn(user, pw) {
 }
 
 function get_Question() {
-<<<<<<< HEAD
 	var id = document.getElementById("q_id").value;
 	var pw = document.getElementById("q_pw").value;
 	location.href = "./HTML/question.html?id="+id+"&pw="+pw;

@@ -1,14 +1,297 @@
-.content {
-	width: 80%;
+html{
+	height: 100%;
 }
 
+body{
+	height: 100%;
+	margin: 0;
+	/*background-image: -webkit-linear-gradient(#bebdbd 0%, #444444 100%); 
+	background-image: -moz-linear-gradient(#bebdbd 0%, #444444 100%); 
+	background-image: -o-linear-gradient(#bebdbd 0%, #444444 100%); 
+	background-image: linear-gradient(#bebdbd 0%, #444444 100%);*/
+	background-repeat: no-repeat;
+	background-attachment:fixed;
+}
+
+p{
+	margin-left:2%;
+	margin-right:auto;
+}
+
+
+a{
+	text-decoration:none;
+	color:#0073e5;
+}
+
+a:hover{
+	color:#7ddc1f;
+	cursor:pointer;
+}
+
+h3{
+	color:#7ddc1f;
+	margin: auto 0;
+	margin-left:2%;
+	margin-right:auto;
+	width:100%;
+}
+
+hr{
+	width:100%;
+	margin-bottom:2%;
+}
+
+span{
+	color:#0073e5;
+	margin-top:-10px;
+}
+
+label{
+	color:#0073e5;
+}
+
+ul{
+	margin-top:2%;
+	float:left;
+}
+
+.logo{
+	float:left;
+	margin-right:2%;
+	margin-left:-1.9%;
+}
+
+.hrbox{
+	margin-left:15px;
+	margin-top:-2%;
+	width:90%;
+}
+
+.hrboxquestion{
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:-3%;
+	width:90%;
+}
+
+.content{
+	/*width:900px;*/
+	/*border: solid;
+	border-color:#000000;*/
+}
+
+.menu{
+	/*margin:53px;*/
+	font-size:large;
+	margin:0 auto;
+	margin-top:2%;
+	margin-bottom:2%;
+}
+
+.navi{
+	padding-top:8.8%;
+}
+
+.slider{
+	float:none;
+	margin:0 auto;
+}
+
+.box{
+	height: 240px;
+	margin-bottom: 2%;
+	margin-left: 0px !important;
+	-moz-border-radius-bottomleft: 10px;
+	-moz-border-radius-bottomright: 10px;
+	-webkit-border-bottom-left-radius: 10px;
+	-webkit-border-bottom-right-radius: 10px;
+	border-bottom: 1px solid #0073e5;
+	border-left: 1px solid #0073e5;
+	border-right: 1px solid #0073e5;
+	float:left;
+	text-align:left;
+}
+
+.headline{
+	background-color:#0073e5;
+	-moz-border-radius-topleft: 10px;
+	-moz-border-radius-topright: 10px;
+	-webkit-border-top-left-radius: 10px;
+	-webkit-border-top-right-radius: 10px;
+	height:auto;
+	margin-left: 0px !important;
+	margin-bottom:-1%;
+	border: 1px solid #0073e5;
+	float:left;
+}
+
+.holebox{
+	margin-left:0.7%;
+	margin-bottom:1%;
+}
+
+.holeboxright{
+	margin-left: 1%;
+	margin-bottom:1%;
+}
+
+.boxright{
+	/*margin-right: 30px;*/
+	float:left;
+}
+
+.boxadmin{
+	margin-bottom: 2%;
+	background-color:#ffffff;
+	height: auto;
+	border-radius: 10px;
+	border: 1px solid #0073e5;
+	text-align:center;
+}
+
+.footer{
+	margin-left:auto;
+	margin-right:auto;
+	position:relative;
+	float:left;
+	width:100%;
+	border-top:solid 1px #0073e5;
+	text-align:center;
+}
+
+.copyright{
+	margin-top:0.5%;
+	float:left;
+}
+
+.impressum{
+	margin-top:0.5%;
+	color:#7ddc1f;
+	float:right;
+}
+
+.socialmedia{
+	margin-top:0.5%;
+	margin-left:-19%;
+}
+
+.questionbox{
+	text-align:center;
+}
+
+.questionbox h3 {
+	color: #0073e5;
+	margin-top:2%;
+}
+
+.menubox{
+	height:auto !important;
+}
+
+.question{
+	margin-top:2%;
+	font-size:large;
+}
+
+.ansbutton{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.result{
+	text-align:center;
+	margin-top:2%;
+	margin-bottom:2%;
+}
+
+.resultbox{
+	margin-left:15%;
+	margin-right:auto;
+}
+
+.resbutton{
+	text-align:center;
+	margin-bottom:2%;
+}
+
+.resultbutton{
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.anstext{
+	color:#7ddc1f;
+}
+
+.form{
+	margin-top:2%;
+	margin-bottom:2%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.menuform{
+	margin-top:2%;
+	margin-bottom:2%;
+}
+
+.btn-group {
+	margin-left:2%;
+	margin-right:auto;
+}
+
+.row {
+	margin-left:0px !important;
+}
+
+
+/*LOGIN*/
 .login {
 	float: right;
 	width: 20%;
 	margin-right: 10%;
 }
 
-#btn_login {
-	margin-left: 80%;
-	margin-right: auto;
+/*Register*/
+#btn_register {
+
+}
+
+#bg_trans_register{
+	width:100%;
+	height:100%;
+	position:fixed;
+	top:0px;
+	left:0px;
+	background-color:#000000;
+	opacity:0.70;
+	filter: alpha(opacity=70);
+	-moz-opacity: 0.7;
+	z-index: 2;	
+}
+
+#register_form{
+	/*height:500px;*/
+	position:fixed;
+	top:50%;
+	/*left:50%;*/
+	/*margin:-50px 0 0 -100px;*/ /* [-(height/2)px 0 0 -(width/2)px] */
+	/*margin-left: -1.5%;*/
+	margin-top: -193px;
+	display: none;
+	z-index: 3;
+}
+
+.registerbox{
+	background: #ffffff !important;
+	height: auto !important;
+}
+
+/* content */
+.index_content{
+	margin-left: 8%;
+	margin-top: 5%;
+	margin-right: 5%;
+	font-size: 18px;
 }
