@@ -214,6 +214,7 @@ function saveMessage(){
 				$("#answer6").remove();
 				$("#answerText5").remove();
 			}
+			i = 3;
 	});
 }
 /*enable message*/
@@ -440,11 +441,9 @@ function saveChanges(num){
 			// do nothing
 	});
 	
+	made_changes = true;
 	// close div
 	close_edit();
-	
-	// reload page
-	updateTable();
 }
 
 /*update table*/
