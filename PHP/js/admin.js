@@ -207,7 +207,7 @@ function saveMessage(){
 				$("#answer6").remove();
 				$("#answerText5").remove();
 			}
-			i = 3;
+			i=3;
 		}
 	});
 }
