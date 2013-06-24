@@ -3,7 +3,7 @@
 ###Index###
 1. Description
 2. Getting started
-3. Manual
+3. Manual 
 
 ###Description###
 The clicker is a nice application to make polls. You can free login and create your own questions easily.
