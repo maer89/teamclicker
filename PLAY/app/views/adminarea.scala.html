@@ -2,15 +2,17 @@
 <html>
 <head>
 	<title>Clicker Admin</title>
-	<!--JQuery-->
+
+</head>
+<body>
+	<!-- special includes are in the body because of the point, that there could be functions with the same name -->
+	<!-- JQuery -->
 	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-  	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-  	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-  	<!-- <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>-->
+	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<!--Google Chart Tool-->
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-	
 	<!-- QR-Code -->
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/jquery.qrcode-0.2.min.js")'></script>
 	<!-- storage.js -->
@@ -19,23 +21,12 @@
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/admin.js")'></script>
 	<!--resultadmin.js-->
 	<script type="text/javascript" src='@routes.Assets.at("javascripts/resultadmin.js")'></script>
-	
-	<!-- Bootstrap -->
-    <link type="text/css" href='@routes.Assets.at("bootstrap/css/bootstrap.css")' rel="stylesheet" media="screen">
-    <script src='@routes.Assets.at("bootstrap/js/bootstrap.min.js")'></script>
-	
-	<!-- Responsive Design -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href='@routes.Assets.at("bootstrap/css/bootstrap-responsive.css")' rel="stylesheet">
-	
-	<!--css-->
-	<link type="text/css" rel="stylesheet" href='@routes.Assets.at("stylesheets/index.css")' >
+	<!-- css -->
+	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/index.css")'>
 	<link type="text/css" rel="stylesheet" href='@routes.Assets.at("stylesheets/admin.css")' >
 	<link type="text/css" rel="stylesheet" href='@routes.Assets.at("stylesheets/resultadmin.css")' >
 	<link type="text/css" rel="stylesheet" href='@routes.Assets.at("stylesheets/edit.css")' >
-
-</head>
-<body>
+	
 	<div id="bg_trans" style="display:none"></div>
 	<div id="bg_trans_qr" style="display:none"></div>
 	<div id="bg_trans_edit" style="display:none"></div>
@@ -102,12 +93,6 @@
 		<!--show result-->
 		<div id="showresult">
 		</div>
-		
-		<div class="footer hidden-phone">
-			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stoo&szlig</span>
-			<img src='@routes.Assets.at("images/socialmedia.png")' class="socialmedia" />
-			<span class="impressum"><a href="">Impressum</a></span>
-		</div>
-	</div>
+		<!-- the last closing div is in the main-view -->
 </body>
 </html>

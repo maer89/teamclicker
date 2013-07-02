@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Result</title>
-	
+<body onload="connect()">
+	<!-- special includes are in the body because of the point, that there could be functions with the same name -->
 	<!-- jQuery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
- 	<!-- includes -->
+ 	
+ 	<!-- js -->
 	<link rel="shortcut icon" href="../img/favicon.ico" >
 	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
  	<script type="text/javascript" src='@routes.Assets.at("javascripts/storage.js")'></script>
@@ -14,19 +14,9 @@
 		var id = storage.get("q_id");
 	</script>
 	
-	<!-- Bootstrap -->
-    <link href='@routes.Assets.at("bootstrap/css/bootstrap.css")' rel="stylesheet" media="screen">
-    <script src='@routes.Assets.at("bootstrap/js/bootstrap.min.js")'></script>
-	
-	<!-- Responsive Design -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href='@routes.Assets.at("bootstrap/css/bootstrap-responsive.css")' rel="stylesheet">
-	
 	<!--CSS-->
 	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/index.css")'>
-</head>
-
-<body onload="connect()">
+	
 	<div class="container">
 		<div class="row menu">
 			<div class="span4 offset4">
@@ -47,44 +37,6 @@
 				<button class="btn" id="pie">pie chart</button>
 			</div>
 		</div>
-	
-		<div class="footer hidden-phone">
-			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stoo&szlig</span>
-			<img src='@routes.Assets.at("images/socialmedia.png")' class="socialmedia" />
-			<span class="impressum"><a href="">Impressum</a></span>
-		</div>
-	</div>
-	<!--<script type="text/javascript" charset="utf-8">	
-		var test = function(data){
-			$("#result").empty();
-			
-			if(data[6] == 2){
-				$("#result").append("<p>" + data[0] + "</p><p>" + data[1] + "</p>");
-				//$("#result").append("<p>" + data_field.ans1text + ": " + data[0] + "</p><p>" + data_field.ans2text + ": " + data_field.ans2 + "</p>");
-			}else if(data[6] == 3){
-				$("#result").append("<p>" + data[0] + "</p><p>" + data[1] + "</p><p>" + data[2] + "</p>");
-				//$("#result").append("<p>" + data_field.ans1text + ": "+ data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + "</p>");
-			}else if(data[6] == 4){
-				//$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + 
-				//					"</p><p>" + data_field.ans4text + ": " + data_field.ans4 + "</p>");
-			}else if(data[6] == 5){
-				//$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p><p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p><p>" + data_field.ans3text + ": " + data_field.ans3 + 
-				//					"</p><p>" + data_field.ans4text + ": "+ data_field.ans4 + "</p><p>" + data_field.ans5text + ": " + data_field.ans5 + "</p>");
-			}else if(data[6] == 6){
-				//$("#result").append("<p>" + data_field.ans1text + ": " + data_field.ans1 + "</p>" + data_field.ans2text + ": "  + data_field.ans2 + "</p>" + data_field.ans3text + ": " + data_field.ans3 + 
-				//					"</p><p>" + data_field.ans4text + ": " + data_field.ans4 + "</p><p>" + data_field.ans5text + ": " + data_field.ans5 + "</p><p>" + data_field.ans6text + ": " + data_field.ans6 + "</p>");
-			}else{
-				//do nothing
-			}
-			//window.frames['comet'];
-		}
-	</script>-->
-	
-	
-	<!--<iframe name="comet" id="comet" width=0px height=0px src=""></iframe>
-	<script>
-		document.getElementById("comet").src="/outcome?id="+id;
-	</script>-->
-	
+	<!-- the last closing div is in the main-view -->
 </body>
 </html>

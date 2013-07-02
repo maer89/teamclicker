@@ -1,26 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Clicker Admin</title>
-	<!-- jQuery -->
+<body>
+	<!-- special includes are in the body because of the point, that there could be functions with the same name -->
+	<!-- JQuery -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-	
-	<!-- includes -->
-	<script type="text/javascript" src='@routes.Assets.at("javascripts/storage.js")'></script>
- 	<script type="text/javascript" src='@routes.Assets.at("javascripts/index.js")'></script>
-
-	<!-- Bootstrap -->
-    <link href='@routes.Assets.at("bootstrap/css/bootstrap.css")' rel="stylesheet" media="screen">
-    <script src='@routes.Assets.at("bootstrap/js/bootstrap.min.js")'></script>
-	
-	<!-- Responsive Design -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href='@routes.Assets.at("bootstrap/css/bootstrap-responsive.css")' rel="stylesheet">
 	
 	<!--CSS-->
 	<link rel="stylesheet" type="text/css" href='@routes.Assets.at("stylesheets/index.css")'>
-</head>
-<body>
+	
+	<!-- JS -->
+	<script type="text/javascript" src='@routes.Assets.at("javascripts/storage.js")'></script>
+ 	<script type="text/javascript" src='@routes.Assets.at("javascripts/index.js")'></script>
+ 	
 	<div id="bg_trans_register" style="display:none"></div>
 	<div class="container content">
 		<div class="row menu">
@@ -92,12 +83,6 @@
 				</div>
 			</div>
 		</div>
-	
-		<div class="footer hidden-phone">
-			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stoo&szlig</span>
-			<img src='@routes.Assets.at("images/socialmedia.png")' class="socialmedia" />
-			<span class="impressum"><a href="">Impressum</a></span>
-		</div>
-	</div>
+		<!-- the last closing div is in the main-view -->
 </body>
 </html>

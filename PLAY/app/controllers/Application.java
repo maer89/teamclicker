@@ -22,23 +22,23 @@ public class Application extends Controller {
 	
 	/* shows index.html */
     public static Result index() {
-        return ok(views.html.index.render());
+        return ok(views.html.main.render("Clicker", views.html.index.render()));
     }
     
     /* shows admin.html */
     public static Result admin(){
-    	return ok(views.html.admin.render());
+    	return ok(views.html.main.render("Clicker Admin", views.html.admin.render()));
     }
     
     /* shows question.html */
     public static Result question(){
-    	return ok(views.html.question.render());
+    	return ok(views.html.main.render("Clicker Question", views.html.question.render()));
     }
     
     /* shows adminarea.html */
     public static Result adminarea() {
     	m = new Messages();
-    	return ok(views.html.adminarea.render());
+    	return ok(views.html.main.render("Clicker Admin", views.html.adminarea.render()));
     }
     
     /* loads messages/questions for a specific user */
@@ -51,7 +51,7 @@ public class Application extends Controller {
     
     /* shows result.html */
     public static Result result(){
-    	return ok(views.html.result.render());
+    	return ok(views.html.main.render("Clicker Result", views.html.result.render()));
     }
     
     /*save Message*/
@@ -170,7 +170,7 @@ public class Application extends Controller {
     
     /*get Question */
     public static Result getQuestion(int id, String pw) {   	
-    	return ok(views.html.showQuestion.render(id, pw));
+    	return ok(views.html.main.render("Clicker Question", views.html.showQuestion.render(id, pw)));
     }
     
     /*check Question-Parameters */
