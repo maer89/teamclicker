@@ -26,9 +26,9 @@
 		<div class="row menu">
 			<div class="span4 offset4">
 				<ul class="nav nav-pills">
-					<li><a href="./index.html">Home</a></li>
-					<li class="active"><a href="./question.html">Question</a></li>
-					<li><a href="./admin.html">Admin</a></li>
+					<li><a href="./index.php">Home</a></li>
+					<li class="active"><a href="./question.php">Question</a></li>
+					<li><a href="./admin.php">Admin</a></li>
 				</ul>
 			</div>
 		</div>
@@ -54,12 +54,9 @@
 			</div>
 		</div>
 		
-		<div class="footer hidden-phone">
-			<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
-			<img src="./img/socialmedia.png" class="socialmedia" />
-			<span class="impressum"><a href="">Impressum</a></span>
-		</div>
-		
+		<?php
+			include './PHP/footer.php';
+		?>
 	</div>
 </body>
 </html>

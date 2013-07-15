@@ -1,110 +1,59 @@
-<?php
-	include 'DB_data.php';
-
-	// Connect with DB
-	$con = mysql_connect($ServerAdr, $UserName, $pw);
-	if(!$con) {
-		die('Cold not connect: ' .mysql_error());
-	}
-
-	mysql_select_db($database, $con);
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Result</title>
 	
-	$answers; 
-	$ans1;
-	$ans1text;
-	$ans2;
-	$ans2text;
-	$ans3;
-	$ans3text;
-	$ans4;
-	$ans4text;
-	$ans5;
-	$ans5text;
-	$ans6;
-	$ans6text;
-	$id = $_POST['id'];
+	<!-- jQuery -->
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 	
-	/*get answers*/
-	$res = mysql_query("SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM answers WHERE messageID = '$id'");
+ 	<!-- includes -->
+	<link rel="shortcut icon" href="../img/favicon.ico" >
 	
-	while($data = mysql_fetch_array($res)){
-		if($data['answer3'] == ""){
-			$answers = 2;
-		}else if($data['answer4'] == ""){
-			$answers = 3;
-		}else if($data['answer5'] == ""){
-			$answers = 4;
-		}else if($data['answer6'] == ""){
-			$answers = 5;
-		}else{
-			$answers = 6;
-		}
-		$ans1text = $data['answer1'];
-		$ans2text = $data['answer2'];
-		$ans3text = $data['answer3'];
-		$ans4text = $data['answer4'];
-		$ans5text = $data['answer5'];
-		$ans6text = $data['answer6'];
-	}
-
+ 	<script type="text/javascript" src="../js/storage.js"></script>
 	
-	$numb = mysql_query("SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = '$id'");
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="../js/result.js"></script>
 	
-	while($data = mysql_fetch_array($numb)){
-		$ans1 = $data['answer1'];
-		$ans2 = $data['answer2'];
-		$ans3 = $data['answer3'];
-		$ans4 = $data['answer4'];
-		$ans5 = $data['answer5'];
-		$ans6 = $data['answer6'];
-	}
+	<!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
 	
-	$sqlmsg = mysql_query("SELECT messageText FROM messages WHERE id = '$id'");
-	while($data = mysql_fetch_array($sqlmsg)){
-		$msg = $data['messageText'];
-	}
+	<!-- Responsive Design -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="../bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 	
-	$start = mktime();
-	$end = mktime();
-	$i = true;
-	$file = fopen("test.txt",w);
-	while(($end-$start) <  2){
-		$numb = mysql_query("SELECT answer1,answer2,answer3,answer4,answer5,answer6 FROM results WHERE messageID = '$id'");
-	
-		while($data = mysql_fetch_array($numb)){
-			$ans1neu = $data['answer1'];
-			$ans2neu = $data['answer2'];
-			$ans3neu = $data['answer3'];
-			$ans4neu = $data['answer4'];
-			$ans5neu = $data['answer5'];
-			$ans6neu = $data['answer6'];
-		}
+	<!--CSS-->
+	<link href="../css/index.css" type="text/css" rel="stylesheet">
 		
-		if(($ans1neu != $ans1) || ($ans2neu != $ans2) || ($ans3neu != $ans3) || ($ans4neu != $ans4) || ($ans5neu != $ans5) || ($ans6neu != $ans6) || ($i)){
-			$response = array("ans1"=>$ans1neu, 
-							"ans1text"=>$ans1text,
-							"ans2"=>$ans2neu,
-							"ans2text"=>$ans2text,
-							"ans3"=>$ans3neu,
-							"ans3text"=>$ans3text,
-							"ans4"=>$ans4neu,
-							"ans4text"=>$ans4text,
-							"ans5"=>$ans5neu,
-							"ans5text"=>$ans5text,
-							"ans6"=>$ans6neu,
-							"ans6text"=>$ans6text,
-							"num"=>$answers,
-							"msg"=>$msg);
-			fwrite($file,json_encode($response)."\n");
-			//$x = "[".json_encode($response)."]";
-			//echo $x;
-			echo json_encode($response);
-		} 
+</head>
 
-		$i = false;
-		
-		$end = mktime();
-		//fclose($file);
-	}
+<body onload="connect()">
+	<div class="container">
+		<div class="row menu">
+			<div class="span4 offset4">
+				<div>
+					<ul class="nav nav-pills navi">
+						<li><a href="../index.php">Home</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	
-?>
+		<div class="row result">
+			<div class="span8 resultbox" id="chart_div" ></div>
+		</div>
+		
+		<div class="row resbutton">
+			<div class="btn-group resultbutton">
+				<button class="btn" id="column">column chart</button>
+				<button class="btn" id="bar">bar chart</button>
+				<button class="btn" id="pie">pie chart</button>
+			</div>
+		</div>
+		
+		<?php
+			include 'footer.php';
+		?>
+	</div>
+</body>
+</html>

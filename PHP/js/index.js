@@ -100,7 +100,7 @@ function login_ftn(user, pw) {
 function get_Question() {
 	var id = document.getElementById("q_id").value;
 	var pw = document.getElementById("q_pw").value;
-	location.href = "./HTML/question.html?id="+id+"&pw="+pw;
+	location.href = "./PHP/question.php?id="+id+"&pw="+pw;
 }
 
 

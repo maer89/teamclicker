@@ -28,7 +28,7 @@ $(document).ready(function(){
 		}
 	} else {
 		alert("You're not allowed to enter this site!");
-		var page = "http://www.marcel-erath.de/clicker/index.html";
+		var page = "http://www.marcel-erath.de/clicker/index.php";
 		window.open(page, "_self");
 		return;
 	}  
@@ -112,7 +112,7 @@ function logout() {
 	// set expire time to past
 	document.cookie = 'uid=' + user_id + "; expires=Thu, 01-Jan-70 00:00:01 GMT;";
 	// link to index
-	location.href = "http://www.marcel-erath.de/clicker/index.html";
+	location.href = "http://www.marcel-erath.de/clicker/index.php";
 }
 
 /*save message*/
@@ -508,8 +508,8 @@ function updateTable(){
 					"<td>"+data_field[i].pw+"</td>";
 
 				if (data_field[i].enable != 0) {
-					content = content + "<td><a href='" + window.location.origin + "/clicker/HTML/question.html?id=" + data_field[i].id + "&pw=" + data_field[i].pw
-							  + "' >" + window.location.origin + "/clicker/HTML/question.html?id=" + data_field[i].id + "&pw=" + data_field[i].pw
+					content = content + "<td><a href='" + window.location.origin + "/clicker/PHP/question.php?id=" + data_field[i].id + "&pw=" + data_field[i].pw
+							  + "' >" + window.location.origin + "/clicker/PHP/question.php?id=" + data_field[i].id + "&pw=" + data_field[i].pw
 							  + "</a></td>";
 				} else {
 					content = content + "<td> - </td>";
@@ -554,7 +554,7 @@ function qr_code(id) {
 	
 	// create QR
 	$('#qrcode_div').qrcode({
-		text    : "http://marcel-erath.de/clicker/HTML/question.html?id=" + q_id + "&pw=" + q_pw,
+		text    : "http://marcel-erath.de/clicker/PHP/question.php?id=" + q_id + "&pw=" + q_pw,
 		render    : "canvas",
 		background : "#ffffff",
 		foreground : "#000000",

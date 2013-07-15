@@ -105,12 +105,9 @@
 			</div>
 			
 			<!--footer-->
-			<div class="footer hidden-phone">
-				<span class="copyright">&copy;HTWG Konstanz Marcel Erath &amp; Daniel Stooﬂ</span>
-				<img src="../img/socialmedia.png" class="socialmedia" />
-				<span class="impressum"><a href="">Impressum</a></span>
-			</div>
-			
+			<?php
+				include 'footer.php';
+			?>
 		</div>
 	</div>
 </body>

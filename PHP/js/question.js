@@ -13,7 +13,7 @@ $(function() {
 	var pos = c.indexOf(q_id);
 	if (pos != -1) {
 		alert("You have already voted for this question!");
-		var page = "../index.html";
+		var page = "../index.php";
 		window.open(page, "_self");
 		return;
 	}
@@ -21,7 +21,7 @@ $(function() {
 		check_Question(q_id, q_pw);
 	} else {
 		alert("Invalide option");
-		var page = "../index.html";
+		var page = "../index.php";
 		window.open(page, "_self");
 		return;
 	}
@@ -43,14 +43,14 @@ function check_Question(q_id, q_pw) {
 				switch(data_field) {
 					case -1:
 						alert('Question doesn\'t exist or isn\'t enabled!');
-						// link back to index.html
-						var page = "../index.html";
+						// link back to index.php
+						var page = "../index.php";
 						window.open(page, "_self");
 						break;
 					case 0:
 						alert('You entered the wrong password for the ID  ' + q_id);
-						// link back to index.html
-						var page = "../index.html";
+						// link back to index.php
+						var page = "../index.php";
 						window.open(page, "_self");
 						break;
 					case 1:
@@ -116,7 +116,7 @@ function sendAnswer(id) {
 				document.cookie = q_id + "=visited" + "; expires=" + expire.toGMTString();
 				storage.set("q_id", q_id);
 				// Link to Timer-/Resultpage
-				location.href = "result.html";
+				location.href = "result.php";
 			}
 	}).error(function() {
 		alert("Error sending answer!");
